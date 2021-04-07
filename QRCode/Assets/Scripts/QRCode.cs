@@ -32,7 +32,7 @@ public class QRCode : MonoBehaviour
             var result = barcodeReader.Decode(camTexture.GetPixels32(), camTexture.width, camTexture.height);
             if (result != null)
             {
-                Debug.Log("DECODED TEXT FROM QR: " + result.Text + " Coucou Diane et Coralie");
+                Debug.Log("DECODED TEXT FROM QR: " + result.Text);
             }
         }
         catch (System.Exception ex) { Debug.LogWarning(ex.Message); }
