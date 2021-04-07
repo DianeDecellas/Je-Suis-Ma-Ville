@@ -31,10 +31,10 @@ public class testmusicxml : MonoBehaviour
         XmlNode music = CurrentNode.NextSibling;
         
         Debug.Log(music.InnerText);
-        string audiopath = music.InnerText;
-        //XmlNode url = music.FirstChild;
+        string audiopath = music.InnerText; //visiblement il lit direct le InnerText dans <music></music>et pas dans <url></url>
+                                            //XmlNode url = music.FirstChild;
 
-        //string audiopath = "https://ciihuy.com/downloads/music.mp3";
+
         //read audiosource
         audioSource = GetComponent<AudioSource>();
         StartCoroutine(GetAudioClip(audiopath));
