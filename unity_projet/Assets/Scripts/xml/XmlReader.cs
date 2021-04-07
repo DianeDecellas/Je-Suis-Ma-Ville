@@ -84,6 +84,7 @@ namespace XmlReader
                 
                 EtapeReader(etape.NextSibling);
             }
+            suivant.GetComponent<Button>().onClick.RemoveAllListeners();
             suivant.GetComponent<Button>().onClick.AddListener(EtapeSuivante);
         }
 
@@ -96,6 +97,7 @@ namespace XmlReader
 
                 EtapeReader(etape.NextSibling);
             }
+            suivant.GetComponent<Button>().onClick.RemoveAllListeners();
             suivant.GetComponent<Button>().onClick.AddListener(EtapeSuivante);
         }
         
@@ -123,19 +125,19 @@ namespace XmlReader
             g2.transform.GetChild(1).GetComponent<Text>().text = reponsef1.InnerText;
             g3.transform.GetChild(1).GetComponent<Text>().text = reponsef2.InnerText;
             g4.transform.GetChild(1).GetComponent<Text>().text = reponsef3.InnerText;
-
+            void EtapeSuivante()
+            {
+                Destroy(g2.gameObject);
+                Destroy(g3);
+                Destroy(g4);
+                EtapeReader(etape.NextSibling);
+            }
             g.transform.GetChild(0).GetComponent<Text>().text = "valider";
             g.GetComponent<Button>().AddEventListener(0, Valider);
             g2.GetComponent<Button>().AddEventListener(0, Refuser);
             g3.GetComponent<Button>().AddEventListener(0, Refuser);
             g4.GetComponent<Button>().AddEventListener(0, Refuser);
-            void EtapeSuivante()
-            {
-                Destroy(g2);
-                Destroy(g3);
-                Destroy(g4);
-                EtapeReader(etape.NextSibling);
-            }
+            suivant.GetComponent<Button>().onClick.RemoveAllListeners();
             suivant.GetComponent<Button>().onClick.AddListener(EtapeSuivante);
             
         }
@@ -187,9 +189,10 @@ namespace XmlReader
                 creerQrCode(etape);
             }
 
-            if (typeEtape==null)
+            if (typeEtape=="Conclusion")
             {
                 Debug.Log("c'est fini");
+                
             }
             
             
