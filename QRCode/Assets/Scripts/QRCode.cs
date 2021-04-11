@@ -6,6 +6,7 @@ using ZXing.QrCode;
 
 public class QRCode : MonoBehaviour
 {
+    public MessageDisplay fenetre;
     private WebCamTexture camTexture;
     private Rect screenRect;
     void Start()
@@ -33,6 +34,8 @@ public class QRCode : MonoBehaviour
             if (result != null)
             {
                 Debug.Log("DECODED TEXT FROM QR: " + result.Text);
+                fenetre.Display(result.Text);
+
             }
         }
         catch (System.Exception ex) { Debug.LogWarning(ex.Message); }
