@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using ZXing;
 using ZXing.QrCode;
-/*
+
 public class QRCode : MonoBehaviour
 {
     public MessageDisplay fenetre;
@@ -27,8 +27,8 @@ public class QRCode : MonoBehaviour
     void OnGUI()
     {
         // drawing the camera on screen
-        //GUI.DrawTexture(screenRect, camTexture, ScaleMode.ScaleToFit); 
-        GUI.DrawTexture(cameraRect, camTexture, ScaleMode.ScaleToFit);
+        GUI.DrawTexture(screenRect, camTexture, ScaleMode.ScaleToFit); 
+        //GUI.DrawTexture(cameraRect, camTexture, ScaleMode.ScaleToFit);
         // do the reading — you might want to attempt to read less often than you draw on the screen for performance sake
         try
         {
@@ -68,8 +68,8 @@ public class QRCode : MonoBehaviour
         return encoded;
     }
 }
-*/
 
+/*
 public class QRCode : MonoBehaviour
 {
 
@@ -81,4 +81,4 @@ public class QRCode : MonoBehaviour
             print("You clicked the button!");
         }
     }
-}
+}*/
