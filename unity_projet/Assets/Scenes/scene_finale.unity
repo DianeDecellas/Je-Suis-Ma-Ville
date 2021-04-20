@@ -1056,7 +1056,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c99f3936f51a5c74a980a88a03279cf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Url: http://localhost:8000/message.xml
+  Url: https://admiring-easley-a2c27c.netlify.app/message.xml
 --- !u!1 &1923737709
 GameObject:
   m_ObjectHideFlags: 0
