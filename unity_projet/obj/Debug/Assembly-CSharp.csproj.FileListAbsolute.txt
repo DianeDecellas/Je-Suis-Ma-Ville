@@ -239,3 +239,6 @@ C:\Users\dovaco\New Unity Project (5)\obj\Debug\Assembly-CSharp.csproj.CopyCompl
 C:\Users\dovaco\New Unity Project (5)\obj\Debug\Assembly-CSharp.dll
 C:\Users\dovaco\New Unity Project (5)\obj\Debug\Assembly-CSharp.pdb
 C:\Users\dovaco\New Unity Project (5)\Temp\bin\Debug\UnityEngine.SpatialTrackingModule.dll
+C:\Users\guill\Documents\TSP2A\Cassiop\CodeProjet\Je-Suis-Ma-Ville\unity_projet\obj\Debug\Assembly-CSharp.csprojAssemblyReference.cache
+C:\Users\guill\Documents\TSP2A\Cassiop\CodeProjet\Je-Suis-Ma-Ville\unity_projet\obj\Debug\Assembly-CSharp.csproj.CoreCompileInputs.cache
+C:\Users\guill\Documents\TSP2A\Cassiop\CodeProjet\Je-Suis-Ma-Ville\unity_projet\obj\Debug\Assembly-CSharp.dll

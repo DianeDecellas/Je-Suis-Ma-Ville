@@ -7,6 +7,7 @@ using ZXing.QrCode;
 public class QRCodeReader : MonoBehaviour
 {
     public string expectedMessage; // (G) La solution attendue du QRCode
+    public bool qrcodeValide = false;
     private WebCamTexture camTexture;
     private Rect screenRect; //(G) le rectangle qui contiendra la caméra.   
 
@@ -39,6 +40,8 @@ public class QRCodeReader : MonoBehaviour
                 if (result.Text == expectedMessage)
                 {
                     Debug.Log("True");
+                    qrcodeValide = true;
+                    //(G) Ici, on pourra rajouter l'appel à une méthode de XMLreader permettant à XMLreader de valider l'étape QRCode;
                 }
             }
         }

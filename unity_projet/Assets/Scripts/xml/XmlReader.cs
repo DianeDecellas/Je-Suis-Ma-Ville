@@ -9,22 +9,12 @@ using System.Xml.Linq;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 
-namespace XmlReader
-{
+
     
-    public static class ButtonExtension
+    public class XmlReader : MonoBehaviour
     {
-        public static void AddEventListener<T>(this Button button, T param, Action<T> OnClick)
-        {
-            button.onClick.AddListener(delegate () {
-                OnClick(param);
-            });
-        }
-    }
-    class XmlReader : MonoBehaviour
-    {
-        
-        
+    public QRCodeReader scriptQrCode;
+     
         
         void ItemClicked(bool correct) ///fonction qui permet de savoir si une réponse est juste ou non
 
@@ -51,6 +41,8 @@ namespace XmlReader
         public void creerEtapeTexte(XmlNode etape, XmlNode question, XmlNode reponse) ///fonction qui crée une etape texte avec question et reponse
         {
             GameObject buttonTemplate = transform.GetChild(2).gameObject; ///on récupère la template de bouton formée dans l'UI, il s'agit du 3eme fils de l'objet auquel le code est attaché "panel"
+            buttonTemplate.SetActive(true);
+
             GameObject g; ///on crée un objet g
             GameObject titre = transform.GetChild(0).gameObject; ///on récupère le 1er fils de panel et on l'appelle titre
             GameObject suivant = transform.parent.GetChild(1).gameObject; ///le 2ele fils du parent de panel est le bouton suivant
@@ -79,29 +71,50 @@ namespace XmlReader
             g.GetComponent<Button>().onClick.AddListener( ValiderTexte); ///le bouton déclenche la fonction ValiderTexte quand on appuye dessus
             void EtapeSuivante()
             {
-                
+            Debug.Log("odkour");
                 EtapeReader(etape.NextSibling); ///on appelle la fonction EtapeReader sur le frère suivant de l'étape en cours (imaginez un arbre)
             }
             suivant.GetComponent<Button>().onClick.RemoveAllListeners(); ///on enlève tous les attribus du bouton suivant avant de lui appliquer la fonction EtapeReader sinon le bouton suivant se retrouve avec 1000 fonctions différentes dessus
             suivant.GetComponent<Button>().onClick.AddListener(EtapeSuivante);///on applique la fonction EtapeSuivante au bouton suivant
         }
 
-        public void creerQrCode(XmlNode etape) ///fonction creer qrCode
+    public void creerQrCode(XmlNode etape) ///fonction creer qrCode
         {
+        Debug.Log("83");
             GameObject suivant = transform.parent.GetChild(1).gameObject;
-            void EtapeSuivante()
-            {
-                
+        GameObject input = transform.GetChild(1).gameObject;
+            GameObject boutonValider = transform.GetChild(2).gameObject;
+            GameObject qrReader = transform.GetChild(3).gameObject;
+        input.SetActive(false);
+        Debug.Log("87");
+            boutonValider.SetActive(false);
+        Debug.Log("89");
+            qrReader.SetActive(true);
 
+
+        Debug.Log("On rentre dans la boucle infinie");
+        while(!scriptQrCode.qrcodeValide){
+            Debug.Log("J'attends...");
+        } //(G) A faire : mettre un late update pour optimiser parce que là, c'est schlag !
+        Debug.Log("C'est bon, le QR Code est valide !!");
+        scriptQrCode.qrcodeValide = false;
+        
+        void EtapeSuivante()
+            {
+                qrReader.SetActive(false);
                 EtapeReader(etape.NextSibling);
             }
             suivant.GetComponent<Button>().onClick.RemoveAllListeners(); ///on enlève les anciennes fonctions du bouton avant d'ajouter la fonction etape suivante appropriée
             suivant.GetComponent<Button>().onClick.AddListener(EtapeSuivante);
         }
+
+
         
         public void creerQCM(XmlNode etape, XmlNode question, XmlNode reponsev, XmlNode reponsef1, XmlNode reponsef2, XmlNode reponsef3) ///reponsev est la réponse juste, reponsefi pour i entre 1 et 3 les fausses
         {
             GameObject buttonTemplate = transform.GetChild(2).gameObject; ///on récupère le template de bouton, 3eme fils du panel
+            buttonTemplate.SetActive(true);
+
             GameObject g;
             GameObject g2;
             GameObject g3;
@@ -196,6 +209,8 @@ namespace XmlReader
             
 
         }
+
+
         
         public string Url;
         private void Start() ///que fait on au démarrage?
@@ -221,4 +236,3 @@ namespace XmlReader
             
         }
     }
-}
