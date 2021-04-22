@@ -1151,7 +1151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c99f3936f51a5c74a980a88a03279cf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptQrCode: {fileID: 0}
+  scriptQrCode: {fileID: 2108037544}
   Url: https://admiring-easley-a2c27c.netlify.app/message2.xml
 --- !u!1 &1923737709
 GameObject:
@@ -1568,3 +1568,15 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2076052338}
   m_CullTransparentMesh: 0
+--- !u!114 &2108037544 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 794154144641781349, guid: 1cde0f98f1f2a6244826b8bb14c4c09d,
+    type: 3}
+  m_PrefabInstance: {fileID: 203416407}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 371485cc2324d084bbb169cc7566fda5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
