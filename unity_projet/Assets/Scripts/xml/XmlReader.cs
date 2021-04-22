@@ -78,7 +78,7 @@ public class XmlReader : MonoBehaviour
         suivant.GetComponent<Button>().onClick.AddListener(EtapeSuivante);///on applique la fonction EtapeSuivante au bouton suivant
     }
 
-    public void creerQrCode(XmlNode etape) ///fonction creer qrCode
+    public void creerQrCode(XmlNode etape, XmlNode question, XmlNode reponse) ///fonction creer qrCode
     {
         //(G) il ne reste plus qu'à modifier cette methode pour qu'elle cherche dans le XML la réponse au QRCode attendue, au lieu que ce soit nous qui la passions pour les tests
         //(G) on récupère les GameObject qui définissent la vue
@@ -86,10 +86,16 @@ public class XmlReader : MonoBehaviour
         GameObject input = transform.GetChild(1).gameObject;
         GameObject boutonValider = transform.GetChild(2).gameObject;
         GameObject qrReader = transform.GetChild(3).gameObject;
+        GameObject questionTextBox = transform.GetChild(0).GetChild(0).gameObject; //(G) la boite texte contenant la question
 
+        questionTextBox.transform.GetComponent<Text>().text = question.InnerText; //(G) on met le texte dans la question et on est bons !
+        
+        //questionTextBox.transform.Text
         input.SetActive(false);
         boutonValider.SetActive(false);
         qrReader.SetActive(true); //(G) on affiche le QRCodeReader
+        scriptQrCode.expectedMessage = reponse.InnerText;
+        Debug.Log("Creer QRCode : Expected Message = " + scriptQrCode.expectedMessage);
         //qrReader.expectedMessage =    //(G) penser à passer le message attendu à qrReader à partir du code XML
 
         IEnumerator waitForQRCode() //(G) la routine qui est appelée pour attendre que le booléen scriptQrCode.qrCodeValide passe de false à true
@@ -197,9 +203,16 @@ public class XmlReader : MonoBehaviour
 
         else if (typeEtape == "QR Code")
         {
-            Debug.Log( "QrCode");
-            XmlNode etape = CurrentNode.NextSibling; ///à remplir pour afficher un QRCode
-            creerQrCode(etape);
+            XmlNode etape = CurrentNode.NextSibling; 
+            XmlNode titre = etape.FirstChild;
+            XmlNode navigation = titre.NextSibling;
+            Debug.Log(navigation.InnerText);
+            XmlNode epreuve = navigation.NextSibling;
+
+            XmlNode qrcode = epreuve.FirstChild;
+            XmlNode question = qrcode.FirstChild;
+            XmlNode reponse = question.NextSibling;
+            creerQrCode(etape, question, reponse); // (G) On crée l'étape QRCode
         }
 
         if (typeEtape=="Conclusion") ///si on atteint la conclusion alors c'est fini
