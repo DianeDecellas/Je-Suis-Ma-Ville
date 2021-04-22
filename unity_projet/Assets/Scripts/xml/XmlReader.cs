@@ -88,6 +88,7 @@ public class XmlReader : MonoBehaviour
         GameObject qrReader = transform.GetChild(3).gameObject;
         GameObject questionTextBox = transform.GetChild(0).GetChild(0).gameObject; //(G) la boite texte contenant la question
 
+        suivant.transform.GetComponent<Button>().interactable = false;
         questionTextBox.transform.GetComponent<Text>().text = question.InnerText; //(G) on met le texte dans la question et on est bons !
         
         //questionTextBox.transform.Text
@@ -107,6 +108,7 @@ public class XmlReader : MonoBehaviour
                 qrReader.SetActive(false); //(G) on désactive l'objet QRReader
                 EtapeReader(etape.NextSibling);
             }
+            suivant.GetComponent<Button>().interactable = true;
             suivant.GetComponent<Button>().onClick.RemoveAllListeners(); ///on enlève les anciennes fonctions du bouton avant d'ajouter la fonction etape suivante appropriée
             suivant.GetComponent<Button>().onClick.AddListener(EtapeSuivante);
         }
