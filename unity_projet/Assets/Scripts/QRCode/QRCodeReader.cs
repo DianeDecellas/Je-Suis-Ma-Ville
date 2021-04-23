@@ -10,6 +10,8 @@ public class QRCodeReader : MonoBehaviour
     public bool qrcodeValide = false; // (G) le booléen que le script XmlReader utilise pour savoir si le qrCode scanné correspond au message attendu
     private WebCamTexture camTexture;
     private Rect screenRect; //(G) le rectangle qui contiendra la caméra.   
+    public Quaternion baseRotation;
+
 
     // Start is called before the first frame update
     void Start()
@@ -19,6 +21,12 @@ public class QRCodeReader : MonoBehaviour
         camTexture = new WebCamTexture(); //(G) La caméra
         camTexture.requestedHeight = Screen.height;
         camTexture.requestedWidth = Screen.width;
+
+        Renderer renderer = GetComponent<Renderer>();
+        renderer.material.mainTexture = camTexture;
+        baseRotation = transform.rotation;
+
+
         if (camTexture != null)
         {
             camTexture.Play();
@@ -28,6 +36,8 @@ public class QRCodeReader : MonoBehaviour
     void OnGUI()
     {
         // drawing the camera on screen
+        transform.rotation = baseRotation * Quaternion.AngleAxis(camTexture.videoRotationAngle, Vector3.down);
+        GUIUtility.RotateAroundPivot(90, screenRect.center);
         GUI.DrawTexture(screenRect, camTexture, ScaleMode.ScaleToFit);
         // do the reading — you might want to attempt to read less often than you draw on the screen for performance sake
         try
