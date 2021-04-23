@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/testGeolocali.unity
+    guid: 193ec60623d18ac45b167d781b84e023
   m_configObjects: {}

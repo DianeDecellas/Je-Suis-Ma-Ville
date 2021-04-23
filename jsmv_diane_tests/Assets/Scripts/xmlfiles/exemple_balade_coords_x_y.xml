@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE balade[
+	<!ELEMENT balade (descriptif, etape+,conclusion)>
+	<!ELEMENT descriptif (nom_balade, duree, resume, lieu_depart, coords)>
+	<!--elements elementaires:	nom_balade, duree, resume, lieu_depart-->
+		<!ELEMENT coords (x,y)>
+		<!--elements elementaires: x,y-->
+	<!ELEMENT etape (nom_etape, navigation, epreuve)>
+	<!--elements élémentaires : nom_etape-->
+		<!ELEMENT navigation (image, instructions, coords)>
+		<!--elements elementaires: image, instructions-->
+		<!ELEMENT epreuve (qcm|texte|qrcode)>
+			<!ELEMENT qcm (question, (reponse_v|reponse_f), (reponse_v|reponse_f), (reponse_v|reponse_f), (reponse_v|reponse_f), indice, felicitations)>
+			<!--eleemnts elementaires : question, reponse_v, reponse_f, felicitations, indice--> 
+			<!ELEMENT texte (image, question, reponse*, indice, solution)>
+			<!--reponse-->
+			<!ELEMENT qrcode (question, solution)>
+				<!ELEMENT solution (image, felicitations, explication)>
+				<!--elements elementaires : explication -->
+	<!ELEMENT nom_balade (#PCDATA)>
+	<!ELEMENT duree (#PCDATA)>
+	<!ELEMENT resume (#PCDATA)>
+	<!ELEMENT lieu_depart (#PCDATA)>
+	<!ELEMENT x (#PCDATA)>
+	<!ELEMENT y (#PCDATA)>
+	<!ELEMENT nom_etape (#PCDATA)>
+	<!ELEMENT image (#PCDATA)>
+	<!ELEMENT instructions (#PCDATA)>
+	<!ELEMENT question (#PCDATA)>
+	<!ELEMENT reponse_v (#PCDATA)>
+	<!ELEMENT reponse_f (#PCDATA)>
+	<!ELEMENT reponse (#PCDATA)>
+	<!ELEMENT felicitations (#PCDATA)>
+	<!ELEMENT indice (#PCDATA)>
+	<!ELEMENT explication (#PCDATA)>
+	<!ELEMENT conclusion (#PCDATA)>
+
+]>
+
+<balade>
+
+	<descriptif>
+		<nom_balade>Le jeu vidéo à Evry</nom_balade>
+		<duree>2h00</duree>
+		<resume>Venez découvrir un aspect méconnu d'Evry : le jeu vidéo</resume>
+		<lieu_depart>Chambre de Commerce et de l'Industrie d'Essonne</lieu_depart>
+		<coords>
+			<x>48.62433182969001</x>
+			<y>2.430626494958054</y>
+		</coords>
+	</descriptif>
+	<!-- Etape 1 : question texte-->
+	<etape>
+		<nom_etape>Ethereal</nom_etape>
+		<navigation>
+			<image>image1.png</image> 
+			<instructions>Rendez-vous au 19 cours Blaise Pascal</instructions>
+			<coords>
+				<x>48.62670748930166</x>
+				<y>2.4318495822363873</y>
+			</coords>
+		</navigation>
+		<epreuve>
+			<texte>
+				<image>image.png</image>
+				<question> Comment s’appelle l’entreprise de création de jeux mobiles dont les locaux se trouvent au 19 rue Blaise Pascal ?
+				</question>
+				<reponse>Ethereal</reponse>
+				<indice>L'entreprise est à l'origine du jeu mobile Last Heart.</indice>
+				<solution>
+					<image>ethereal.png</image>
+					<felicitations>Félicitations ! L'entreprise ayant ses locaux ici est bien Ethereal!</felicitations>
+					<explication>L'entreprise Ethereal développe des jeux mobiles et des jeux sérieux comme Tomatron ou Last Heart pour différents partenaires.</explication>
+				</solution>
+			</texte>
+		</epreuve>
+	</etape>
+
+	<!-- Etape 2 : QR Code-->
+	<etape>
+		<nom_etape>Passage Galilée</nom_etape>
+		<navigation>
+			<image>passage_galilee.png</image>
+			<instructions>Remontez le cours en prenant à droite la traversée d'un grand mathématicien italien</instructions>
+			<coords>
+				<x>48.62705526232185</x>
+				<y>2.4318741154531542</y>
+			</coords>
+		</navigation>
+		<epreuve>
+			<qrcode>
+				<question>Trouvez le QR Code qui se trouve sous le nom du savant en question</question>
+				<solution>
+					<image>galilee.png</image>
+					<felicitations>Bravo ! C'est tu te trouves bien sur la traversée Galilée </felicitations>
+					<explication>La rue d'où tu viens s'appelle le court Blaise Pascal, tu te trouves sur la traversée Galilée, à côté de la venelle Benjamin Franklin... Toutes les rues de ce quartier ont été baptisée d'après de grands scientifiques!</explication>
+				</solution>
+			</qrcode>
+		</epreuve>
+	</etape>
+	
+	<!-- Etape 3 : QCM -->
+	<etape>
+		<nom_etape>ENSIIE</nom_etape>
+		<navigation>
+			<image>batiment_en_metal.png</image>
+			<instructions>Poursuivez jusqu'au bout de la traversée Galilée</instructions>
+			<coords>
+				<x>48.62668968085049</x>
+				<y>2.432552108651349</y>
+			</coords>
+		</navigation>
+		<epreuve>
+			<qcm>
+				<question>Qu'y a-t-il écrit en pixel sur le côté du bâtiment en métal à gauche ?</question>
+				<reponse_v>ENSIIE</reponse_v>
+				<reponse_f>TSP</reponse_f>
+				<reponse_f>JIN</reponse_f>
+				<reponse_f>EVRY</reponse_f>
+				<indice>C'est le nom d'une école</indice>
+				<felicitations> 
+					Tu te trouves devant l'Ecole Nationale Supérieure de l'Informatique pour l'Industrie et l'entreprise 
+				</felicitations>
+			</qcm>
+		</epreuve>
+	</etape>
+	<conclusion>
+		
+	</conclusion>
+</balade>
