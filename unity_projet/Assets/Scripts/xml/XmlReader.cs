@@ -82,12 +82,12 @@ public class XmlReader : MonoBehaviour
     {
         //(G) il ne reste plus qu'à modifier cette methode pour qu'elle cherche dans le XML la réponse au QRCode attendue, au lieu que ce soit nous qui la passions pour les tests
         //(G) on récupère les GameObject qui définissent la vue
-        GameObject suivant = transform.parent.GetChild(1).gameObject;
-        GameObject input = transform.GetChild(1).gameObject;
-        GameObject boutonValider = transform.GetChild(2).gameObject;
-        GameObject imageParent = transform.GetChild(3).gameObject;
-        GameObject questionTextBox = transform.GetChild(0).GetChild(0).gameObject; //(G) la boite texte contenant la question
-        GameObject rotateCamera = transform.GetChild(4).gameObject;
+        GameObject suivant = transform.parent.Find("bouton suivant").gameObject;
+        GameObject input = transform.Find("InputField").gameObject;
+        GameObject boutonValider = transform.Find("Button").gameObject;
+        GameObject imageParent = transform.Find("ImageParent").gameObject;
+        GameObject questionTextBox = transform.Find("Image").GetChild(0).gameObject; //(G) la boite texte contenant la question
+        GameObject rotateCamera = transform.Find("SwitchCameraButton").gameObject;
 
         suivant.transform.GetComponent<Button>().interactable = false;
         questionTextBox.transform.GetComponent<Text>().text = question.InnerText; //(G) on met le texte dans la question et on est bons !
@@ -98,7 +98,7 @@ public class XmlReader : MonoBehaviour
         imageParent.SetActive(true); //(G) on affiche le QRCodeReader
         scriptQrCode.reponseEpreuveQrCode = reponse.InnerText;
         Debug.Log("Creer QRCode : Expected Message = " + scriptQrCode.reponseEpreuveQrCode);
-        //qrReader.expectedMessage =    //(G) penser à passer le message attendu à qrReader à partir du code XML
+        //qrReader.expectedMessage =    //(G) penser à passer le message attendu à qrReader à partir du code XML    
 
         IEnumerator waitForQRCode() //(G) la routine qui est appelée pour attendre que le booléen scriptQrCode.qrCodeValide passe de false à true
         {

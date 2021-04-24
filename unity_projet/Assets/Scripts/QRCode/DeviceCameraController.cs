@@ -41,6 +41,7 @@ public class DeviceCameraController : MonoBehaviour
         cameraImage = transform.GetComponent<RawImage>();
         imageParent = GetComponentInParent<RectTransform>();
         imageFitter = transform.GetComponent<AspectRatioFitter>();
+
         if (WebCamTexture.devices.Length == 0)
         {
             Debug.Log("No devices cameras found");
@@ -59,7 +60,7 @@ public class DeviceCameraController : MonoBehaviour
         backCameraTexture.filterMode = FilterMode.Trilinear;
 
         // Set the camera to use by default
-        SetActiveCamera(frontCameraTexture);
+        SetActiveCamera(backCameraTexture);
     }
 
     // Set the device camera to use and start it
@@ -83,6 +84,7 @@ public class DeviceCameraController : MonoBehaviour
     // Switch between the device's front and back camera
     public void SwitchCamera()
     {
+        Debug.Log("SwitchCamera");
         SetActiveCamera(activeCameraTexture.Equals(frontCameraTexture) ?
             backCameraTexture : frontCameraTexture);
     }
@@ -101,6 +103,7 @@ public class DeviceCameraController : MonoBehaviour
         // Rotate image to show correct orientation 
         rotationVector.z = -activeCameraTexture.videoRotationAngle;
         cameraImage.rectTransform.localEulerAngles = rotationVector;
+
 
         // Set AspectRatioFitter's ratio
         float videoRatio =(float)activeCameraTexture.width / (float)activeCameraTexture.height;
