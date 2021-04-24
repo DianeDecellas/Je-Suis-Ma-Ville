@@ -17,9 +17,9 @@ public class GPS : MonoBehaviour
     }
 
     // Update is called once per frame
-    private void Update()
+    private void LateUpdate()
     {
-        
+        StartCoroutine(StartLocationService());
     }
 
     private IEnumerator StartLocationService()

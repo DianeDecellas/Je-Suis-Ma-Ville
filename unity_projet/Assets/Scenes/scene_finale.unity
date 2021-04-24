@@ -225,8 +225,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   position: {fileID: 1019155163}
-  xprevu: 0
-  yprevu: 0
 --- !u!1001 &203416407
 PrefabInstance:
   m_ObjectHideFlags: 0

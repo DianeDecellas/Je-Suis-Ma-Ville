@@ -19,8 +19,9 @@ public class UpdatePosition : MonoBehaviour
    
     
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
+        
         float lat = GPS.Instance.latitude;
         float lon = GPS.Instance.longitude;
         position.text = "Nord-Sud:" + (k*(yprevu-GPS.Instance.longitude)).ToString() + "\nEst-Ouest" + (k*(xprevu-GPS.Instance.latitude)*Mathf.Cos(yprevu/2+GPS.Instance.longitude/2)).ToString();
