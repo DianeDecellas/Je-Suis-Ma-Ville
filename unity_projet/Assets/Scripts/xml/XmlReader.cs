@@ -13,7 +13,7 @@ using UnityEngine.Networking;
     
 public class XmlReader : MonoBehaviour
     {
-    public QRCodeReader scriptQrCode;
+    public DeviceCameraController scriptQrCode;
      
         
     void ItemClicked(bool correct) ///fonction qui permet de savoir si une réponse est juste ou non
@@ -85,8 +85,9 @@ public class XmlReader : MonoBehaviour
         GameObject suivant = transform.parent.GetChild(1).gameObject;
         GameObject input = transform.GetChild(1).gameObject;
         GameObject boutonValider = transform.GetChild(2).gameObject;
-        GameObject qrReader = transform.GetChild(3).gameObject;
+        GameObject imageParent = transform.GetChild(3).gameObject;
         GameObject questionTextBox = transform.GetChild(0).GetChild(0).gameObject; //(G) la boite texte contenant la question
+        GameObject rotateCamera = transform.GetChild(4).gameObject;
 
         suivant.transform.GetComponent<Button>().interactable = false;
         questionTextBox.transform.GetComponent<Text>().text = question.InnerText; //(G) on met le texte dans la question et on est bons !
@@ -94,18 +95,18 @@ public class XmlReader : MonoBehaviour
         //questionTextBox.transform.Text
         input.SetActive(false);
         boutonValider.SetActive(false);
-        qrReader.SetActive(true); //(G) on affiche le QRCodeReader
-        scriptQrCode.expectedMessage = reponse.InnerText;
-        Debug.Log("Creer QRCode : Expected Message = " + scriptQrCode.expectedMessage);
+        imageParent.SetActive(true); //(G) on affiche le QRCodeReader
+        scriptQrCode.reponseEpreuveQrCode = reponse.InnerText;
+        Debug.Log("Creer QRCode : Expected Message = " + scriptQrCode.reponseEpreuveQrCode);
         //qrReader.expectedMessage =    //(G) penser à passer le message attendu à qrReader à partir du code XML
 
         IEnumerator waitForQRCode() //(G) la routine qui est appelée pour attendre que le booléen scriptQrCode.qrCodeValide passe de false à true
         {
             //(G) On ne passe à la suite de l'iterateur / enumerateur waitForQRCode que si le booléen scriptQrCode.qrcodeValide passe à true
-            yield return new WaitUntil(() => scriptQrCode.qrcodeValide); //(G) le petit bout de " () => " permet de transformer la variable scriptQrCode.qrcodeValide en fonction
+            yield return new WaitUntil(() => scriptQrCode.qrCodeEstValide); //(G) le petit bout de " () => " permet de transformer la variable scriptQrCode.qrcodeValide en fonction
             void EtapeSuivante() //(G) la fonction qui sera appelée lorsqu'on pressera le bouton "suivant".
             {
-                qrReader.SetActive(false); //(G) on désactive l'objet QRReader
+                imageParent.SetActive(false); //(G) on désactive l'objet QRReader
                 EtapeReader(etape.NextSibling);
             }
             suivant.GetComponent<Button>().interactable = true;
