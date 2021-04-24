@@ -33,8 +33,7 @@ public class PrefabQRCode : MonoBehaviour
         {
             IBarcodeReader barcodeReader = new BarcodeReader();
             // decode the current frame
-            var result = barcodeReader.Decode(camTexture.GetPixels32(),
-              camTexture.width, camTexture.height);
+            var result = barcodeReader.Decode(camTexture.GetPixels32(), camTexture.width, camTexture.height);
             if (result != null)
             {
                 Debug.Log("Lu!");
