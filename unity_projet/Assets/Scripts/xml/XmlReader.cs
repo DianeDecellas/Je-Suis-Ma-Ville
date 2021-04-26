@@ -89,13 +89,16 @@ public class XmlReader : MonoBehaviour
         GameObject questionTextBox = transform.Find("Image").GetChild(0).gameObject; //(G) la boite texte contenant la question
         GameObject rotateCamera = transform.Find("SwitchCameraButton").gameObject;
 
-        suivant.transform.GetComponent<Button>().interactable = false;
+        //suivant.transform.GetComponent<Button>().interactable = false;
+        suivant.GetComponent<Button>().interactable = false; //(G) (voir si ça résout le problème de plusieurs QCM à la suite)
         questionTextBox.transform.GetComponent<Text>().text = question.InnerText; //(G) on met le texte dans la question et on est bons !
-        
+
         //questionTextBox.transform.Text
+        
         input.SetActive(false);
         boutonValider.SetActive(false);
         imageParent.SetActive(true); //(G) on affiche le QRCodeReader
+        rotateCamera.SetActive(true);
         scriptQrCode.reponseEpreuveQrCode = reponse.InnerText;
         Debug.Log("Creer QRCode : Expected Message = " + scriptQrCode.reponseEpreuveQrCode);
         //qrReader.expectedMessage =    //(G) penser à passer le message attendu à qrReader à partir du code XML    
@@ -107,6 +110,7 @@ public class XmlReader : MonoBehaviour
             void EtapeSuivante() //(G) la fonction qui sera appelée lorsqu'on pressera le bouton "suivant".
             {
                 imageParent.SetActive(false); //(G) on désactive l'objet QRReader
+                rotateCamera.SetActive(true);
                 EtapeReader(etape.NextSibling);
             }
             suivant.GetComponent<Button>().interactable = true;

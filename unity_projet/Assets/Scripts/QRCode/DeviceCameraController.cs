@@ -37,11 +37,11 @@ public class DeviceCameraController : MonoBehaviour
 
     void Start()
     {
-        // Check for device cameras
         cameraImage = transform.GetComponent<RawImage>();
         imageParent = GetComponentInParent<RectTransform>();
         imageFitter = transform.GetComponent<AspectRatioFitter>();
 
+        // Check for device cameras
         if (WebCamTexture.devices.Length == 0)
         {
             Debug.Log("No devices cameras found");
