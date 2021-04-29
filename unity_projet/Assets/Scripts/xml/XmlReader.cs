@@ -14,7 +14,7 @@ using UnityEngine.Networking;
 public class XmlReader : MonoBehaviour
     {
     public DeviceCameraController scriptQrCode;
-     
+    public UpdatePosition gpscalcul;
         
     void ItemClicked(bool correct) ///fonction qui permet de savoir si une réponse est juste ou non
     {
@@ -40,22 +40,17 @@ public class XmlReader : MonoBehaviour
 
     public void creerEtapeTexte(XmlNode etape, XmlNode question, XmlNode reponse) ///fonction qui crée une etape texte avec question et reponse
     {
-        GameObject buttonTemplate = transform.GetChild(2).gameObject; ///on récupère la template de bouton formée dans l'UI, il s'agit du 3eme fils de l'objet auquel le code est attaché "panel"
-        buttonTemplate.SetActive(true);
-
-        GameObject g; ///on crée un objet g
-        GameObject titre = transform.GetChild(0).gameObject; ///on récupère le 1er fils de panel et on l'appelle titre
-        GameObject suivant = transform.parent.GetChild(1).gameObject; ///le 2ele fils du parent de panel est le bouton suivant
-
-        titre.transform.GetChild(0).GetComponent<Text>().text = question.InnerText; ///on récupère le texte contenu dans titre et on le remplace par le texte de la question
-            
-        GameObject input = transform.GetChild(1).gameObject; ///le deuxième fils de panel est une zone d'entrée de texte, on l'appelle input
-            
+        GameObject buttonTemplate = transform.Find("TestButton").gameObject; ///on récupère la template de bouton formée dans l'UI, il s'agit du 3eme fils de l'objet auquel le code est attaché "panel"
+        GameObject questionBox = transform.Find("QuestionBox").gameObject; ///on récupère le 1er fils de panel et on l'appelle titre //(G) En fait on renomme en questionBox
+        GameObject nextStepButton = transform.parent.Find("NextStepButton").gameObject; ///le 2ele fils du parent de panel est le bouton suivant    
+        GameObject input = transform.Find("InputField").gameObject; ///le deuxième fils de panel est une zone d'entrée de texte, on l'appelle input
         Debug.Log("etape cree"); ///on affiche etape cree dans la console
-        g = buttonTemplate; ///g est le template de bouton défini plus haut
 
-        g.transform.GetChild(1).GetComponent<Text>().text = reponse.InnerText; ///on remplace le contenu texte de g par le texte de la réponse, c'est pour tricher et tester plus facilement il faudra enlever cette ligne
+        buttonTemplate.SetActive(true);
         input.SetActive(true); ///on rend input actif : il faut qu'il soit affiché dans l'ui
+
+        questionBox.transform.Find("Text").GetComponent<Text>().text = question.InnerText; ///on récupère le texte contenu dans titre(maintenant questionBox) et on le remplace par le texte de la question
+
         void ValiderTexte(){
             if (input.GetComponent < InputField >().text.ToString()== reponse.InnerText.ToString()) ///si le texte en entrée est égal au texte attendu
             {
@@ -66,80 +61,92 @@ public class XmlReader : MonoBehaviour
                 Debug.Log("Bzzt!! C'est faux!");
             }
         }
-            
-        g.transform.GetChild(0).GetComponent<Text>().text = "valider"; ///on remplace le texte du bouton par valider
+        GameObject g; ///on crée un objet g
+        g = buttonTemplate; ///g est le template de bouton défini plus haut
+        g.transform.Find("Text (1)").GetComponent<Text>().text = reponse.InnerText;//(G) je touche pas à cette ligne si c'est du test  ///on remplace le contenu texte de g par le texte de la réponse, c'est pour tricher et tester plus facilement il faudra enlever cette ligne
+        g.transform.Find("Text").GetComponent<Text>().text = "valider"; ///on remplace le texte du bouton par valider
         g.GetComponent<Button>().onClick.AddListener( ValiderTexte); ///le bouton déclenche la fonction ValiderTexte quand on appuye dessus
+
         void EtapeSuivante()
         {
         Debug.Log("odkour");
             EtapeReader(etape.NextSibling); ///on appelle la fonction EtapeReader sur le frère suivant de l'étape en cours (imaginez un arbre)
         }
-        suivant.GetComponent<Button>().onClick.RemoveAllListeners(); ///on enlève tous les attribus du bouton suivant avant de lui appliquer la fonction EtapeReader sinon le bouton suivant se retrouve avec 1000 fonctions différentes dessus
-        suivant.GetComponent<Button>().onClick.AddListener(EtapeSuivante);///on applique la fonction EtapeSuivante au bouton suivant
+        nextStepButton.GetComponent<Button>().onClick.RemoveAllListeners(); ///on enlève tous les attribus du bouton suivant avant de lui appliquer la fonction EtapeReader sinon le bouton suivant se retrouve avec 1000 fonctions différentes dessus
+        nextStepButton.GetComponent<Button>().onClick.AddListener(EtapeSuivante);///on applique la fonction EtapeSuivante au bouton suivant
     }
 
     public void creerQrCode(XmlNode etape, XmlNode question, XmlNode reponse) ///fonction creer qrCode
     {
         //(G) il ne reste plus qu'à modifier cette methode pour qu'elle cherche dans le XML la réponse au QRCode attendue, au lieu que ce soit nous qui la passions pour les tests
         //(G) on récupère les GameObject qui définissent la vue
-        GameObject suivant = transform.parent.Find("bouton suivant").gameObject;
+        GameObject nextStepButton = transform.parent.Find("NextStepButton").gameObject;
         GameObject input = transform.Find("InputField").gameObject;
-        GameObject boutonValider = transform.Find("Button").gameObject;
+        GameObject testButton = transform.Find("TestButton").gameObject;
         GameObject imageParent = transform.Find("ImageParent").gameObject;
-        GameObject questionTextBox = transform.Find("Image").GetChild(0).gameObject; //(G) la boite texte contenant la question
-        GameObject rotateCamera = transform.Find("SwitchCameraButton").gameObject;
+        GameObject questionTextBox = transform.Find("QuestionBox").Find("Text").gameObject; //(G) la boite texte contenant la question
 
-        //suivant.transform.GetComponent<Button>().interactable = false;
-        suivant.GetComponent<Button>().interactable = false; //(G) (voir si ça résout le problème de plusieurs QCM à la suite)
+        nextStepButton.transform.GetComponent<Button>().interactable = false;
         questionTextBox.transform.GetComponent<Text>().text = question.InnerText; //(G) on met le texte dans la question et on est bons !
-
-        //questionTextBox.transform.Text
         
+        //questionTextBox.transform.Text
         input.SetActive(false);
-        boutonValider.SetActive(false);
+        testButton.SetActive(false);
         imageParent.SetActive(true); //(G) on affiche le QRCodeReader
-        rotateCamera.SetActive(true);
-        scriptQrCode.reponseEpreuveQrCode = reponse.InnerText;
-        Debug.Log("Creer QRCode : Expected Message = " + scriptQrCode.reponseEpreuveQrCode);
-        //qrReader.expectedMessage =    //(G) penser à passer le message attendu à qrReader à partir du code XML    
+        scriptQrCode.expectedQrCodeMessage = reponse.InnerText;
+        Debug.Log("Creer QRCode : Expected Message = " + scriptQrCode.expectedQrCodeMessage);
+        //qrReader.expectedMessage =    //(G) penser à passer le message attendu à qrReader à partir du code XML
 
         IEnumerator waitForQRCode() //(G) la routine qui est appelée pour attendre que le booléen scriptQrCode.qrCodeValide passe de false à true
         {
             //(G) On ne passe à la suite de l'iterateur / enumerateur waitForQRCode que si le booléen scriptQrCode.qrcodeValide passe à true
-            yield return new WaitUntil(() => scriptQrCode.qrCodeEstValide); //(G) le petit bout de " () => " permet de transformer la variable scriptQrCode.qrcodeValide en fonction
+            yield return new WaitUntil(() => scriptQrCode.isQrCodeValid); //(G) le petit bout de " () => " permet de transformer la variable scriptQrCode.qrcodeValide en fonction
             void EtapeSuivante() //(G) la fonction qui sera appelée lorsqu'on pressera le bouton "suivant".
             {
                 imageParent.SetActive(false); //(G) on désactive l'objet QRReader
-                rotateCamera.SetActive(true);
                 EtapeReader(etape.NextSibling);
             }
-            suivant.GetComponent<Button>().interactable = true;
-            suivant.GetComponent<Button>().onClick.RemoveAllListeners(); ///on enlève les anciennes fonctions du bouton avant d'ajouter la fonction etape suivante appropriée
-            suivant.GetComponent<Button>().onClick.AddListener(EtapeSuivante);
+            nextStepButton.GetComponent<Button>().interactable = true;
+            nextStepButton.GetComponent<Button>().onClick.RemoveAllListeners(); ///on enlève les anciennes fonctions du bouton avant d'ajouter la fonction etape suivante appropriée
+            nextStepButton.GetComponent<Button>().onClick.AddListener(EtapeSuivante);
         }
 
         //(G) La boucle où on attend que le QRCode soit bon.
         Debug.Log("En attente de QRCode");
         StartCoroutine(waitForQRCode());
     }
+    public void navigate(XmlNode nav)
+    {
+        XmlNode imagenav = nav.FirstChild;
+        XmlNode instruct = imagenav.NextSibling;
+        XmlNode coords = instruct.NextSibling;
+        XmlNode x = coords.FirstChild;
+        XmlNode y = x.NextSibling;
+        Debug.Log(x.InnerText);
+        float xprev = float.Parse(x.InnerText, System.Globalization.CultureInfo.InvariantCulture );
+        float yprev = float.Parse(y.InnerText.ToString(), System.Globalization.CultureInfo.InvariantCulture);
+        gpscalcul.setLocalisationPrevue(xprev, yprev);
 
+
+    }
 
         
     public void creerQCM(XmlNode etape, XmlNode question, XmlNode reponsev, XmlNode reponsef1, XmlNode reponsef2, XmlNode reponsef3) ///reponsev est la réponse juste, reponsefi pour i entre 1 et 3 les fausses
     {
-        GameObject buttonTemplate = transform.GetChild(2).gameObject; ///on récupère le template de bouton, 3eme fils du panel
+        GameObject buttonTemplate = transform.Find("TestButton").gameObject; ///on récupère le template de bouton, 3eme fils du panel
         buttonTemplate.SetActive(true);
 
         GameObject g;
         GameObject g2;
         GameObject g3;
         GameObject g4; ///creation des différents objets
-        GameObject suivant = transform.parent.GetChild(1).gameObject; ////bouton suivant
-        GameObject titre = transform.GetChild(0).gameObject;
+        GameObject nextStepButton = transform.parent.Find("NextStepButton").gameObject; ////bouton suivant
+        GameObject questionBox = transform.Find("QuestionBox").gameObject;
+        GameObject input = transform.Find("InputField").gameObject;
 
-        titre.transform.GetChild(0).GetComponent<Text>().text = question.InnerText;
+        questionBox.transform.Find("Text").GetComponent<Text>().text = question.InnerText;
 
-        GameObject input = transform.GetChild(1).gameObject;
+
         input.SetActive(false); ///on désactive la barre d'entrée de texte pour qu'elle n'aparaisse pas dans l'ui
         Debug.Log("etape cree");
         g = buttonTemplate;
@@ -163,8 +170,8 @@ public class XmlReader : MonoBehaviour
         g2.GetComponent<Button>().AddEventListener(0, Refuser);///les autres appellent refuser
         g3.GetComponent<Button>().AddEventListener(0, Refuser);
         g4.GetComponent<Button>().AddEventListener(0, Refuser);
-        suivant.GetComponent<Button>().onClick.RemoveAllListeners();
-        suivant.GetComponent<Button>().onClick.AddListener(EtapeSuivante);
+        nextStepButton.GetComponent<Button>().onClick.RemoveAllListeners();
+        nextStepButton.GetComponent<Button>().onClick.AddListener(EtapeSuivante);
             
     }
     public void EtapeReader(XmlNode CurrentNode)
@@ -177,6 +184,7 @@ public class XmlReader : MonoBehaviour
             XmlNode etape = CurrentNode.NextSibling; ///l'étape en elle même est le frère du commentaire sur le xml que vous avez fouri
             XmlNode titre = etape.FirstChild; ///le premier fils de l'étape est son titre
             XmlNode navigation = titre.NextSibling; ///le deuxième fils de l'étape est la navigation
+            navigate(navigation);
             Debug.Log(navigation.InnerText); /// on affiche la navigation dans la console, pour vérifier que àa marche
             XmlNode epreuve = navigation.NextSibling; ///l'epreuve est le 3eme fils de l'étape
             Debug.Log(epreuve.InnerText);
