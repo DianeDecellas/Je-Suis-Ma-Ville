@@ -93,14 +93,14 @@ public class XmlReader : MonoBehaviour
         input.SetActive(false);
         testButton.SetActive(false);
         qrReader.SetActive(true); //(G) on affiche le QRCodeReader
-        scriptQrCode.expectedMessage = reponse.InnerText;
-        Debug.Log("Creer QRCode : Expected Message = " + scriptQrCode.expectedMessage);
+        scriptQrCode.expectedQrCodeMessage = reponse.InnerText;
+        Debug.Log("Creer QRCode : Expected Message = " + scriptQrCode.expectedQrCodeMessage);
         //qrReader.expectedMessage =    //(G) penser à passer le message attendu à qrReader à partir du code XML
 
         IEnumerator waitForQRCode() //(G) la routine qui est appelée pour attendre que le booléen scriptQrCode.qrCodeValide passe de false à true
         {
             //(G) On ne passe à la suite de l'iterateur / enumerateur waitForQRCode que si le booléen scriptQrCode.qrcodeValide passe à true
-            yield return new WaitUntil(() => scriptQrCode.qrcodeValide); //(G) le petit bout de " () => " permet de transformer la variable scriptQrCode.qrcodeValide en fonction
+            yield return new WaitUntil(() => scriptQrCode.isQrCodeValid); //(G) le petit bout de " () => " permet de transformer la variable scriptQrCode.qrcodeValide en fonction
             void EtapeSuivante() //(G) la fonction qui sera appelée lorsqu'on pressera le bouton "suivant".
             {
                 qrReader.SetActive(false); //(G) on désactive l'objet QRReader
