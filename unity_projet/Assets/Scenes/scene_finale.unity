@@ -128,7 +128,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &41459900
 RectTransform:
   m_ObjectHideFlags: 0
@@ -144,10 +144,10 @@ RectTransform:
   m_Father: {fileID: 1500548278}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 675.0484}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 400, y: -627.5242}
+  m_SizeDelta: {x: 800, y: 675.0484}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &41459901
 MonoBehaviour:
@@ -1250,6 +1250,7 @@ GameObject:
   - component: {fileID: 1482310741}
   - component: {fileID: 1482310740}
   - component: {fileID: 1482310739}
+  - component: {fileID: 1482310742}
   m_Layer: 5
   m_Name: NextStepButton
   m_TagString: Untagged
@@ -1275,7 +1276,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 568.6111}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1482310739
 MonoBehaviour:
@@ -1352,6 +1353,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1482310737}
   m_CullTransparentMesh: 0
+--- !u!114 &1482310742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1482310737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1679637790, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 2
 --- !u!1 &1500548277
 GameObject:
   m_ObjectHideFlags: 0
@@ -1365,6 +1386,7 @@ GameObject:
   - component: {fileID: 1500548283}
   - component: {fileID: 1500548279}
   - component: {fileID: 1500548282}
+  - component: {fileID: 1500548281}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -1393,7 +1415,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 798.6111}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1500548279
 MonoBehaviour:
@@ -1430,6 +1452,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1500548277}
   m_CullTransparentMesh: 0
+--- !u!114 &1500548281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1500548277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1679637790, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!114 &1500548282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1855,7 +1897,7 @@ MonoBehaviour:
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 1
-  m_ChildControlHeight: 1
+  m_ChildControlHeight: 0
 --- !u!1 &2076052338
 GameObject:
   m_ObjectHideFlags: 0
