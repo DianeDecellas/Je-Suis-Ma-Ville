@@ -1407,7 +1407,7 @@ GameObject:
   - component: {fileID: 1923737712}
   - component: {fileID: 1923737711}
   m_Layer: 5
-  m_Name: Image
+  m_Name: QuestionBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
