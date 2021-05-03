@@ -15,6 +15,7 @@ public class XmlReader : MonoBehaviour
     {
     public QRCodeReader scriptQrCode;
     public UpdatePosition gpscalcul;
+    
         
     void ItemClicked(bool correct) ///fonction qui permet de savoir si une réponse est juste ou non
     {
@@ -245,6 +246,8 @@ public class XmlReader : MonoBehaviour
     public string Url;
     private void Start() ///que fait on au démarrage?
     {
+
+        Url = UrlStorage.url;
         XmlDocument baladeData = new XmlDocument(); ///on crée un nouveau doc xml nommé baladeData
         WWW data = new WWW(Url); ///oui cette fonction est obsolète mais j'ai du mal avec la nouvelle
         while (!data.isDone)
