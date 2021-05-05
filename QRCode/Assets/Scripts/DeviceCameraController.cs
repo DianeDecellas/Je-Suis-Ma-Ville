@@ -10,6 +10,8 @@ public class DeviceCameraController : MonoBehaviour
     public RectTransform imageParent;
     public AspectRatioFitter imageFitter;
 
+    private Vector3 speed;
+
     // Device cameras
     WebCamDevice frontCameraDevice;
     WebCamDevice backCameraDevice;
@@ -62,7 +64,6 @@ public class DeviceCameraController : MonoBehaviour
         {
             activeCameraTexture.Stop();
         }
-
         activeCameraTexture = cameraToUse;
         activeCameraDevice = WebCamTexture.devices.FirstOrDefault(device =>
             device.name == cameraToUse.deviceName);
@@ -105,6 +106,7 @@ public class DeviceCameraController : MonoBehaviour
         // Mirror front-facing camera's image horizontally to look more natural
         imageParent.localScale = activeCameraDevice.isFrontFacing ? fixedScale : defaultScale;
 
+        imageParent.transform.Rotate(new Vector3(0, 0, 0));
         try
         {
             IBarcodeReader barcodeReader = new BarcodeReader();
