@@ -17,27 +17,17 @@ public class XmlReader : MonoBehaviour
     public DeviceCameraController scriptQrCode;
     public UpdatePosition gpscalcul;
     
-        
-    void ItemClicked(bool correct) ///fonction qui permet de savoir si une réponse est juste ou non
+    public void navigate(XmlNode nav)
     {
-        if (correct)
-        {
-            Debug.Log("oui");
-                
-        }
-        else
-        {
-            Debug.Log("non");
-        }
-    }
-    void Valider(int itemIndex) ///fonction qui affiche "Bravo! C'est juste" dans la console
-    {
-        Debug.Log("Bravo! C'est juste!!");
-            
-    }
-    void Refuser (int itemIndex) ///fonction qui affiche que c'est faux dans la console
-    {
-        Debug.Log("Bzzt! C'est faux!");
+        XmlNode imagenav = nav.FirstChild;
+        XmlNode instruct = imagenav.NextSibling;
+        XmlNode coords = instruct.NextSibling;
+        XmlNode x = coords.FirstChild;
+        XmlNode y = x.NextSibling;
+        Debug.Log(x.InnerText);
+        float xprev = float.Parse(x.InnerText, System.Globalization.CultureInfo.InvariantCulture );
+        float yprev = float.Parse(y.InnerText.ToString(), System.Globalization.CultureInfo.InvariantCulture);
+        gpscalcul.setLocalisationPrevue(xprev, yprev);
     }
 
     public void creerEtapeTexte(XmlNode etape, XmlNode question, XmlNode reponse, XmlNode indice) ///fonction qui crée une etape texte avec question et reponse
@@ -72,8 +62,8 @@ public class XmlReader : MonoBehaviour
             {
                 Debug.Log("Bzzt!! C'est faux!");
                 Color defaultColor = buttonTemplate.GetComponent<Button>().GetComponent<Image>().color;
-                buttonTemplate.GetComponent<Button>().GetComponent<Image>().color = Color.red;
-                buttonTemplate.GetComponent<Button>().GetComponent<Image>().color = defaultColor;
+                //buttonTemplate.GetComponent<Button>().GetComponent<Image>().color = Color.red; //(G) must find a way to make the change last 5 seconds or so
+                //buttonTemplate.GetComponent<Button>().GetComponent<Image>().color = defaultColor;
             }
         }
         GameObject g; ///on crée un objet g
@@ -139,21 +129,6 @@ public class XmlReader : MonoBehaviour
         Debug.Log("En attente de QRCode");
         StartCoroutine(waitForQRCode());
     }
-    public void navigate(XmlNode nav)
-    {
-        XmlNode imagenav = nav.FirstChild;
-        XmlNode instruct = imagenav.NextSibling;
-        XmlNode coords = instruct.NextSibling;
-        XmlNode x = coords.FirstChild;
-        XmlNode y = x.NextSibling;
-        Debug.Log(x.InnerText);
-        float xprev = float.Parse(x.InnerText, System.Globalization.CultureInfo.InvariantCulture );
-        float yprev = float.Parse(y.InnerText.ToString(), System.Globalization.CultureInfo.InvariantCulture);
-        gpscalcul.setLocalisationPrevue(xprev, yprev);
-
-
-    }
-
 
     public void creerQCM(XmlNode etape, XmlNode question, XmlNode reponsev, XmlNode reponsef1, XmlNode reponsef2, XmlNode reponsef3, XmlNode indice) ///reponsev est la réponse juste, reponsefi pour i entre 1 et 3 les fausses
     {
@@ -257,6 +232,7 @@ public class XmlReader : MonoBehaviour
         nextStepButton.GetComponent<Button>().onClick.AddListener(EtapeSuivante);
             
     }
+
     public void EtapeReader(XmlNode CurrentNode)
     {
         string typeEtape= CurrentNode.InnerText; ///on connait le type de l'étape en lisant le texte du noeud en cours (le commentaire)
