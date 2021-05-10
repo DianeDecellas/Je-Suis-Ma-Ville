@@ -99,7 +99,7 @@ public class DeviceCameraController : MonoBehaviour
         // Set AspectRatioFitter's ratio
         float videoRatio = (float)activeCameraTexture.width / (float)activeCameraTexture.height;
         imageFitter.aspectRatio = videoRatio;
-        Debug.Log("VideoRation : " + videoRatio);
+        
 
         // Unflip if vertically flipped
         image.uvRect = activeCameraTexture.videoVerticallyMirrored ? fixedRect : defaultRect;
