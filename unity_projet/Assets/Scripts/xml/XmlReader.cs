@@ -281,18 +281,20 @@ public class XmlReader : MonoBehaviour
         XmlNode navigation = titre.NextSibling; ///le deuxième fils de l'étape est la navigation
         navigate(navigation);
         Debug.Log(navigation.InnerText);
-        if (typeEtape == "info")
+        XmlNode epreuve = navigation.NextSibling;
+        XmlNode typeEpreuve = epreuve.FirstChild;
+        if (typeEpreuve.Name == "info")
         {
-            XmlNode epreuve = navigation.NextSibling;
+            
             XmlNode info = epreuve.FirstChild;
             XmlNode texteinfo = info.FirstChild;
             XmlNode imageUrl = texteinfo.NextSibling;
             creerEtapeInfo(etape,texteinfo,imageUrl);
         }
-        if (typeEtape == "question texte")
+        if (typeEpreuve.Name == "texte")
         {
              /// on affiche la navigation dans la console, pour vérifier que àa marche
-            XmlNode epreuve = navigation.NextSibling; ///l'epreuve est le 3eme fils de l'étape
+            
             Debug.Log(epreuve.InnerText);
 
             XmlNode texte = epreuve.FirstChild; ///on récup_re le texte de l'épreuve
@@ -305,10 +307,10 @@ public class XmlReader : MonoBehaviour
             creerEtapeTexte(etape,question, reponse, indice); ///on crée une étape à partir de la question et de la réponse
         }
 
-        else if (typeEtape == "QCM")
+        else if (typeEpreuve.Name== "qcm")
         {
             
-            XmlNode epreuve = navigation.NextSibling;
+            
             Debug.Log(epreuve.InnerText);
 
             XmlNode qcm = epreuve.FirstChild;
@@ -322,10 +324,10 @@ public class XmlReader : MonoBehaviour
             creerQCM(etape, question, reponsev, reponsef1,reponsef2,reponsef3, indice); ///on crée l'étape qcm
         }
 
-        else if (typeEtape == "QR Code")
+        else if (typeEpreuve.Name == "qrcode")
         {
             
-            XmlNode epreuve = navigation.NextSibling;
+            
 
             XmlNode qrcode = epreuve.FirstChild;
             XmlNode question = qrcode.FirstChild;
@@ -333,7 +335,7 @@ public class XmlReader : MonoBehaviour
             creerQrCode(etape, question, reponse); // (G) On crée l'étape QRCode
         }
 
-        if (typeEtape=="Conclusion") ///si on atteint la conclusion alors c'est fini
+        if (typeEpreuve.Name=="Conclusion") ///si on atteint la conclusion alors c'est fini
         {
             Debug.Log("c'est fini");
             transform.parent.gameObject.SetActive(false); 

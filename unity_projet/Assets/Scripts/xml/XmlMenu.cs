@@ -28,6 +28,8 @@ public class XmlMenu : MonoBehaviour
             g = Instantiate(baladeTemplate, transform);
             g.transform.GetChild(0).GetComponent<Text>().text = title.InnerText;
             g.transform.GetChild(1).GetComponent<Text>().text = duration.InnerText;
+            Debug.Log("Tite - Outer = " + title.OuterXml);
+            Debug.Log("Name =" + title.Name);
             void loadBalade()
             {
                 UrlStorage.url = url;
