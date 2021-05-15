@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE balade[
+	<!ELEMENT balade (descriptif, etape+,conclusion)>
+	<!ELEMENT descriptif (nom_balade, duree, resume, lieu_depart, coords)>
+	<!--elements elementaires:	nom_balade, duree, resume, lieu_depart-->
+		<!ELEMENT coords (x,y)>
+		<!--elements elementaires: x,y-->
+	<!ELEMENT etape (nom_etape, navigation, epreuve)>
+	<!--elements élémentaires : nom_etape-->
+		<!ELEMENT navigation (image, instructions, coords)>
+		<!--elements elementaires: image, instructions-->
+		<!ELEMENT epreuve (qcm|texte|qrcode|info)>
+			<!ELEMENT qcm (question, (reponse_v|reponse_f), (reponse_v|reponse_f), (reponse_v|reponse_f), (reponse_v|reponse_f), indice, felicitations)>
+			<!--eleemnts elementaires : question, reponse_v, reponse_f, felicitations, indice-->
+			<!ELEMENT texte (image, question, reponse+, indice, solution)>
+			<!--reponse-->
+			<!ELEMENT qrcode (question, reponse, solution)>
+				<!ELEMENT solution (image, felicitations, explication)>
+				<!--elements elementaires : explication-->
+			<!ELEMENT info (texteInfo, image)>
+
+	<!ELEMENT nom_balade (#PCDATA)>
+	<!ELEMENT duree (#PCDATA)>
+	<!ELEMENT resume (#PCDATA)>
+	<!ELEMENT lieu_depart (#PCDATA)>
+	<!ELEMENT x (#PCDATA)>
+	<!ELEMENT y (#PCDATA)>
+	<!ELEMENT nom_etape (#PCDATA)>
+	<!ELEMENT image (#PCDATA)>
+	<!ELEMENT instructions (#PCDATA)>
+	<!ELEMENT question (#PCDATA)>
+	<!ELEMENT reponse_v (#PCDATA)>
+	<!ELEMENT reponse_f (#PCDATA)>
+	<!ELEMENT reponse (#PCDATA)>
+	<!ELEMENT felicitations (#PCDATA)>
+	<!ELEMENT indice (#PCDATA)>
+	<!ELEMENT explication (#PCDATA)>
+	<!ELEMENT conclusion (#PCDATA)>
+	<!ELEMENT texteInfo (#PCDATA)>
+
+]>
+
+<balade>
+	<descriptif>
+		<nom_balade>Balade Démo MVP</nom_balade>
+		<duree>00h30</duree>
+		<resume>Une balade pour découvrir le Produit Viable Minimal</resume>
+		<lieu_depart>Parvis de la Cathédrale de la Résurrection</lieu_depart>
+		<coords>
+			<x>48.62381746035102</x>
+			<y>2.4286455281840023</y>
+		</coords>
+	</descriptif>
+	<etape>
+		<nom_etape>Monkey Bird Parking</nom_etape>
+		<navigation>
+			<image>http://spraymiummagazine.com/wp-content/uploads/2015/11/spraymium-MonkeyBirdEvry09.jpg</image>
+			<instructions>Rendez-vous au fond de l'allée de parking derrière la Cathédrale</instructions>
+			<coords>
+				<x>48.62348693303248</x>
+				<y>2.429221186228874</y>
+		</coords>
+		</navigation>
+		<epreuve>
+			<qcm>
+			<question>Que représentent le singe et les oiseaux sur cette oeuvre ?</question>
+			<reponse_v> Le corps et l'esprit</reponse_v>
+			<reponse_f> La terre et l'air</reponse_f>
+			<reponse_f> Le ying et le yang</reponse_f>
+			<reponse_f> Le temps et l'espace</reponse_f>
+			<indice>Le corps et l'esprit</indice>
+			<felicitations>Il s'agissait bien du corps et de l'esprit, bravo!</felicitations>
+		</qcm>
+		</epreuve>
+	</etape>
+	<etape>
+		<nom_etape>MonkeyBirdPontCoquibus</nom_etape>
+		<navigation>
+			<image>https://i.pinimg.com/originals/61/fb/e6/61fbe6c6f03f29eba9875a0fa7bdd11b.jpg</image>
+			<instructions>Rendez-vous le long du Boulevard des Coquibus voir cette grande fresque le long du mur </instructions>
+			<coords>
+				<x>48.62509358186824</x>
+				<y>2.4321150998715453</y>
+			</coords>
+		</navigation>
+		<epreuve>
+			<info>
+				<texteInfo>Avez-vous remarqué cette oeuvre de Monkey Bird sur votre chemin ?</texteInfo>
+				<image>http://spraymiummagazine.com/wp-content/uploads/2015/11/spraymium-MonkeyBirdEvry14.jpg</image>
+			</info>
+		</epreuve>
+	</etape>
+	<etape>
+		<nom_etape>Les vieux Amants</nom_etape>
+		<navigation>
+			<image>https://gpscarto.gogocarto.fr/uploads/gpscarto/images/elements/5ed8cfa3d30a5_les%20deux%20vieux%2001place%20Henri%20Moissan.jpg</image>
+			<instructions>Rendez-vous à la statue des Vieux Amants, Allée Jean Rostand</instructions>
+			<coords>
+				<x>48.625303690956635</x>
+				<y>2.4314465406725194</y>
+			</coords>
+		</navigation>
+		<epreuve>
+			<qrcode>
+				<question>Trouvez le QRCode sur la base de la statue</question>
+				<reponse>vieuxamants</reponse>
+				<solution>
+					<image>https://gpscarto.gogocarto.fr/uploads/gpscarto/images/elements/5ed8cfa3d30a5_les%20deux%20vieux%2001place%20Henri%20Moissan.jpg</image>
+					<felicitations>Vous vous trouvez devant la statue des Deux Vieux</felicitations>
+					<explication>Cette statue appelée Les Deux Vieux a été créée en 1983 par Mondineu</explication>
+				</solution>
+			</qrcode>
+		</epreuve>
+	</etape>
+	<etape>
+		<nom_etape>Galilée</nom_etape>
+		<navigation>
+			<image>http://ensemble-paroissial-de-laroque-d-olmes.com/wp-content/uploads/2014/06/Galilee.jpg</image>
+			<instructions>Continuez au bout de l'avenue Jean Rostand et rendez-vous à la traversée Galilée</instructions>
+			<coords>
+				<x>48.62711001605313</x>
+				<y>2.430960662644533</y>
+			</coords>
+		</navigation>
+		<epreuve>
+			<qrcode>
+				<question>Trouvez le QR Code sous le nom de la rue </question>
+				<reponse>galilee</reponse>
+				<solution>
+					<image>https://gpscarto.gogocarto.fr/uploads/gpscarto/images/elements/5ee3eb8765b56_traverseeGallilee.JPG</image>
+					<felicitations>Felicitation ! Vous voilà devant la fresque Même Droit Même Voix Même Sol!</felicitations>
+					<explication>Cette fresque d'un artiste anonyme se trouve sur la traversée Galilée. Toutes les rues du quartie </explication>
+				</solution>
+			</qrcode>
+		</epreuve>
+	</etape>
+	<etape>
+		<nom_etape>MonkeyBirdRer</nom_etape>
+		<navigation>
+			<image>https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Evry_-_2020-01-23_-_IMG_0973.jpg/391px-Evry_-_2020-01-23_-_IMG_0973.jpg</image>
+			<instructions>Rendez-vous devant l'entrée de la gare RER du Cours Blaise Pascal</instructions>
+			<coords>
+				<x>48.62589304326379</x>
+				<y>2.430375618122467</y>
+			</coords>
+		</navigation>
+		<epreuve>
+			<texte>
+				<image></image>
+				<question>Ecrivez en chiffres arabes l'année inscrite en chiffres romains sur l'œuvre de Monkey Bird à gauche de l'entrée de la gare</question>
+				<reponse>2015</reponse>
+				<indice>XV = 15</indice>
+				<solution>
+					<image>https://medias.publidata.io/production/images/images/000/028/490/original/open-uri20180806-4-qgh5j6?1533540404</image>
+					<felicitations>L'année est bien 2015 !</felicitations>
+					<explication>On retrouve encore ici une oeuvre de Monkey Bird</explication>
+				</solution>
+			</texte>
+		</epreuve>
+	</etape>
+
+	<conclusion></conclusion>
+</balade>
