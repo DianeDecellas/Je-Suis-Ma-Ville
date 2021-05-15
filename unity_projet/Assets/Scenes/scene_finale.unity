@@ -1496,7 +1496,7 @@ GameObject:
   - component: {fileID: 1336247021}
   - component: {fileID: 1336247023}
   - component: {fileID: 1336247022}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: textNav
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2135,78 +2135,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scriptQrCode: {fileID: 912109999}
   gpscalcul: {fileID: 97928911}
-  baladeSenaud: "<?xml version=\"1.0\" encoding=\"UTF-8\"?>  <!DOCTYPE balade[ \t<!ELEMENT
-    balade (descriptif, etape+,conclusion)> \t<!ELEMENT descriptif (nom_balade, duree,
-    resume, lieu_depart, coords)> \t<!--elements elementaires:\tnom_balade, duree,
-    resume, lieu_depart--> \t\t<!ELEMENT coords (x,y)> \t\t<!--elements elementaires:
-    x,y--> \t<!ELEMENT etape (nom_etape, navigation, epreuve)> \t<!--elements \xE9l\xE9mentaires
-    : nom_etape--> \t\t<!ELEMENT navigation (image, instructions, coords)> \t\t<!--elements
-    elementaires: image, instructions--> \t\t<!ELEMENT epreuve (qcm|texte|qrcode|info)>
-    \t\t\t<!ELEMENT qcm (question, (reponse_v|reponse_f), (reponse_v|reponse_f), (reponse_v|reponse_f),
-    (reponse_v|reponse_f), indice, felicitations)> \t\t\t<!--eleemnts elementaires
-    : question, reponse_v, reponse_f, felicitations, indice--> \t\t\t<!ELEMENT texte
-    (image, question, reponse+, indice, solution)> \t\t\t<!--reponse--> \t\t\t<!ELEMENT
-    qrcode (question, reponse, solution)> \t\t\t\t<!ELEMENT solution (image, felicitations,
-    explication)> \t\t\t\t<!--elements elementaires : explication--> \t\t\t<!ELEMENT
-    info (texteInfo, image)>  \t<!ELEMENT nom_balade (#PCDATA)> \t<!ELEMENT duree
-    (#PCDATA)> \t<!ELEMENT resume (#PCDATA)> \t<!ELEMENT lieu_depart (#PCDATA)> \t<!ELEMENT
-    x (#PCDATA)> \t<!ELEMENT y (#PCDATA)> \t<!ELEMENT nom_etape (#PCDATA)> \t<!ELEMENT
-    image (#PCDATA)> \t<!ELEMENT instructions (#PCDATA)> \t<!ELEMENT question (#PCDATA)>
-    \t<!ELEMENT reponse_v (#PCDATA)> \t<!ELEMENT reponse_f (#PCDATA)> \t<!ELEMENT
-    reponse (#PCDATA)> \t<!ELEMENT felicitations (#PCDATA)> \t<!ELEMENT indice (#PCDATA)>
-    \t<!ELEMENT explication (#PCDATA)> \t<!ELEMENT conclusion (#PCDATA)> \t<!ELEMENT
-    texteInfo (#PCDATA)>  ]>  <balade> \t<descriptif> \t\t<nom_balade>Balade D\xE9mo
-    MVP</nom_balade> \t\t<duree>00h30</duree> \t\t<resume>Une balade pour d\xE9couvrir
-    le Produit Viable Minimal</resume> \t\t<lieu_depart>Parvis de la Cath\xE9drale
-    de la R\xE9surrection</lieu_depart> \t\t<coords> \t\t\t<x>48.62381746035102</x>
-    \t\t\t<y>2.4286455281840023</y> \t\t</coords> \t</descriptif> \t<etape> \t\t<nom_etape>Monkey
-    Bird Parking</nom_etape> \t\t<navigation> \t\t\t<image>http://spraymiummagazine.com/wp-content/uploads/2015/11/spraymium-MonkeyBirdEvry09.jpg</image>
-    \t\t\t<instructions>Rendez-vous au fond de l'all\xE9e de parking derri\xE8re la
-    Cath\xE9drale</instructions> \t\t\t<coords> \t\t\t\t<x>48.62348693303248</x> \t\t\t\t<y>2.429221186228874</y>
-    \t\t</coords> \t\t</navigation> \t\t<epreuve> \t\t\t<qcm> \t\t\t<question>Que
-    repr\xE9sentent le singe et les oiseaux sur cette oeuvre ?</question> \t\t\t<reponse_v>
-    Le corps et l'esprit</reponse_v> \t\t\t<reponse_f> La terre et l'air</reponse_f>
-    \t\t\t<reponse_f> Le ying et le yang</reponse_f> \t\t\t<reponse_f> Le temps et
-    l'espace</reponse_f> \t\t\t<indice>Le corps et l'esprit</indice> \t\t\t<felicitations>Il
-    s'agissait bien du corps et de l'esprit, bravo!</felicitations> \t\t</qcm> \t\t</epreuve>
-    \t</etape> \t<etape> \t\t<nom_etape>MonkeyBirdPontCoquibus</nom_etape> \t\t<navigation>
-    \t\t\t<image>https://i.pinimg.com/originals/61/fb/e6/61fbe6c6f03f29eba9875a0fa7bdd11b.jpg</image>
-    \t\t\t<instructions>Rendez-vous le long du Boulevard des Coquibus voir cette grande
-    fresque le long du mur </instructions> \t\t\t<coords> \t\t\t\t<x>48.62509358186824</x>
-    \t\t\t\t<y>2.4321150998715453</y> \t\t\t</coords> \t\t</navigation> \t\t<epreuve>
-    \t\t\t<info> \t\t\t\t<texteInfo>Avez-vous remarqu\xE9 cette oeuvre de Monkey Bird
-    sur votre chemin ?</texteInfo> \t\t\t\t<image>http://spraymiummagazine.com/wp-content/uploads/2015/11/spraymium-MonkeyBirdEvry14.jpg</image>
-    \t\t\t</info> \t\t</epreuve> \t</etape> \t<etape> \t\t<nom_etape>Les vieux Amants</nom_etape>
-    \t\t<navigation> \t\t\t<image>https://gpscarto.gogocarto.fr/uploads/gpscarto/images/elements/5ed8cfa3d30a5_les%20deux%20vieux%2001place%20Henri%20Moissan.jpg</image>
-    \t\t\t<instructions>Rendez-vous \xE0 la statue des Vieux Amants, All\xE9e Jean
-    Rostand</instructions> \t\t\t<coords> \t\t\t\t<x>48.625303690956635</x> \t\t\t\t<y>2.4314465406725194</y>
-    \t\t\t</coords> \t\t</navigation> \t\t<epreuve> \t\t\t<qrcode> \t\t\t\t<question>Trouvez
-    le QRCode sur la base de la statue</question> \t\t\t\t<reponse>vieuxamants</reponse>
-    \t\t\t\t<solution> \t\t\t\t\t<image>https://gpscarto.gogocarto.fr/uploads/gpscarto/images/elements/5ed8cfa3d30a5_les%20deux%20vieux%2001place%20Henri%20Moissan.jpg</image>
-    \t\t\t\t\t<felicitations>Vous vous trouvez devant la statue des Deux Vieux</felicitations>
-    \t\t\t\t\t<explication>Cette statue appel\xE9e Les Deux Vieux a \xE9t\xE9 cr\xE9\xE9e
-    en 1983 par Mondineu</explication> \t\t\t\t</solution> \t\t\t</qrcode> \t\t</epreuve>
-    \t</etape> \t<etape> \t\t<nom_etape>Galil\xE9e</nom_etape> \t\t<navigation> \t\t\t<image>http://ensemble-paroissial-de-laroque-d-olmes.com/wp-content/uploads/2014/06/Galilee.jpg</image>
-    \t\t\t<instructions>Continuez au bout de l'avenue Jean Rostand et rendez-vous
-    \xE0 la travers\xE9e Galil\xE9e</instructions> \t\t\t<coords> \t\t\t\t<x>48.62711001605313</x>
-    \t\t\t\t<y>2.430960662644533</y> \t\t\t</coords> \t\t</navigation> \t\t<epreuve>
-    \t\t\t<qrcode> \t\t\t\t<question>Trouvez le QR Code sous le nom de la rue </question>
-    \t\t\t\t<reponse>galilee</reponse> \t\t\t\t<solution> \t\t\t\t\t<image>https://gpscarto.gogocarto.fr/uploads/gpscarto/images/elements/5ee3eb8765b56_traverseeGallilee.JPG</image>
-    \t\t\t\t\t<felicitations>Felicitation ! Vous voil\xE0 devant la fresque M\xEAme
-    Droit M\xEAme Voix M\xEAme Sol!</felicitations> \t\t\t\t\t<explication>Cette fresque
-    d'un artiste anonyme se trouve sur la travers\xE9e Galil\xE9e. Toutes les rues
-    du quartie </explication> \t\t\t\t</solution> \t\t\t</qrcode> \t\t</epreuve> \t</etape>
-    \t<etape> \t\t<nom_etape>MonkeyBirdRer</nom_etape> \t\t<navigation> \t\t\t<image>https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Evry_-_2020-01-23_-_IMG_0973.jpg/391px-Evry_-_2020-01-23_-_IMG_0973.jpg</image>
-    \t\t\t<instructions>Rendez-vous devant l'entr\xE9e de la gare RER du Cours Blaise
-    Pascal</instructions> \t\t\t<coords> \t\t\t\t<x>48.62589304326379</x> \t\t\t\t<y>2.430375618122467</y>
-    \t\t\t</coords> \t\t</navigation> \t\t<epreuve> \t\t\t<texte> \t\t\t\t<image></image>
-    \t\t\t\t<question>Ecrivez en chiffres arabes l'ann\xE9e inscrite en chiffres romains
-    sur l'\u0153uvre de Monkey Bird \xE0 gauche de l'entr\xE9e de la gare</question>
-    \t\t\t\t<reponse>2015</reponse> \t\t\t\t<indice>XV = 15</indice> \t\t\t\t<solution>
-    \t\t\t\t\t<image>https://medias.publidata.io/production/images/images/000/028/490/original/open-uri20180806-4-qgh5j6?1533540404</image>
-    \t\t\t\t\t<felicitations>L'ann\xE9e est bien 2015 !</felicitations> \t\t\t\t\t<explication>On
-    retrouve encore ici une oeuvre de Monkey Bird</explication> \t\t\t\t</solution>
-    \t\t\t</texte> \t\t</epreuve> \t</etape>  \t<conclusion></conclusion> </balade>"
   Url: https://admiring-easley-a2c27c.netlify.app/message2.xml
 --- !u!1 &1518751480
 GameObject:
@@ -2260,7 +2188,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1636390144
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2275,10 +2203,10 @@ RectTransform:
   m_Father: {fileID: 1384737613}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 1300}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 540, y: -931.70636}
+  m_SizeDelta: {x: 1080, y: 150.23816}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1636390145
 MonoBehaviour:

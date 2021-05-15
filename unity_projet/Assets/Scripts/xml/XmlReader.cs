@@ -61,6 +61,7 @@ public class XmlReader : MonoBehaviour
         void EtapeSuivante()
         {
             info.SetActive(false);
+            Debug.Log("====\n" + etape.OuterXml+ "\n====");
             EtapeReader(etape.NextSibling); ///on appelle la fonction EtapeReader sur le frère suivant de l'étape en cours (imaginez un arbre)
 
         }
@@ -93,9 +94,11 @@ public class XmlReader : MonoBehaviour
 
         textHint.GetComponent<Text>().text = indice.InnerText.ToString();//initialize textHint content with the XmlNode indice innertext
 
+        
         buttonTemplate.SetActive(true);
         nextStepButton.GetComponent<Button>().interactable = false; //(G) the Next Step Button is not interactable until the answer is right
 
+        questionBox.SetActive(true);
         input.SetActive(true); ///on rend input actif : il faut qu'il soit affiché dans l'ui
         textHint.SetActive(false);//the user should not see the hint before their first answer
         hint.SetActive(true);//however they need the hint button
@@ -201,7 +204,7 @@ public class XmlReader : MonoBehaviour
         GameObject input = transform.Find("InputField").gameObject;
         GameObject hint = transform.Find("Hint").gameObject;//creation of hint button object
         GameObject textHint = transform.Find("TextHint").gameObject;//creation of hint text
-
+        
         nextStepButton.transform.GetComponent<Button>().interactable = false;
         questionBox.transform.Find("Text").GetComponent<Text>().text = question.InnerText;
         textHint.GetComponent<Text>().text = indice.InnerText.ToString();//initialize textHint content with the XmlNode indice innertext
@@ -209,7 +212,10 @@ public class XmlReader : MonoBehaviour
 
         input.SetActive(false); ///on désactive la barre d'entrée de texte pour qu'elle n'aparaisse pas dans l'ui
         textHint.SetActive(false);//the user should not see the hint before their first answer
+
+        questionBox.SetActive(true);
         hint.SetActive(true);
+
         Debug.Log("etape cree");
         g = buttonTemplate;
 
@@ -294,7 +300,7 @@ public class XmlReader : MonoBehaviour
         string typeEtape= CurrentNode.InnerText; ///on connait le type de l'étape en lisant le texte du noeud en cours (le commentaire)
 
         Debug.Log(typeEtape);
-        XmlNode etape = CurrentNode.NextSibling; ///l'étape en elle même est le frère du commentaire sur le xml que vous avez fouri
+        XmlNode etape = CurrentNode; ///l'étape en elle même est le frère du commentaire sur le xml que vous avez fouri
         XmlNode titre = etape.FirstChild; ///le premier fils de l'étape est son titre
         XmlNode navigation = titre.NextSibling; ///le deuxième fils de l'étape est la navigation
         navigate(navigation);
