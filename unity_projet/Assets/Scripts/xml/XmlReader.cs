@@ -68,6 +68,7 @@ public class XmlReader : MonoBehaviour
             YourRawImage.texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
     }
 
+
     public void creerEtapeTexte(XmlNode etape, XmlNode question, XmlNode reponse, XmlNode indice) ///fonction qui crée une etape texte avec question et reponse
     {
         GameObject buttonTemplate = transform.Find("TestButton").gameObject; ///on récupère la template de bouton formée dans l'UI, il s'agit du 3eme fils de l'objet auquel le code est attaché "panel"
@@ -91,8 +92,14 @@ public class XmlReader : MonoBehaviour
 
         questionBox.transform.Find("Text").GetComponent<Text>().text = question.InnerText; ///on récupère le texte contenu dans titre(maintenant questionBox) et on le remplace par le texte de la question
 
+
         void ValiderTexte(){
-            if (input.GetComponent < InputField >().text.ToString()== reponse.InnerText.ToString()) ///si le texte en entrée est égal au texte attendu
+            int stringDistance;//the distance between the correct answer and the user's input, calculated according to the Damerau Levenstein formula
+            stringDistance = DamerauLevensteinDistance.StringDistance.GetDamerauLevenshteinDistance(input.GetComponent<InputField>().text.ToString(), reponse.InnerText.ToString());
+            int threshold;//the threshold for the correct answer, since we allow some misclicks. You are free to change its definition
+            threshold = reponse.InnerText.ToString().Length / 3;
+
+            if (stringDistance <= threshold) //if the user's input is accurate enough
             {
                 Debug.Log("Bravo!! C'est Juste!");
                 nextStepButton.GetComponent<Button>().interactable = true;
@@ -100,6 +107,7 @@ public class XmlReader : MonoBehaviour
             else
             {
                 Debug.Log("Bzzt!! C'est faux!");
+                
                 Color defaultColor = buttonTemplate.GetComponent<Button>().GetComponent<Image>().color;
                 //buttonTemplate.GetComponent<Button>().GetComponent<Image>().color = Color.red; //(G) must find a way to make the change last 5 seconds or so
                 //buttonTemplate.GetComponent<Button>().GetComponent<Image>().color = defaultColor;
