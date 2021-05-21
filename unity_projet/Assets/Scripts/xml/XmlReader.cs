@@ -80,6 +80,7 @@ public class XmlReader : MonoBehaviour
         Debug.Log("etape cree"); ///on affiche etape cree dans la console
 
         textHint.GetComponent<Text>().text = indice.InnerText.ToString();//initialize textHint content with the XmlNode indice innertext
+        hint.transform.Find("Text").GetComponent<Text>().text = "un indice?";//replace template text in the language you want
 
         buttonTemplate.SetActive(true);
         nextStepButton.GetComponent<Button>().interactable = false; //(G) the Next Step Button is not interactable until the answer is right
@@ -187,7 +188,7 @@ public class XmlReader : MonoBehaviour
         nextStepButton.transform.GetComponent<Button>().interactable = false;
         questionBox.transform.Find("Text").GetComponent<Text>().text = question.InnerText;
         textHint.GetComponent<Text>().text = indice.InnerText.ToString();//initialize textHint content with the XmlNode indice innertext
-
+        hint.transform.Find("Text").GetComponent<Text>().text = "un indice?";
 
         input.SetActive(false); ///on désactive la barre d'entrée de texte pour qu'elle n'aparaisse pas dans l'ui
         textHint.SetActive(false);//the user should not see the hint before their first answer
