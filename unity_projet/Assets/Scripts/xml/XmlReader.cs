@@ -9,9 +9,9 @@ using System.Xml.Linq;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 
-    
 public class XmlReader : MonoBehaviour
     {
     public DeviceCameraController scriptQrCode;
@@ -344,10 +344,11 @@ public class XmlReader : MonoBehaviour
             creerQrCode(etape, question, reponse); // (G) On crée l'étape QRCode
         }
 
-        if (typeEpreuve.Name=="Conclusion") ///si on atteint la conclusion alors c'est fini
+        if (etape.NextSibling.Name == "conclusion") ///si on atteint la conclusion alors c'est fini
         {
             Debug.Log("c'est fini");
-            transform.parent.gameObject.SetActive(false); 
+            transform.parent.gameObject.SetActive(false);
+            SceneManager.LoadScene("ecran_felicitations");
         }
             
             

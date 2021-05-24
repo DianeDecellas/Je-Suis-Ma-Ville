@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/scene_finale.unity
     guid: 27e0cb410a5d6de4e816f2e03d72a0f6
+  - enabled: 1
+    path: Assets/Scenes/ecran_felicitations.unity
+    guid: 4da9d8decd5eaba47a5870b65f679d8c
   m_configObjects: {}
