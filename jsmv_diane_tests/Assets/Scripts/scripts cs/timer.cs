@@ -15,8 +15,15 @@ public class timer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GetComponent<Text>().text = time.ToString();
-
         time = (int)Time.time;
+
+        int seconds = (int)(time % 60);
+        int minutes = (int)(time / 60)%60;
+        int hours = (int)(time / 3600) % 24;
+
+        string timerString = string.Format("{0:0}:{1:00}:{2:00}",hours, minutes,seconds);
+        GetComponent<Text>().text = timerString;
+
+        
     }
 }
