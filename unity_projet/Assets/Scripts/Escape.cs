@@ -16,7 +16,7 @@ public class Escape : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            SceneManager.LoadScene("scene de chargement");
+            SceneManager.LoadScene("scene de chargement", LoadSceneMode.Single);
         }
     }
 }

@@ -13,7 +13,7 @@ public class EcranAccueil : MonoBehaviour
     }
     void accessChoice()
     {
-        SceneManager.LoadScene("scene de chargement");
+        SceneManager.LoadScene("scene de chargement", LoadSceneMode.Single);
     }
 
     // Update is called once per frame

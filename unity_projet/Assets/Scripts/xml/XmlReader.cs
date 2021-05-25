@@ -300,7 +300,7 @@ public class XmlReader : MonoBehaviour
         {
             Debug.Log("c'est fini");
             transform.parent.gameObject.SetActive(false);
-            SceneManager.LoadScene("ecran_felicitations");
+            SceneManager.LoadScene("ecran_felicitations", LoadSceneMode.Single);
         }
         else
         {
