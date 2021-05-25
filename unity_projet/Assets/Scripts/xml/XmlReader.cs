@@ -81,7 +81,7 @@ public class XmlReader : MonoBehaviour
         Debug.Log("etape cree"); ///on affiche etape cree dans la console
 
         textHint.GetComponent<Text>().text = indice.InnerText.ToString();//initialize textHint content with the XmlNode indice innertext
-        hint.transform.Find("Text").GetComponent<Text>().text = "un indice?";//replace template text in the language you want
+
 
         buttonTemplate.SetActive(true);
         nextStepButton.GetComponent<Button>().interactable = false; //(G) the Next Step Button is not interactable until the answer is right
@@ -115,8 +115,7 @@ public class XmlReader : MonoBehaviour
         }
         GameObject g; ///on crée un objet g
         g = buttonTemplate; ///g est le template de bouton défini plus haut
-        g.transform.Find("Text (1)").GetComponent<Text>().text = reponse.InnerText;//(G) je touche pas à cette ligne si c'est du test  ///on remplace le contenu texte de g par le texte de la réponse, c'est pour tricher et tester plus facilement il faudra enlever cette ligne
-        g.transform.Find("Text").GetComponent<Text>().text = "valider"; ///on remplace le texte du bouton par valider
+        g.transform.Find("Text (1)").GetComponent<Text>().text = "Valider";//(G) je touche pas à cette ligne si c'est du test  ///on remplace le contenu texte de g par le texte de la réponse, c'est pour tricher et tester plus facilement il faudra enlever cette ligne
         g.GetComponent<Button>().onClick.AddListener( ValiderTexte); ///le bouton déclenche la fonction ValiderTexte quand on appuye dessus
 
         void AfficherIndice()
@@ -127,9 +126,10 @@ public class XmlReader : MonoBehaviour
 
         void EtapeSuivante()
         {
-        Debug.Log("odkour");
+        
             hint.SetActive(false);
             textHint.SetActive(false);
+            questionBox.transform.Find("Text").GetComponent<Text>().text = "";
             EtapeReader(etape.NextSibling); ///on appelle la fonction EtapeReader sur le frère suivant de l'étape en cours (imaginez un arbre)
         }
         nextStepButton.GetComponent<Button>().onClick.RemoveAllListeners(); ///on enlève tous les attribus du bouton suivant avant de lui appliquer la fonction EtapeReader sinon le bouton suivant se retrouve avec 1000 fonctions différentes dessus
@@ -197,7 +197,7 @@ public class XmlReader : MonoBehaviour
         nextStepButton.transform.GetComponent<Button>().interactable = false;
         questionBox.transform.Find("Text").GetComponent<Text>().text = question.InnerText;
         textHint.GetComponent<Text>().text = indice.InnerText.ToString();//initialize textHint content with the XmlNode indice innertext
-        hint.transform.Find("Text").GetComponent<Text>().text = "un indice?";
+        
 
         input.SetActive(false); ///on désactive la barre d'entrée de texte pour qu'elle n'aparaisse pas dans l'ui
         textHint.SetActive(false);//the user should not see the hint before their first answer
@@ -213,10 +213,10 @@ public class XmlReader : MonoBehaviour
         g3 = Instantiate(buttonTemplate, transform);
         g4 = Instantiate(buttonTemplate, transform);
 
-        g1.transform.GetChild(1).GetComponent<Text>().text = reponsev.InnerText;
-        g2.transform.GetChild(1).GetComponent<Text>().text = reponsef1.InnerText; ///on remplit le texte de chaque bouton avec celui de la réponse correspondante
-        g3.transform.GetChild(1).GetComponent<Text>().text = reponsef2.InnerText;
-        g4.transform.GetChild(1).GetComponent<Text>().text = reponsef3.InnerText;
+        g1.transform.GetChild(0).GetComponent<Text>().text = reponsev.InnerText;
+        g2.transform.GetChild(0).GetComponent<Text>().text = reponsef1.InnerText; ///on remplit le texte de chaque bouton avec celui de la réponse correspondante
+        g3.transform.GetChild(0).GetComponent<Text>().text = reponsef2.InnerText;
+        g4.transform.GetChild(0).GetComponent<Text>().text = reponsef3.InnerText;
 
         //(G) Getting the buttons' indexes 
         int[] indexArray = { g1.transform.GetSiblingIndex(),
@@ -259,6 +259,7 @@ public class XmlReader : MonoBehaviour
             Destroy(g4);
             hint.SetActive(false);
             textHint.SetActive(false);
+            questionBox.transform.Find("Text").GetComponent<Text>().text = "";
             EtapeReader(etape.NextSibling); ///on appelle la fonction EtapeReader sur le frère suivant de cette étape
         }
         
@@ -295,72 +296,74 @@ public class XmlReader : MonoBehaviour
     public void EtapeReader(XmlNode CurrentNode)
     {
         string typeEtape= CurrentNode.InnerText; ///on connait le type de l'étape en lisant le texte du noeud en cours (le commentaire)
-
-        Debug.Log(typeEtape);
-        XmlNode etape = CurrentNode; ///l'étape en elle même est le frère du commentaire sur le xml que vous avez fouri
-        XmlNode titre = etape.FirstChild; ///le premier fils de l'étape est son titre
-        XmlNode navigation = titre.NextSibling; ///le deuxième fils de l'étape est la navigation
-        navigate(navigation);
-        Debug.Log(navigation.InnerText);
-        XmlNode epreuve = navigation.NextSibling;
-        XmlNode typeEpreuve = epreuve.FirstChild;
-        if (typeEpreuve.Name == "info")
-        {
-            
-            XmlNode info = epreuve.FirstChild;
-            XmlNode texteinfo = info.FirstChild;
-            XmlNode imageUrl = texteinfo.NextSibling;
-            creerEtapeInfo(etape,texteinfo,imageUrl);
-        }
-        if (typeEpreuve.Name == "texte")
-        {
-             /// on affiche la navigation dans la console, pour vérifier que àa marche
-            
-            Debug.Log(epreuve.InnerText);
-
-            XmlNode texte = epreuve.FirstChild; ///on récup_re le texte de l'épreuve
-            XmlNode imagetexte = texte.FirstChild; 
-            XmlNode question = imagetexte.NextSibling; ///on récupère la question
-            XmlNode reponse = question.NextSibling; ///et la réponse
-            XmlNode indice = reponse.NextSibling; //and the hint
-
-
-            creerEtapeTexte(etape,question, reponse, indice); ///on crée une étape à partir de la question et de la réponse
-        }
-
-        else if (typeEpreuve.Name== "qcm")
-        {
-            
-            
-            Debug.Log(epreuve.InnerText);
-
-            XmlNode qcm = epreuve.FirstChild;
-            XmlNode question = qcm.FirstChild;
-            XmlNode reponsev = question.NextSibling;
-            XmlNode reponsef1 = reponsev.NextSibling; ///on récupère toutes les réponses juste et fausses
-            XmlNode reponsef2 = reponsef1.NextSibling;
-            XmlNode reponsef3 = reponsef2.NextSibling;
-            XmlNode indice = reponsef3.NextSibling; ///(D) and the hint
-
-            creerQCM(etape, question, reponsev, reponsef1,reponsef2,reponsef3, indice); ///on crée l'étape qcm
-        }
-
-        else if (typeEpreuve.Name == "qrcode")
-        {
-            
-            
-
-            XmlNode qrcode = epreuve.FirstChild;
-            XmlNode question = qrcode.FirstChild;
-            XmlNode reponse = question.NextSibling;
-            creerQrCode(etape, question, reponse); // (G) On crée l'étape QRCode
-        }
-
-        if (etape.NextSibling.Name == "conclusion") ///si on atteint la conclusion alors c'est fini
+        if (CurrentNode.Name == "conclusion") ///si on atteint la conclusion alors c'est fini
         {
             Debug.Log("c'est fini");
             transform.parent.gameObject.SetActive(false);
             SceneManager.LoadScene("ecran_felicitations");
+        }
+        else
+        {
+            Debug.Log(typeEtape);
+            XmlNode etape = CurrentNode; ///l'étape en elle même est le frère du commentaire sur le xml que vous avez fouri
+            XmlNode titre = etape.FirstChild; ///le premier fils de l'étape est son titre
+            XmlNode navigation = titre.NextSibling; ///le deuxième fils de l'étape est la navigation
+            navigate(navigation);
+            Debug.Log(navigation.InnerText);
+            XmlNode epreuve = navigation.NextSibling;
+            XmlNode typeEpreuve = epreuve.FirstChild;
+            if (typeEpreuve.Name == "info")
+            {
+
+                XmlNode info = epreuve.FirstChild;
+                XmlNode texteinfo = info.FirstChild;
+                XmlNode imageUrl = texteinfo.NextSibling;
+                creerEtapeInfo(etape, texteinfo, imageUrl);
+            }
+            if (typeEpreuve.Name == "texte")
+            {
+                /// on affiche la navigation dans la console, pour vérifier que àa marche
+
+                Debug.Log(epreuve.InnerText);
+
+                XmlNode texte = epreuve.FirstChild; ///on récup_re le texte de l'épreuve
+                XmlNode imagetexte = texte.FirstChild;
+                XmlNode question = imagetexte.NextSibling; ///on récupère la question
+                XmlNode reponse = question.NextSibling; ///et la réponse
+                XmlNode indice = reponse.NextSibling; //and the hint
+
+
+                creerEtapeTexte(etape, question, reponse, indice); ///on crée une étape à partir de la question et de la réponse
+            }
+
+            else if (typeEpreuve.Name == "qcm")
+            {
+
+
+                Debug.Log(epreuve.InnerText);
+
+                XmlNode qcm = epreuve.FirstChild;
+                XmlNode question = qcm.FirstChild;
+                XmlNode reponsev = question.NextSibling;
+                XmlNode reponsef1 = reponsev.NextSibling; ///on récupère toutes les réponses juste et fausses
+                XmlNode reponsef2 = reponsef1.NextSibling;
+                XmlNode reponsef3 = reponsef2.NextSibling;
+                XmlNode indice = reponsef3.NextSibling; ///(D) and the hint
+
+                creerQCM(etape, question, reponsev, reponsef1, reponsef2, reponsef3, indice); ///on crée l'étape qcm
+            }
+
+            else if (typeEpreuve.Name == "qrcode")
+            {
+
+
+
+                XmlNode qrcode = epreuve.FirstChild;
+                XmlNode question = qrcode.FirstChild;
+                XmlNode reponse = question.NextSibling;
+                creerQrCode(etape, question, reponse); // (G) On crée l'étape QRCode
+            }
+
         }
             
             
