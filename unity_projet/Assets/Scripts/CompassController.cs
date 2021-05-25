@@ -15,17 +15,17 @@ public class CompassController : MonoBehaviour
     private float anglePhoneToObjective;
 
     public GameObject textBox;
-    public Text textContent;
+    private Text textContent;
 
 
     // Use this for initialization
     void Start()
     {
-        textBox = transform.parent.Find("Text").gameObject;
         textContent = textBox.GetComponent<Text>();
+        textContent.text = "Coucou";
 
         // Shareloc  : 48.62360625887856f, 2.446877750478768f
-        Phone = new Vector2(48.62360625887856f, 2.446877750478768f);
+        Phone = new Vector2(48.62360625887856f, 2.446877750478768f); //Shareloc
         Objective = new Vector2(48.62353419622095f, 2.450696006891488f); //Bras de fer
         North = new Vector2(90, Phone.y);
 
