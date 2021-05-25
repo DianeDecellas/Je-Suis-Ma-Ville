@@ -9,9 +9,9 @@ using System.Xml.Linq;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 
-    
 public class XmlReader : MonoBehaviour
     {
     public DeviceCameraController scriptQrCode;
@@ -68,6 +68,7 @@ public class XmlReader : MonoBehaviour
             YourRawImage.texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
     }
 
+
     public void creerEtapeTexte(XmlNode etape, XmlNode question, XmlNode reponse, XmlNode indice) ///fonction qui crée une etape texte avec question et reponse
     {
         GameObject buttonTemplate = transform.Find("TestButton").gameObject; ///on récupère la template de bouton formée dans l'UI, il s'agit du 3eme fils de l'objet auquel le code est attaché "panel"
@@ -80,6 +81,7 @@ public class XmlReader : MonoBehaviour
         Debug.Log("etape cree"); ///on affiche etape cree dans la console
 
         textHint.GetComponent<Text>().text = indice.InnerText.ToString();//initialize textHint content with the XmlNode indice innertext
+        hint.transform.Find("Text").GetComponent<Text>().text = "un indice?";//replace template text in the language you want
 
         buttonTemplate.SetActive(true);
         nextStepButton.GetComponent<Button>().interactable = false; //(G) the Next Step Button is not interactable until the answer is right
@@ -90,8 +92,14 @@ public class XmlReader : MonoBehaviour
 
         questionBox.transform.Find("Text").GetComponent<Text>().text = question.InnerText; ///on récupère le texte contenu dans titre(maintenant questionBox) et on le remplace par le texte de la question
 
+
         void ValiderTexte(){
-            if (input.GetComponent < InputField >().text.ToString()== reponse.InnerText.ToString()) ///si le texte en entrée est égal au texte attendu
+            int stringDistance;//the distance between the correct answer and the user's input, calculated according to the Damerau Levenstein formula
+            stringDistance = DamerauLevensteinDistance.StringDistance.GetDamerauLevenshteinDistance(input.GetComponent<InputField>().text.ToString(), reponse.InnerText.ToString());
+            int threshold;//the threshold for the correct answer, since we allow some misclicks. You are free to change its definition
+            threshold = reponse.InnerText.ToString().Length / 3;
+
+            if (stringDistance <= threshold) //if the user's input is accurate enough
             {
                 Debug.Log("Bravo!! C'est Juste!");
                 nextStepButton.GetComponent<Button>().interactable = true;
@@ -99,6 +107,7 @@ public class XmlReader : MonoBehaviour
             else
             {
                 Debug.Log("Bzzt!! C'est faux!");
+                
                 Color defaultColor = buttonTemplate.GetComponent<Button>().GetComponent<Image>().color;
                 //buttonTemplate.GetComponent<Button>().GetComponent<Image>().color = Color.red; //(G) must find a way to make the change last 5 seconds or so
                 //buttonTemplate.GetComponent<Button>().GetComponent<Image>().color = defaultColor;
@@ -187,7 +196,7 @@ public class XmlReader : MonoBehaviour
         nextStepButton.transform.GetComponent<Button>().interactable = false;
         questionBox.transform.Find("Text").GetComponent<Text>().text = question.InnerText;
         textHint.GetComponent<Text>().text = indice.InnerText.ToString();//initialize textHint content with the XmlNode indice innertext
-
+        hint.transform.Find("Text").GetComponent<Text>().text = "un indice?";
 
         input.SetActive(false); ///on désactive la barre d'entrée de texte pour qu'elle n'aparaisse pas dans l'ui
         textHint.SetActive(false);//the user should not see the hint before their first answer
@@ -335,10 +344,11 @@ public class XmlReader : MonoBehaviour
             creerQrCode(etape, question, reponse); // (G) On crée l'étape QRCode
         }
 
-        if (typeEpreuve.Name=="Conclusion") ///si on atteint la conclusion alors c'est fini
+        if (etape.NextSibling.Name == "conclusion") ///si on atteint la conclusion alors c'est fini
         {
             Debug.Log("c'est fini");
-            transform.parent.gameObject.SetActive(false); 
+            transform.parent.gameObject.SetActive(false);
+            SceneManager.LoadScene("ecran_felicitations");
         }
             
             
