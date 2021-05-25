@@ -266,15 +266,27 @@ public class XmlReader : MonoBehaviour
             Debug.Log("C'est bon");
         }
 
-        void Refuser2()
+        void Refuser2(GameObject wrongButton)
         {
+
             Debug.Log("C'est faux");
+            StartCoroutine(colorChangeTimer());
+            IEnumerator colorChangeTimer()
+            {
+                Color defaultColor = wrongButton.GetComponent<Button>().GetComponent<Image>().color;
+                wrongButton.GetComponent<Button>().GetComponent<Image>().color = Color.red;
+                wrongButton.GetComponent<Button>().interactable = false;
+                yield return new WaitForSecondsRealtime(2);
+                wrongButton.GetComponent<Button>().GetComponent<Image>().color = defaultColor;
+                wrongButton.GetComponent<Button>().interactable = true;
+
+            }
         }
         g.transform.GetChild(0).GetComponent<Text>().text = "valider";
         g1.GetComponent<Button>().onClick.AddListener(Valider2); ///la réponse juste appelle valider, fen vrai il faudrait enlever les fonctions déjà présentes sur le bouton avant de faire ça...
-        g2.GetComponent<Button>().onClick.AddListener(Refuser2);///les autres appellent refuser
-        g3.GetComponent<Button>().onClick.AddListener(Refuser2);
-        g4.GetComponent<Button>().onClick.AddListener(Refuser2);
+        g2.GetComponent<Button>().onClick.AddListener(delegate { Refuser2(g2); });///les autres appellent refuser
+        g3.GetComponent<Button>().onClick.AddListener(delegate { Refuser2(g3); });
+        g4.GetComponent<Button>().onClick.AddListener(delegate { Refuser2(g4); });
         nextStepButton.GetComponent<Button>().onClick.RemoveAllListeners();
         nextStepButton.GetComponent<Button>().onClick.AddListener(EtapeSuivante);
             
@@ -285,7 +297,7 @@ public class XmlReader : MonoBehaviour
         string typeEtape= CurrentNode.InnerText; ///on connait le type de l'étape en lisant le texte du noeud en cours (le commentaire)
 
         Debug.Log(typeEtape);
-        XmlNode etape = CurrentNode.NextSibling; ///l'étape en elle même est le frère du commentaire sur le xml que vous avez fouri
+        XmlNode etape = CurrentNode; ///l'étape en elle même est le frère du commentaire sur le xml que vous avez fouri
         XmlNode titre = etape.FirstChild; ///le premier fils de l'étape est son titre
         XmlNode navigation = titre.NextSibling; ///le deuxième fils de l'étape est la navigation
         navigate(navigation);

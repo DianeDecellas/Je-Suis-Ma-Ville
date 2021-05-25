@@ -60,7 +60,9 @@ public class CompassController : MonoBehaviour
 
             textContent.text = "Vers Nord: " + currentMagneticHeading.ToString() + "\n"
                 + "Angle Nord - Objectif: " + Vector2.SignedAngle(PhoneToNorth, PhoneToObjective).ToString() + "\n"
-                + "Angle Phone - Objectif: " + anglePhoneToObjective.ToString();
+                + "Angle Phone - Objectif: " + anglePhoneToObjective.ToString() + "\n"
+                + "Objectif: " + Objective.ToString() + "\n"
+                + "Phone:" + Phone.ToString() + "\n";
 
         }
     }
