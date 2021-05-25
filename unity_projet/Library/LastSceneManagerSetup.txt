@@ -3,8 +3,8 @@ sceneSetups:
   isLoaded: 1
   isActive: 1
 - path: Assets/Scenes/scene_finale.unity
-  isLoaded: 1
+  isLoaded: 0
   isActive: 0
 - path: Assets/Scenes/ecran_felicitations.unity
-  isLoaded: 1
+  isLoaded: 0
   isActive: 0

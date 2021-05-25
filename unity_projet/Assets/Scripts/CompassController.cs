@@ -21,44 +21,39 @@ public class CompassController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        textContent = textBox.GetComponent<Text>();
+        textContent = textBox.GetComponent<Text>(); //The debug box that is used to display the informations.
         textContent.text = "Coucou";
 
-        // Shareloc  : 48.62360625887856f, 2.446877750478768f
-        Phone = new Vector2(GPS.Instance.latitude, GPS.Instance.longitude); //phone coords
+        Phone = new Vector2(GPS.Instance.latitude, GPS.Instance.longitude); //The current coordinates of the mobile phone.
         Objective = new Vector2(UrlStorage.xprevu, UrlStorage.yprevu); //Coords of place to go
-        North = new Vector2(90, Phone.y);
+        North = new Vector2(90, Phone.y); //The coordinates of the North. This may seem wierd, but it works to accomodate the model of a 2D plan, and works on the scale of a city or a region
 
-        PhoneToNorth = North - Phone;
-        PhoneToObjective = Objective - Phone;
+        PhoneToNorth = North - Phone; //The vector between the phone and North
+        PhoneToObjective = Objective - Phone; //The vector between the Phone and the Objective
 
         // If you need an accurate heading to true north, 
         // start the location service so Unity can correct for local deviations:
         Input.location.Start();
         // Start the compass.
         Input.compass.enabled = true;
-        //measuresArray = new float[measureNb];
-        //float currentTrueHeading = (float)Math.Round(Input.compass.magneticHeading, 2);
-        /*for (int i=0; i<measureNb; i++)
-        {
-            measuresArray[i] = currentTrueHeading;
-        }*/
+
     }
     // Update is called once per frame
     private void Update()
     {
-        Phone = new Vector2(GPS.Instance.latitude, GPS.Instance.longitude); //coords of the phone
-        Objective = new Vector2(UrlStorage.xprevu, UrlStorage.yprevu); // coords of place to reach
+        Phone = new Vector2(GPS.Instance.latitude, GPS.Instance.longitude); //to refresh the phone's current coordinates.
+        Objective = new Vector2(UrlStorage.xprevu, UrlStorage.yprevu); // coords of place to reach. May need to be changed in the future.   
 
         //do rotation based on compass
-        float currentMagneticHeading = (float)Math.Round(Input.compass.magneticHeading, 2);
+        float currentMagneticHeading = (float)Math.Round(Input.compass.magneticHeading, 2); // Direction to the magnetic north. Seems to be the Angle clockwise from the phone's direction to the north's direction
         if (m_lastMagneticHeading < currentMagneticHeading - compassSmooth || m_lastMagneticHeading > currentMagneticHeading + compassSmooth)
         {
             m_lastMagneticHeading = currentMagneticHeading;
-            anglePhoneToObjective = -Vector2.SignedAngle(PhoneToNorth, PhoneToObjective) + m_lastMagneticHeading;
-            transform.localRotation = Quaternion.Euler(0, 0, anglePhoneToObjective);
+            // /!\Beware, in this code, many things measure the angles clockwise, and many counter clockwise. Always check to avoid a headache.
+             anglePhoneToObjective = -Vector2.SignedAngle(PhoneToNorth, PhoneToObjective) + m_lastMagneticHeading; //updates the direction to the objective based on the north. 
+            transform.localRotation = Quaternion.Euler(0, 0, anglePhoneToObjective); // rotate the compass on screen
 
-            textContent.text = "Vers Nord: " + currentMagneticHeading.ToString() + "\n"
+            textContent.text = "Vers Nord: " + currentMagneticHeading.ToString() + "\n" //displays handy informations
                 + "Angle Nord - Objectif: " + Vector2.SignedAngle(PhoneToNorth, PhoneToObjective).ToString() + "\n"
                 + "Angle Phone - Objectif: " + anglePhoneToObjective.ToString() + "\n"
                 + "Objectif: " + Objective.ToString() + "\n"

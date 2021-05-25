@@ -193,6 +193,7 @@ public class XmlReader : MonoBehaviour
         GameObject hint = transform.Find("Hint").gameObject;//creation of hint button object
         GameObject textHint = transform.Find("TextHint").gameObject;//creation of hint text
 
+
         nextStepButton.transform.GetComponent<Button>().interactable = false;
         questionBox.transform.Find("Text").GetComponent<Text>().text = question.InnerText;
         textHint.GetComponent<Text>().text = indice.InnerText.ToString();//initialize textHint content with the XmlNode indice innertext
@@ -202,7 +203,9 @@ public class XmlReader : MonoBehaviour
         textHint.SetActive(false);//the user should not see the hint before their first answer
         hint.SetActive(true);
         Debug.Log("etape cree");
-        g = buttonTemplate;
+
+        buttonTemplate.SetActive(false);
+        
 
         //g.transform.GetChild(1).GetComponent<Text>().text = reponsev.InnerText;
         g1 = Instantiate(buttonTemplate, transform);
@@ -271,18 +274,15 @@ public class XmlReader : MonoBehaviour
 
             Debug.Log("C'est faux");
             StartCoroutine(colorChangeTimer());
-            IEnumerator colorChangeTimer()
+            IEnumerator colorChangeTimer() //(G): changes the button's color for a moment to indicate a wrong answer.
             {
                 Color defaultColor = wrongButton.GetComponent<Button>().GetComponent<Image>().color;
                 wrongButton.GetComponent<Button>().GetComponent<Image>().color = Color.red;
-                wrongButton.GetComponent<Button>().interactable = false;
                 yield return new WaitForSecondsRealtime(2);
                 wrongButton.GetComponent<Button>().GetComponent<Image>().color = defaultColor;
-                wrongButton.GetComponent<Button>().interactable = true;
 
             }
         }
-        g.transform.GetChild(0).GetComponent<Text>().text = "valider";
         g1.GetComponent<Button>().onClick.AddListener(Valider2); ///la réponse juste appelle valider, fen vrai il faudrait enlever les fonctions déjà présentes sur le bouton avant de faire ça...
         g2.GetComponent<Button>().onClick.AddListener(delegate { Refuser2(g2); });///les autres appellent refuser
         g3.GetComponent<Button>().onClick.AddListener(delegate { Refuser2(g3); });
