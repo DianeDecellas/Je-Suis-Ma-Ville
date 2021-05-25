@@ -6,14 +6,14 @@ public class CompassController : MonoBehaviour
 {
     public float compassSmooth = 0.5f;
     private float m_lastMagneticHeading = 0f;
-
+    
     private Vector2 North;
     private Vector2 Phone;
     private Vector2 Objective;
     private Vector2 PhoneToNorth;
     private Vector2 PhoneToObjective;
     private float anglePhoneToObjective;
-
+   
     public GameObject textBox;
     private Text textContent;
 
@@ -25,8 +25,8 @@ public class CompassController : MonoBehaviour
         textContent.text = "Coucou";
 
         // Shareloc  : 48.62360625887856f, 2.446877750478768f
-        Phone = new Vector2(48.62360625887856f, 2.446877750478768f); //Shareloc
-        Objective = new Vector2(48.62353419622095f, 2.450696006891488f); //Bras de fer
+        Phone = new Vector2(GPS.Instance.latitude, GPS.Instance.longitude); //phone coords
+        Objective = new Vector2(UrlStorage.xprevu, UrlStorage.yprevu); //Coords of place to go
         North = new Vector2(90, Phone.y);
 
         PhoneToNorth = North - Phone;
@@ -47,6 +47,9 @@ public class CompassController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        Phone = new Vector2(GPS.Instance.latitude, GPS.Instance.longitude); //coords of the phone
+        Objective = new Vector2(UrlStorage.xprevu, UrlStorage.yprevu); // coords of place to reach
+
         //do rotation based on compass
         float currentMagneticHeading = (float)Math.Round(Input.compass.magneticHeading, 2);
         if (m_lastMagneticHeading < currentMagneticHeading - compassSmooth || m_lastMagneticHeading > currentMagneticHeading + compassSmooth)

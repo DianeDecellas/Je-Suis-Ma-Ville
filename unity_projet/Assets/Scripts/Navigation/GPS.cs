@@ -5,7 +5,7 @@ using UnityEngine;
 public class GPS : MonoBehaviour
 {
     public static GPS Instance { set; get; }
-
+    
     public float latitude;
     public float longitude;
     // Start is called before the first frame update

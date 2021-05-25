@@ -12,10 +12,13 @@ public class UpdatePosition : MonoBehaviour
     float distancex = 0;
     float distancey = 0;
     float distance = 0;
+    
     public void setLocalisationPrevue(float x,float y) //fonction qui met à jour les coordonées du point à trouver
     {
         xprevu = x;
         yprevu = y;
+        UrlStorage.xprevu = x;
+        UrlStorage.yprevu = y;
 
     }
     bool getDistanceIsOk()
