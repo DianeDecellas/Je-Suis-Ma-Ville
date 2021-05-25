@@ -8,3 +8,6 @@ sceneSetups:
 - path: Assets/Scenes/ecran_felicitations.unity
   isLoaded: 0
   isActive: 0
+- path: Assets/Scenes/ecran_accueil.unity
+  isLoaded: 0
+  isActive: 0
