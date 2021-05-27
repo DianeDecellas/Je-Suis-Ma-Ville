@@ -8,5 +8,5 @@ public class UrlStorage : MonoBehaviour
     public static float xprevu=0;
     public static float yprevu=0;
 
-    
+    public static float time;
 }

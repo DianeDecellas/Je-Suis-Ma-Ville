@@ -37,7 +37,7 @@ public class UpdatePosition : MonoBehaviour
         distancex = k * (yprevu - GPS.Instance.longitude);
         distancey = k * (xprevu - GPS.Instance.latitude) * Mathf.Cos(yprevu / 2 + GPS.Instance.longitude / 2);
         distance = Mathf.Sqrt(Mathf.Pow(distancex,2)+Mathf.Pow(distancey,2));
-        position.text = "Nord-Sud:" + distancex.ToString() + "\nEst-Ouest" + distancey.ToString();
+        position.text = distance.ToString() + "m" ;
         if (getDistanceIsOk())
         {
 

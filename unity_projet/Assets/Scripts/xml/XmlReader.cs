@@ -377,7 +377,7 @@ public class XmlReader : MonoBehaviour
     public string Url;
     private void Start() ///que fait on au démarrage?
     {
-
+        UrlStorage.time = (int)Time.time;
         Url = UrlStorage.url;
         XmlDocument baladeData = new XmlDocument(); ///on crée un nouveau doc xml nommé baladeData
         WWW data = new WWW(Url); ///oui cette fonction est obsolète mais j'ai du mal avec la nouvelle

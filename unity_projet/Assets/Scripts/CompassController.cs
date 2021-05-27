@@ -43,7 +43,8 @@ public class CompassController : MonoBehaviour
     {
         Phone = new Vector2(GPS.Instance.latitude, GPS.Instance.longitude); //to refresh the phone's current coordinates.
         Objective = new Vector2(UrlStorage.xprevu, UrlStorage.yprevu); // coords of place to reach. May need to be changed in the future.   
-
+        PhoneToNorth = North - Phone; //The vector between the phone and North
+        PhoneToObjective = Objective - Phone; //The vector between the Phone and the Objective
         //do rotation based on compass
         float currentMagneticHeading = (float)Math.Round(Input.compass.magneticHeading, 2); // Direction to the magnetic north. Seems to be the Angle clockwise from the phone's direction to the north's direction
         if (m_lastMagneticHeading < currentMagneticHeading - compassSmooth || m_lastMagneticHeading > currentMagneticHeading + compassSmooth)
