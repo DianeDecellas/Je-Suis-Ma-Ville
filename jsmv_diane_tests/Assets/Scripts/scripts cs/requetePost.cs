@@ -9,6 +9,7 @@ public class requetePost : MonoBehaviour
     void Start()
     {
         //appeler Upload après avoir fait les bonnes modifs
+        StartCoroutine(Upload());
     }
 
     // Update is called once per frame
@@ -19,7 +20,7 @@ public class requetePost : MonoBehaviour
 
     IEnumerator Upload()
     {
-        WWWForm form = new WWWForm();//penser à dl le csv, mettre chemin d accès dans le php
+        WWWForm form = new WWWForm();//penser à dl le csv, mettre chemin d accès dans le php// cest fait
         //là c pour le test, à modifier pour automatiser
 
         form.AddField("date", "26/05/2021");
@@ -28,8 +29,8 @@ public class requetePost : MonoBehaviour
         form.AddField("duree", "0:12:34");
         form.AddField("note", "5");
 
-        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost:8080/my_html/statistiquesJeSuisMaVille.php", form))
-            //modifier chemin d accès et lancer en localhost
+        using (UnityWebRequest www = UnityWebRequest.Post("localhost:8000/statistiquesJeSuisMaVille.php", form))
+            //modifier chemin d accès et lancer en localhost/ c est fait
         {
             yield return www.SendWebRequest();
 
