@@ -1,13 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/scene de chargement.unity
-  isLoaded: 0
-  isActive: 0
-- path: Assets/Scenes/scene_finale.unity
+- path: Assets/Scenes/ecran_feedbacks.unity
   isLoaded: 1
   isActive: 1
-- path: Assets/Scenes/ecran_felicitations.unity
-  isLoaded: 0
-  isActive: 0
-- path: Assets/Scenes/ecran_accueil.unity
-  isLoaded: 0
-  isActive: 0
