@@ -23,13 +23,13 @@ public class requetePost : MonoBehaviour
         WWWForm form = new WWWForm();//penser à dl le csv, mettre chemin d accès dans le php// cest fait
         //là c pour le test, à modifier pour automatiser
 
-        form.AddField("date", "26/05/2021");
-        form.AddField("heure", "13:40");
-        form.AddField("nom", "super balade");
-        form.AddField("duree", "0:12:34");
-        form.AddField("note", "5");
+        form.AddField("date", "27/05/2021");
+        form.AddField("heure", "14:40");
+        form.AddField("nom", "Post balade nulle");
+        form.AddField("duree", "0:30:00");
+        form.AddField("note", "0");
 
-        using (UnityWebRequest www = UnityWebRequest.Post("localhost:8000/statistiquesJeSuisMaVille.php", form))
+        using (UnityWebRequest www = UnityWebRequest.Post("http://prefigurations.com/je_suis_ma_ville/stat/statistiquesJeSuisMaVille.php", form))
             //modifier chemin d accès et lancer en localhost/ c est fait
         {
             yield return www.SendWebRequest();

@@ -10,7 +10,7 @@ public class requeteGet : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(GetRequest("localhost:8000/statistiquesJeSuisMaVille.php?date=27/05/2021&heure=14:40&nom=Balade nulle&duree=0:12:40&note=0"));
+        StartCoroutine(GetRequest("https://prefigurations.com/je_suis_ma_ville/stat/statistiquesJeSuisMaVille.php?date=27/05/2021&heure=14:40&nom=Balade nulle&duree=0:12:40&note=0"));
     }
 
     IEnumerator GetRequest(string uri)
