@@ -48,11 +48,25 @@ public class XmlReader : MonoBehaviour
         info.SetActive(true);
         nextStepButton.SetActive(true);
 
+        //creation of audio button
+        GameObject AudioButton = transform.Find("AudioButton").gameObject;
+        GameObject AudioText = transform.Find("AudioButton").Find("Text").gameObject;
+        AudioText.GetComponent<Text>().text = "Jouer l'audio";
+        AudioButton.SetActive(true);
+        //how the audio button works: starts audio with first click, then pause or continues with next clicks
+        bool AudioActive = false;
+        void Audio()
+        {
+            AudioActive = !AudioActive;
+            AudioText.GetComponent<Text>().text = AudioActive ? "Pause" : "Continuer";
+        }
+        AudioButton.GetComponent<Button>().onClick.AddListener(Audio);
+
         void EtapeSuivante()
         {
             info.SetActive(false);
             EtapeReader(etape.NextSibling); ///on appelle la fonction EtapeReader sur le frère suivant de l'étape en cours (imaginez un arbre)
-
+            AudioButton.SetActive(false);
         }
         nextStepButton.GetComponent<Button>().onClick.RemoveAllListeners(); ///on enlève tous les attribus du bouton suivant avant de lui appliquer la fonction EtapeReader sinon le bouton suivant se retrouve avec 1000 fonctions différentes dessus
         nextStepButton.GetComponent<Button>().onClick.AddListener(EtapeSuivante);
