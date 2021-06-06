@@ -12,7 +12,7 @@ using UnityEngine.SceneManagement;
 
 public class XmlMenu : MonoBehaviour
 {
-    string UrlMenu = "http://prefigurations.com/je_suis_ma_ville/balades/MenuTest.xml"; //Url où je conserve le menu
+    string UrlMenu = "https://admiring-easley-a2c27c.netlify.app/MenuTest.xml"; //Url où je conserve le menu
     UrlStorage urlstorage;                                                                           // Start is called before the first frame update
     void readXmlMenu(XmlNode menu)
     {

@@ -399,9 +399,9 @@ public class XmlReader : MonoBehaviour
         {
             ///cette boucle while sert à attendre qu'on ait bien toutes les données, sinon on risque d'avoir des erreurs
         }
-            
+
+        Debug.Log("Balade finie de charger");
         baladeData.LoadXml(data.text); ///on charge le texte de data dans le doc xml baladeData
-            
 
         XmlNode encoding = baladeData.FirstChild; ///le premier fils de baladeData est l'encoding
         XmlNode test2 = encoding.NextSibling; ///je ne sais pas encore pourquoi mais il faut skip 1 autres fils avant d'arriver au contenu
