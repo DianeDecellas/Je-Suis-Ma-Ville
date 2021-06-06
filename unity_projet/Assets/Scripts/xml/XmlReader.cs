@@ -53,12 +53,29 @@ public class XmlReader : MonoBehaviour
         GameObject AudioText = transform.Find("AudioButton").Find("Text").gameObject;
         AudioText.GetComponent<Text>().text = "Jouer l'audio";
         AudioButton.SetActive(true);
+        //creation of audio source
+        GameObject AudioSource = transform.Find("AudioSource").gameObject;
+        AudioSource audioSource = AudioSource.GetComponent<AudioSource>();
+        //test with a music from the internet
+        string audiopath = "https://ciihuy.com/downloads/music.mp3";
+        IEnumerator i = audioPlay.GetAudioClip(audiopath, audioSource);
+        StartCoroutine(i);
+        Debug.Log("Starting to download the audio xmlreader...");
         //how the audio button works: starts audio with first click, then pause or continues with next clicks
         bool AudioActive = false;
         void Audio()
         {
             AudioActive = !AudioActive;
             AudioText.GetComponent<Text>().text = AudioActive ? "Pause" : "Continuer";
+
+            if (AudioActive == true)
+            {
+                audioPlay.playAudio(audioSource);
+            }
+            else
+            {
+                audioPlay.pauseAudio(audioSource);
+            }
         }
         AudioButton.GetComponent<Button>().onClick.AddListener(Audio);
 
