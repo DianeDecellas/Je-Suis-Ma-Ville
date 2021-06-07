@@ -299,7 +299,7 @@ public class XmlReader : MonoBehaviour
         void Valider2()
         {
             nextStepButton.transform.GetComponent<Button>().interactable = true;
-            g1.GetComponent<Button>().GetComponent<Image>().color=Color.green;
+            g1.GetComponent<Button>().GetComponent<Image>().color=new Color32(0,156,55,255);
             Debug.Log("C'est bon");
         }
 
@@ -311,7 +311,7 @@ public class XmlReader : MonoBehaviour
             IEnumerator colorChangeTimer() //(G): changes the button's color for a moment to indicate a wrong answer.
             {
                 Color defaultColor = wrongButton.GetComponent<Button>().GetComponent<Image>().color;
-                wrongButton.GetComponent<Button>().GetComponent<Image>().color = Color.red;
+                wrongButton.GetComponent<Button>().GetComponent<Image>().color = new Color32(183,53,58,255);
                 yield return new WaitForSecondsRealtime(2);
                 wrongButton.GetComponent<Button>().GetComponent<Image>().color = defaultColor;
 
