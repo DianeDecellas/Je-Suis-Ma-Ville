@@ -98,6 +98,7 @@ public class XmlReader : MonoBehaviour
             info.SetActive(false);
             EtapeReader(etape.NextSibling); ///on appelle la fonction EtapeReader sur le frère suivant de l'étape en cours (imaginez un arbre)
             AudioButton.SetActive(false);
+            AudioButton.GetComponent<Button>().onClick.RemoveAllListeners();
         }
         nextStepButton.GetComponent<Button>().onClick.RemoveAllListeners(); ///on enlève tous les attribus du bouton suivant avant de lui appliquer la fonction EtapeReader sinon le bouton suivant se retrouve avec 1000 fonctions différentes dessus
         nextStepButton.GetComponent<Button>().onClick.AddListener(EtapeSuivante);
