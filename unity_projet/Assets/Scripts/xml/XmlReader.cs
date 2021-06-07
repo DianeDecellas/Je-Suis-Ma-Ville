@@ -16,7 +16,21 @@ public class XmlReader : MonoBehaviour
     {
     public DeviceCameraController scriptQrCode;
     public UpdatePosition gpscalcul;
-    
+    IEnumerator ecranJuste()
+    {
+        transform.parent.parent.Find("true").gameObject.SetActive(true);
+        yield return new WaitForSecondsRealtime(2);
+        transform.parent.parent.Find("true").gameObject.SetActive(false);
+
+    }
+    IEnumerator ecranFaux()
+    {
+        transform.parent.parent.Find("false").gameObject.SetActive(true);
+        yield return new WaitForSecondsRealtime(2);
+        transform.parent.parent.Find("false").gameObject.SetActive(false);
+
+    }
+
     public void navigate(XmlNode nav)
     {
         XmlNode imagenav = nav.FirstChild;
@@ -135,11 +149,13 @@ public class XmlReader : MonoBehaviour
             if (stringDistance <= threshold) //if the user's input is accurate enough
             {
                 Debug.Log("Bravo!! C'est Juste!");
+                StartCoroutine(ecranJuste());
                 nextStepButton.GetComponent<Button>().interactable = true;
             }
             else
             {
                 Debug.Log("Bzzt!! C'est faux!");
+                StartCoroutine(ecranFaux());
                 
                 Color defaultColor = buttonTemplate.GetComponent<Button>().GetComponent<Image>().color;
                 //buttonTemplate.GetComponent<Button>().GetComponent<Image>().color = Color.red; //(G) must find a way to make the change last 5 seconds or so
@@ -195,6 +211,7 @@ public class XmlReader : MonoBehaviour
         {
             //(G) the Iterator / Enumerator waitForQRCode goes on only when scriptQrCode.qrcodeValide is set to true
             yield return new WaitUntil(() => scriptQrCode.isQrCodeValid); //(G) the " () => " bit transforms the scriptQrCode.qrcodeValide variable into a function
+            StartCoroutine(ecranJuste());
             void EtapeSuivante() //(G) this function will be called upon clicking on the nextStepButton button
             {
                 //scriptQrCode.Interrupt(); //(G) maybe will be used someday to destroy the imageParent object ? Who knows.
@@ -301,6 +318,9 @@ public class XmlReader : MonoBehaviour
             nextStepButton.transform.GetComponent<Button>().interactable = true;
             g1.GetComponent<Button>().GetComponent<Image>().color=new Color32(0,156,55,255);
             Debug.Log("C'est bon");
+            StartCoroutine(ecranJuste());
+            
+            
         }
 
         void Refuser2(GameObject wrongButton)
@@ -308,11 +328,12 @@ public class XmlReader : MonoBehaviour
 
             Debug.Log("C'est faux");
             StartCoroutine(colorChangeTimer());
+            StartCoroutine(ecranFaux());
             IEnumerator colorChangeTimer() //(G): changes the button's color for a moment to indicate a wrong answer.
             {
                 Color defaultColor = wrongButton.GetComponent<Button>().GetComponent<Image>().color;
                 wrongButton.GetComponent<Button>().GetComponent<Image>().color = new Color32(183,53,58,255);
-                yield return new WaitForSecondsRealtime(2);
+                yield return new WaitForSecondsRealtime(3);
                 wrongButton.GetComponent<Button>().GetComponent<Image>().color = defaultColor;
 
             }
