@@ -359,29 +359,29 @@ public class XmlReader : MonoBehaviour
         }
         else
         {
-            Debug.Log(typeEtape);
             XmlNode etape = CurrentNode; ///l'étape en elle même est le frère du commentaire sur le xml que vous avez fouri
             XmlNode titre = etape.FirstChild; ///le premier fils de l'étape est son titre
-            XmlNode navigation = titre.NextSibling; ///le deuxième fils de l'étape est la navigation
-            navigate(navigation);
-            Debug.Log(navigation.InnerText);
-            XmlNode epreuve = navigation.NextSibling;
-            XmlNode typeEpreuve = epreuve.FirstChild;
+            Debug.Log("Titre Etape = " + titre.InnerText);
+            //XmlNode navigation = titre.NextSibling; ///le deuxième fils de l'étape est la navigation
+            //navigate(navigation);
+            //Debug.Log(navigation.InnerText);
+            //XmlNode epreuve = navigation.NextSibling;
+            XmlNode typeEpreuve = titre.NextSibling;
+            Debug.Log("TypeEpreuve = "+typeEpreuve.Name);
             if (typeEpreuve.Name == "info")
             {
 
-                XmlNode info = epreuve.FirstChild;
+                XmlNode info = typeEpreuve.FirstChild;
                 XmlNode texteinfo = info.FirstChild;
                 XmlNode imageUrl = texteinfo.NextSibling;
                 creerEtapeInfo(etape, texteinfo, imageUrl);
-            }
-            if (typeEpreuve.Name == "texte")
+            } else if (typeEpreuve.Name == "texte")
             {
                 /// on affiche la navigation dans la console, pour vérifier que àa marche
 
-                Debug.Log(epreuve.InnerText);
+                Debug.Log(typeEpreuve.InnerText);
 
-                XmlNode texte = epreuve.FirstChild; ///on récup_re le texte de l'épreuve
+                XmlNode texte = typeEpreuve.FirstChild; ///on récup_re le texte de l'épreuve
                 XmlNode imagetexte = texte.FirstChild;
                 XmlNode question = imagetexte.NextSibling; ///on récupère la question
                 XmlNode reponse = question.NextSibling; ///et la réponse
@@ -395,9 +395,9 @@ public class XmlReader : MonoBehaviour
             {
 
 
-                Debug.Log(epreuve.InnerText);
+                Debug.Log(typeEpreuve.InnerText);
 
-                XmlNode qcm = epreuve.FirstChild;
+                XmlNode qcm = typeEpreuve.FirstChild;
                 XmlNode question = qcm.FirstChild;
                 XmlNode reponsev = question.NextSibling;
                 XmlNode reponsef1 = reponsev.NextSibling; ///on récupère toutes les réponses juste et fausses
@@ -413,12 +413,20 @@ public class XmlReader : MonoBehaviour
 
 
 
-                XmlNode qrcode = epreuve.FirstChild;
+                XmlNode qrcode = typeEpreuve.FirstChild;
                 XmlNode question = qrcode.FirstChild;
                 XmlNode reponse = question.NextSibling;
                 creerQrCode(etape, question, reponse); // (G) On crée l'étape QRCode
             }
 
+            else if (typeEpreuve.Name == "navigation")
+            {
+                XmlNode urlImageNode = typeEpreuve.FirstChild;
+                XmlNode instructionsNode = urlImageNode.NextSibling;
+                XmlNode coordsNode = instructionsNode.NextSibling;
+                Debug.Log("urlImage : " + urlImageNode.InnerText + "\ninstructions :" + instructionsNode.InnerText + "\ncoords : " + coordsNode.FirstChild.InnerText + " " + coordsNode.LastChild.InnerText);
+            }
+            
         }
             
             
@@ -430,8 +438,10 @@ public class XmlReader : MonoBehaviour
     public string Url;
     private void Start() ///que fait on au démarrage?
     {
+        Debug.Log("Start XmlReader");
         UrlStorage.time = (int)Time.time;
         Url = UrlStorage.url;
+        Debug.Log("URL chargée:"+ Url);
         XmlDocument baladeData = new XmlDocument(); ///on crée un nouveau doc xml nommé baladeData
         WWW data = new WWW(Url); ///oui cette fonction est obsolète mais j'ai du mal avec la nouvelle
         while (!data.isDone)
@@ -443,10 +453,10 @@ public class XmlReader : MonoBehaviour
         baladeData.LoadXml(data.text); ///on charge le texte de data dans le doc xml baladeData
 
         XmlNode encoding = baladeData.FirstChild; ///le premier fils de baladeData est l'encoding
-        XmlNode test2 = encoding.NextSibling; ///je ne sais pas encore pourquoi mais il faut skip 1 autres fils avant d'arriver au contenu
-        XmlNode test3 = test2.NextSibling;///la dedans y'a le contenu
+        XmlNode dtdNode = encoding.NextSibling; ///La DTD compte comme un noeud
+        XmlNode baladeNode = dtdNode.NextSibling;///la racine de la balade à proprement parler
          
-        XmlNode descriptif = test3.FirstChild; ///le premier fils de test3 c'est le descriptif de la balade
+        XmlNode descriptif = baladeNode.FirstChild; ///le premier fils de test3 c'est le descriptif de la balade
         XmlNode etape1 = descriptif.NextSibling; ///l'etape1 c'est le premier frere du descriptif
 
         XmlNode nomBalade = descriptif.FirstChild;

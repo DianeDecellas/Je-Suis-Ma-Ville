@@ -53,7 +53,6 @@ public class XmlMenu : MonoBehaviour
                 
                 RectTransform Rt = curg.GetComponent<RectTransform>();
                 Rt.sizeDelta = new Vector2(Rt.sizeDelta.x, Rt.sizeDelta.y + 200f);
-                
                 curg.transform.GetChild(2).GetComponent<Text>().text=resume.InnerText;
                 curg.transform.GetChild(2).gameObject.SetActive(true);
                 curg.GetComponent<Button>().onClick.AddListener(loadBalade);
@@ -61,7 +60,7 @@ public class XmlMenu : MonoBehaviour
             void loadBalade()
             {
                 UrlStorage.url = url;
-                Debug.Log(url);
+                Debug.Log("Cliquée : "+url);
                 SceneManager.LoadScene("scene_finale");
             }
             curg.GetComponent<Button>().onClick.AddListener(displayBalade);
