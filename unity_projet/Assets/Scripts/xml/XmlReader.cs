@@ -45,6 +45,38 @@ public class XmlReader : MonoBehaviour
         
     }
 
+    public void creerNavigation(XmlNode etapeNode, XmlNode urlImageNode, XmlNode instructionsNode, XmlNode CoordsNode)
+    {
+        string url = urlImageNode.InnerText.Trim(new char[] {' ', '\n', '\r' });
+        string instructions = instructionsNode.InnerText;
+        float xprev = float.Parse(CoordsNode.FirstChild.InnerText, System.Globalization.CultureInfo.InvariantCulture);
+        float yprev = float.Parse(CoordsNode.LastChild.InnerText.ToString(), System.Globalization.CultureInfo.InvariantCulture);
+        //gpscalcul.setLocalisationPrevue(xprev, yprev);
+
+        //the part were we unload what we don't want and load what we want : 
+        GameObject questionBoxObject = transform.Find("QuestionBox").gameObject;
+        GameObject imageParentObject = transform.Find("ImageParent").gameObject;
+        GameObject infoObject = transform.Find("info").gameObject;
+        GameObject inputObject = transform.Find("InputField").gameObject;
+        GameObject validateButton = transform.Find("TestButton").gameObject;
+        GameObject hintText = transform.Find("TextHint").gameObject;
+        GameObject audioButton = transform.Find("AudioSource").gameObject;
+        GameObject bottomContainer = transform.parent.Find("bottomContainer").gameObject;
+        GameObject nextStepButton = bottomContainer.transform.Find("NextStepButton").gameObject;
+
+        questionBoxObject.transform.Find("Text").GetComponent<Text>().text = instructions;
+        void EtapeSuivante()
+        {
+
+            //hint.SetActive(false);
+            //textHint.SetActive(false);
+            //questionBox.transform.Find("Text").GetComponent<Text>().text = "";
+            EtapeReader(etapeNode.NextSibling); ///on appelle la fonction EtapeReader sur le frère suivant de l'étape en cours (imaginez un arbre)
+        }
+        nextStepButton.GetComponent<Button>().onClick.RemoveAllListeners(); ///on enlève tous les attribus du bouton suivant avant de lui appliquer la fonction EtapeReader sinon le bouton suivant se retrouve avec 1000 fonctions différentes dessus
+        nextStepButton.GetComponent<Button>().onClick.AddListener(EtapeSuivante);///on applique la fonction EtapeSuivante au bouton suivant
+    }
+
     public void creerEtapeInfo(XmlNode etape, XmlNode texte, XmlNode image)
     {
         GameObject info = transform.Find("info").gameObject;
@@ -371,22 +403,27 @@ public class XmlReader : MonoBehaviour
             if (typeEpreuve.Name == "info")
             {
 
-                XmlNode info = typeEpreuve.FirstChild;
-                XmlNode texteinfo = info.FirstChild;
+                //XmlNode info = typeEpreuve.FirstChild;
+                XmlNode texteinfo = typeEpreuve.FirstChild;
                 XmlNode imageUrl = texteinfo.NextSibling;
+
+                Debug.Log("texteInfo : " + texteinfo.InnerText + "\nimageUrl : " + imageUrl.InnerText);
+
                 creerEtapeInfo(etape, texteinfo, imageUrl);
+
             } else if (typeEpreuve.Name == "texte")
             {
                 /// on affiche la navigation dans la console, pour vérifier que àa marche
 
                 Debug.Log(typeEpreuve.InnerText);
 
-                XmlNode texte = typeEpreuve.FirstChild; ///on récup_re le texte de l'épreuve
-                XmlNode imagetexte = texte.FirstChild;
+                //XmlNode texte = typeEpreuve.FirstChild; ///on récup_re le texte de l'épreuve
+                XmlNode imagetexte = typeEpreuve.FirstChild;
                 XmlNode question = imagetexte.NextSibling; ///on récupère la question
                 XmlNode reponse = question.NextSibling; ///et la réponse
                 XmlNode indice = reponse.NextSibling; //and the hint
 
+                Debug.Log("urlImage : "+imagetexte.InnerText+"\nquestion : "+question.InnerText+"\nreponse : "+reponse.InnerText+"\nindice : "+indice.InnerText);
 
                 creerEtapeTexte(etape, question, reponse, indice); ///on crée une étape à partir de la question et de la réponse
             }
@@ -397,13 +434,14 @@ public class XmlReader : MonoBehaviour
 
                 Debug.Log(typeEpreuve.InnerText);
 
-                XmlNode qcm = typeEpreuve.FirstChild;
-                XmlNode question = qcm.FirstChild;
+                XmlNode question = typeEpreuve.FirstChild;
                 XmlNode reponsev = question.NextSibling;
                 XmlNode reponsef1 = reponsev.NextSibling; ///on récupère toutes les réponses juste et fausses
                 XmlNode reponsef2 = reponsef1.NextSibling;
                 XmlNode reponsef3 = reponsef2.NextSibling;
                 XmlNode indice = reponsef3.NextSibling; ///(D) and the hint
+
+                Debug.Log("question : " + question.InnerText + "\nreponse :" + reponsev.InnerText + "\n"+reponsef1.InnerText+"\n"+reponsef2.InnerText+"\n"+reponsef3.InnerText);
 
                 creerQCM(etape, question, reponsev, reponsef1, reponsef2, reponsef3, indice); ///on crée l'étape qcm
             }
@@ -411,11 +449,11 @@ public class XmlReader : MonoBehaviour
             else if (typeEpreuve.Name == "qrcode")
             {
 
-
-
-                XmlNode qrcode = typeEpreuve.FirstChild;
-                XmlNode question = qrcode.FirstChild;
+                XmlNode question = typeEpreuve.FirstChild;
                 XmlNode reponse = question.NextSibling;
+
+                Debug.Log("question : " + question.InnerText + "\nreponse : "+reponse.InnerText);
+
                 creerQrCode(etape, question, reponse); // (G) On crée l'étape QRCode
             }
 
@@ -425,6 +463,8 @@ public class XmlReader : MonoBehaviour
                 XmlNode instructionsNode = urlImageNode.NextSibling;
                 XmlNode coordsNode = instructionsNode.NextSibling;
                 Debug.Log("urlImage : " + urlImageNode.InnerText + "\ninstructions :" + instructionsNode.InnerText + "\ncoords : " + coordsNode.FirstChild.InnerText + " " + coordsNode.LastChild.InnerText);
+
+                creerNavigation(etape, urlImageNode, instructionsNode, coordsNode);
             }
             
         }
@@ -466,9 +506,9 @@ public class XmlReader : MonoBehaviour
         XmlNode coords = lieuDepart.NextSibling;
         XmlNode x = coords.FirstChild;
         XmlNode y = x.NextSibling;
-        float xprev = float.Parse(x.InnerText, System.Globalization.CultureInfo.InvariantCulture);
-        float yprev = float.Parse(y.InnerText.ToString(), System.Globalization.CultureInfo.InvariantCulture);
-        gpscalcul.setLocalisationPrevue(xprev, yprev);
+        //float xprev = float.Parse(x.InnerText, System.Globalization.CultureInfo.InvariantCulture);
+        //float yprev = float.Parse(y.InnerText.ToString(), System.Globalization.CultureInfo.InvariantCulture);
+        //gpscalcul.setLocalisationPrevue(xprev, yprev);
 
         EtapeReader(etape1); ///on lance EtapeReader sur l'etape1
             
