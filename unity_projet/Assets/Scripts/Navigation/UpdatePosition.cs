@@ -38,7 +38,7 @@ public class UpdatePosition : MonoBehaviour
         distancey = k * (xprevu - GPS.Instance.latitude) * Mathf.Cos(yprevu / 2 + GPS.Instance.longitude / 2);
         distance = Mathf.Sqrt(Mathf.Pow(distancex,2)+Mathf.Pow(distancey,2));
 
-        position.text = (distance > 1000) ? distance.ToString("#.0") + "km" : ((int)distance).ToString()+"m";
+        position.text = (distance > 1000) ? distance.ToString() + "km" : ((int)distance).ToString()+"m";
         //position.text = ((int)distance).ToString() + "m" ;
         if (getDistanceIsOk())
         {

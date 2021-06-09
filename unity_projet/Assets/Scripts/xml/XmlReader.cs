@@ -14,20 +14,24 @@ using UnityEngine.SceneManagement;
 
 public class XmlReader : MonoBehaviour
     {
+    GameObject trueScreen;
+    GameObject falseScreen;
+
     public DeviceCameraController scriptQrCode;
     public UpdatePosition gpscalcul;
-    IEnumerator ecranJuste()
+    
+    void killFalseScreen()
     {
-        transform.parent.parent.Find("true").gameObject.SetActive(true);
-        yield return new WaitForSecondsRealtime(2);
-        transform.parent.parent.Find("true").gameObject.SetActive(false);
-
+        falseScreen.SetActive(false);
     }
+    
     IEnumerator ecranFaux()
     {
-        transform.parent.parent.Find("false").gameObject.SetActive(true);
+        
+        falseScreen.SetActive(true);
         yield return new WaitForSecondsRealtime(2);
-        transform.parent.parent.Find("false").gameObject.SetActive(false);
+        
+        
 
     }
 
@@ -88,6 +92,7 @@ public class XmlReader : MonoBehaviour
             //questionBox.transform.Find("Text").GetComponent<Text>().text = "";
             infoObject.SetActive(false);
             compassParent.SetActive(false);
+            trueScreen.SetActive(false);
             EtapeReader(etapeNode.NextSibling); ///on appelle la fonction EtapeReader sur le frère suivant de l'étape en cours (imaginez un arbre)
         }
         nextStepButton.GetComponent<Button>().onClick.RemoveAllListeners(); ///on enlève tous les attribus du bouton suivant avant de lui appliquer la fonction EtapeReader sinon le bouton suivant se retrouve avec 1000 fonctions différentes dessus
@@ -148,6 +153,7 @@ public class XmlReader : MonoBehaviour
             EtapeReader(etape.NextSibling); ///on appelle la fonction EtapeReader sur le frère suivant de l'étape en cours (imaginez un arbre)
             AudioButton.SetActive(false);
             AudioButton.GetComponent<Button>().onClick.RemoveAllListeners();
+            trueScreen.SetActive(false);
         }
         nextStepButton.GetComponent<Button>().onClick.RemoveAllListeners(); ///on enlève tous les attribus du bouton suivant avant de lui appliquer la fonction EtapeReader sinon le bouton suivant se retrouve avec 1000 fonctions différentes dessus
         nextStepButton.GetComponent<Button>().onClick.AddListener(EtapeSuivante);
@@ -199,7 +205,9 @@ public class XmlReader : MonoBehaviour
             if (stringDistance <= threshold) //if the user's input is accurate enough
             {
                 Debug.Log("Bravo!! C'est Juste!");
-                StartCoroutine(ecranJuste());
+                trueScreen.SetActive(true);
+                trueScreen.GetComponent<Button>().onClick.RemoveAllListeners();
+                trueScreen.GetComponent<Button>().onClick.AddListener(EtapeSuivante);
                 nextStepButton.GetComponent<Button>().interactable = true;
             }
             else
@@ -227,6 +235,7 @@ public class XmlReader : MonoBehaviour
         {
         
             hint.SetActive(false);
+            trueScreen.SetActive(false);
             textHint.SetActive(false);
             questionBox.transform.Find("Text").GetComponent<Text>().text = "";
             EtapeReader(etape.NextSibling); ///on appelle la fonction EtapeReader sur le frère suivant de l'étape en cours (imaginez un arbre)
@@ -261,12 +270,15 @@ public class XmlReader : MonoBehaviour
         {
             //(G) the Iterator / Enumerator waitForQRCode goes on only when scriptQrCode.qrcodeValide is set to true
             yield return new WaitUntil(() => scriptQrCode.isQrCodeValid); //(G) the " () => " bit transforms the scriptQrCode.qrcodeValide variable into a function
-            StartCoroutine(ecranJuste());
+            trueScreen.SetActive(true);
+            trueScreen.GetComponent<Button>().onClick.RemoveAllListeners();
+            trueScreen.GetComponent<Button>().onClick.AddListener(EtapeSuivante);
             void EtapeSuivante() //(G) this function will be called upon clicking on the nextStepButton button
             {
                 //scriptQrCode.Interrupt(); //(G) maybe will be used someday to destroy the imageParent object ? Who knows.
                 imageParent.SetActive(false); //(G) deactivating the QRReader object
                 EtapeReader(etape.NextSibling);
+                trueScreen.SetActive(false);
             }
             nextStepButton.GetComponent<Button>().interactable = true;
             nextStepButton.GetComponent<Button>().onClick.RemoveAllListeners(); ///on enlève les anciennes fonctions du bouton avant d'ajouter la fonction etape suivante appropriée
@@ -359,6 +371,7 @@ public class XmlReader : MonoBehaviour
             Destroy(g4);
             hint.SetActive(false);
             textHint.SetActive(false);
+            trueScreen.SetActive(false);
             questionBox.transform.Find("Text").GetComponent<Text>().text = "";
             EtapeReader(etape.NextSibling); ///on appelle la fonction EtapeReader sur le frère suivant de cette étape
         }
@@ -368,9 +381,11 @@ public class XmlReader : MonoBehaviour
             nextStepButton.transform.GetComponent<Button>().interactable = true;
             g1.GetComponent<Button>().GetComponent<Image>().color=new Color32(0,156,55,255);
             Debug.Log("C'est bon");
-            StartCoroutine(ecranJuste());
-            
-            
+            trueScreen.SetActive(true);
+            trueScreen.GetComponent<Button>().onClick.RemoveAllListeners();
+            trueScreen.GetComponent<Button>().onClick.AddListener(EtapeSuivante);
+
+
         }
 
         void Refuser2(GameObject wrongButton)
@@ -384,7 +399,7 @@ public class XmlReader : MonoBehaviour
                 Color defaultColor = wrongButton.GetComponent<Button>().GetComponent<Image>().color;
                 wrongButton.GetComponent<Button>().GetComponent<Image>().color = new Color32(183,53,58,255);
                 yield return new WaitForSecondsRealtime(3);
-                wrongButton.GetComponent<Button>().GetComponent<Image>().color = defaultColor;
+                
 
             }
         }
@@ -495,6 +510,9 @@ public class XmlReader : MonoBehaviour
     public string Url;
     private void Start() ///que fait on au démarrage?
     {
+        trueScreen = transform.parent.parent.Find("true").gameObject;
+        falseScreen = transform.parent.parent.Find("false").gameObject;
+        falseScreen.GetComponent<Button>().onClick.AddListener(killFalseScreen);
         Debug.Log("Start XmlReader");
         UrlStorage.time = (int)Time.time;
         Url = UrlStorage.url;
