@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 21.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Calque_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 1190.6 841.9" style="enable-background:new 0 0 1190.6 841.9;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#FFFFFF;}
+	.st1{font-family:'OptimaLTStd-ExtraBlack';}
+	.st2{font-size:53.3663px;}
+	.st3{letter-spacing:-2;}
+	.st4{fill:none;stroke:#FACE16;stroke-width:7;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st5{clip-path:url(#SVGID_2_);fill:none;stroke:#FACF17;stroke-width:7;stroke-linejoin:round;stroke-miterlimit:10;}
+</style>
+<text transform="matrix(1 0 0 1 416.1406 578.1791)"><tspan x="0" y="0" class="st0 st1 st2">JE SUIS MA</tspan><tspan x="302.4" y="0" class="st0 st1 st2 st3"> </tspan><tspan x="316.1" y="0" class="st0 st1 st2">VILLE</tspan></text>
+<g>
+	<polyline class="st4" points="578.8,376.7 632.6,432.8 632.6,489.4 	"/>
+	<g>
+		<defs>
+			<rect id="SVGID_1_" x="367.7" y="115.9" width="582.2" height="480.9"/>
+		</defs>
+		<clipPath id="SVGID_2_">
+			<use xlink:href="#SVGID_1_"  style="overflow:visible;"/>
+		</clipPath>
+		<path class="st5" d="M888,506.2H411.5V120.2l191.2,51.4v205.1h-23.9l-51.7,51.7v77.8h-53V308.2h104.8v68.6h23.8L758.2,238v37.1
+			h40.7v76h45.8v82.7H888V506.2z M758.2,238H602.7v138.8H678v54.4h-45.4v75.1H527.1v-77.8l51.7-51.7H678v-23.2h43.2v-78.5h37.1"/>
+	</g>
+</g>
+</svg>

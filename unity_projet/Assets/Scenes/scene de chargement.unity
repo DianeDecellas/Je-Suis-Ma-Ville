@@ -556,8 +556,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1493034707}
   m_HandleRect: {fileID: 1493034705}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.9999305
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -772,13 +772,13 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 94005a44202d92b4c8db7aa6ebf7c30e, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
-  m_UseSpriteMesh: 0
+  m_UseSpriteMesh: 1
 --- !u!1 &1527382225
 GameObject:
   m_ObjectHideFlags: 0
@@ -791,6 +791,7 @@ GameObject:
   - component: {fileID: 1527382227}
   - component: {fileID: 1527382228}
   - component: {fileID: 1527382229}
+  - component: {fileID: 1527382230}
   m_Layer: 5
   m_Name: panel
   m_TagString: Untagged
@@ -815,8 +816,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 500, y: -960.00024}
-  m_SizeDelta: {x: -10, y: 1700}
+  m_AnchoredPosition: {x: 500, y: -960.00006}
+  m_SizeDelta: {x: -10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1527382227
 MonoBehaviour:
@@ -834,7 +835,7 @@ MonoBehaviour:
     m_Left: 0
     m_Right: 0
     m_Top: 50
-    m_Bottom: 0
+    m_Bottom: 50
   m_ChildAlignment: 1
   m_Spacing: 0
   m_ChildForceExpandWidth: 0
@@ -866,6 +867,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 1
+--- !u!114 &1527382230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1527382225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1741964061, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 1
 --- !u!1 &1682958633
 GameObject:
   m_ObjectHideFlags: 0
