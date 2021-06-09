@@ -51,18 +51,33 @@ public class XmlReader : MonoBehaviour
         string instructions = instructionsNode.InnerText;
         float xprev = float.Parse(CoordsNode.FirstChild.InnerText, System.Globalization.CultureInfo.InvariantCulture);
         float yprev = float.Parse(CoordsNode.LastChild.InnerText.ToString(), System.Globalization.CultureInfo.InvariantCulture);
-        //gpscalcul.setLocalisationPrevue(xprev, yprev);
+        gpscalcul.setLocalisationPrevue(xprev, yprev);
 
         //the part were we unload what we don't want and load what we want : 
         GameObject questionBoxObject = transform.Find("QuestionBox").gameObject;
         GameObject imageParentObject = transform.Find("ImageParent").gameObject;
         GameObject infoObject = transform.Find("info").gameObject;
+        GameObject rawImageObject = infoObject.transform.Find("RawImage").gameObject;
+        RawImage rawImage = rawImageObject.GetComponent<RawImage>();
+        
         GameObject inputObject = transform.Find("InputField").gameObject;
         GameObject validateButton = transform.Find("TestButton").gameObject;
         GameObject hintText = transform.Find("TextHint").gameObject;
         GameObject audioButton = transform.Find("AudioSource").gameObject;
         GameObject bottomContainer = transform.parent.Find("bottomContainer").gameObject;
         GameObject nextStepButton = bottomContainer.transform.Find("NextStepButton").gameObject;
+        GameObject compassParent = transform.parent.Find("CompassParent").gameObject;
+
+
+        inputObject.SetActive(false);
+        validateButton.SetActive(false);
+        hintText.SetActive(false);
+
+
+        infoObject.SetActive(true);
+        StartCoroutine(DownloadImage(url, rawImage));
+
+        compassParent.SetActive(true);
 
         questionBoxObject.transform.Find("Text").GetComponent<Text>().text = instructions;
         void EtapeSuivante()
@@ -71,6 +86,8 @@ public class XmlReader : MonoBehaviour
             //hint.SetActive(false);
             //textHint.SetActive(false);
             //questionBox.transform.Find("Text").GetComponent<Text>().text = "";
+            infoObject.SetActive(false);
+            compassParent.SetActive(false);
             EtapeReader(etapeNode.NextSibling); ///on appelle la fonction EtapeReader sur le frère suivant de l'étape en cours (imaginez un arbre)
         }
         nextStepButton.GetComponent<Button>().onClick.RemoveAllListeners(); ///on enlève tous les attribus du bouton suivant avant de lui appliquer la fonction EtapeReader sinon le bouton suivant se retrouve avec 1000 fonctions différentes dessus
