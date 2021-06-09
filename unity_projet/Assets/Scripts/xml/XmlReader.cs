@@ -149,6 +149,7 @@ public class XmlReader : MonoBehaviour
 
         void EtapeSuivante()
         {
+            texteInfo.GetComponent<Text>().text = "";
             info.SetActive(false);
             EtapeReader(etape.NextSibling); ///on appelle la fonction EtapeReader sur le frère suivant de l'étape en cours (imaginez un arbre)
             AudioButton.SetActive(false);
