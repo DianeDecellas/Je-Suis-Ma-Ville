@@ -31,31 +31,51 @@ public class XmlMenu : MonoBehaviour
             g = Instantiate(baladeTemplate, transform);
             g.transform.GetChild(0).GetComponent<Text>().text = title.InnerText;
             g.transform.GetChild(1).GetComponent<Text>().text = duration.InnerText;
+            Vector2 buttonSizeVect =g.GetComponent<RectTransform>().sizeDelta;
             Debug.Log("Tite - Outer = " + title.OuterXml);
             Debug.Log("Name =" + title.Name);
-            GameObject curg = g.transform.parent.GetChild(i).gameObject;
-            void displayBalade()
+            GameObject parent = g.transform.parent.gameObject;
+            GameObject curg = parent.transform.GetChild(i).gameObject;
+            void clickBalade()
             {
-                XmlDocument displayXML = new XmlDocument(); ///on crée un nouveau doc xml nommé baladeData
-                WWW dataDisplay = new WWW(url); ///oui cette fonction est obsolète mais j'ai du mal avec la nouvelle
-                while (!dataDisplay.isDone)
+                MenuButtonLoadBoolean b = curg.GetComponent<MenuButtonLoadBoolean>();
+                if (!b.getLoadStatus())
                 {
-                    ///cette boucle while sert à attendre qu'on ait bien toutes les données, sinon on risque d'avoir des erreurs
+                    
+                    XmlDocument displayXML = new XmlDocument(); ///on crée un nouveau doc xml nommé baladeData
+                    WWW dataDisplay = new WWW(url); ///oui cette fonction est obsolète mais j'ai du mal avec la nouvelle
+                    while (!dataDisplay.isDone)
+                    {
+                        ///cette boucle while sert à attendre qu'on ait bien toutes les données, sinon on risque d'avoir des erreurs
+                    }
+
+                    displayXML.LoadXml(dataDisplay.text); ///on charge le texte de data dans le doc xml baladeData
+
+                    XmlElement root = displayXML.DocumentElement;   //Get follow node
+                    Debug.Log("The root element is:" + root.Name);
+                    XmlNode descriptif = root.FirstChild;
+                    XmlNode resume = descriptif.SelectSingleNode("resume");
+                    Debug.Log(resume.InnerText);
+                    foreach (Transform child in parent.transform)
+                    {
+                        child.transform.GetChild(2).gameObject.SetActive(false);
+                        RectTransform rect = child.GetComponent<RectTransform>();
+                        rect.sizeDelta = buttonSizeVect;
+                        child.GetComponent<MenuButtonLoadBoolean>().disableLoad();
+
+                    }
+                    b.enableLoad();
+                    RectTransform Rt = curg.GetComponent<RectTransform>(); //Get the rect transform of object
+                    Rt.sizeDelta = new Vector2(Rt.sizeDelta.x, Rt.sizeDelta.y + 200f); //make button bigger
+                    curg.transform.GetChild(2).GetComponent<Text>().text = resume.InnerText; //get text to display
+                    curg.transform.GetChild(2).gameObject.SetActive(true); //make the summary visible
+                    
                 }
-
-                displayXML.LoadXml(dataDisplay.text); ///on charge le texte de data dans le doc xml baladeData
-
-                XmlElement root = displayXML.DocumentElement;   //Get follow node
-                Debug.Log("The root element is:" + root.Name);
-                XmlNode descriptif = root.FirstChild;
-                XmlNode resume = descriptif.SelectSingleNode("resume");
-                Debug.Log(resume.InnerText);
-                
-                RectTransform Rt = curg.GetComponent<RectTransform>();
-                Rt.sizeDelta = new Vector2(Rt.sizeDelta.x, Rt.sizeDelta.y + 200f);
-                curg.transform.GetChild(2).GetComponent<Text>().text=resume.InnerText;
-                curg.transform.GetChild(2).gameObject.SetActive(true);
-                curg.GetComponent<Button>().onClick.AddListener(loadBalade);
+                else {
+                    UrlStorage.url = url;
+                    Debug.Log("Cliquée : " + url);
+                    SceneManager.LoadScene("scene_finale");
+                }
             }
             void loadBalade()
             {
@@ -63,7 +83,8 @@ public class XmlMenu : MonoBehaviour
                 Debug.Log("Cliquée : "+url);
                 SceneManager.LoadScene("scene_finale");
             }
-            curg.GetComponent<Button>().onClick.AddListener(displayBalade);
+            curg.GetComponent<Button>().onClick.AddListener(clickBalade);
+            
         }
         baladeTemplate.SetActive(false);
     }
