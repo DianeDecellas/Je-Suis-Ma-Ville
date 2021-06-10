@@ -169,7 +169,11 @@ public class XmlReader : MonoBehaviour
         if (request.isNetworkError || request.isHttpError)
             Debug.Log(request.error);
         else
+        {
+            float imageRatio = (float)((DownloadHandlerTexture)request.downloadHandler).texture.width / (float)((DownloadHandlerTexture)request.downloadHandler).texture.height;
             YourRawImage.texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
+            YourRawImage.transform.GetComponent<AspectRatioFitter>().aspectRatio = imageRatio;
+        }
     }
 
 
