@@ -13,6 +13,7 @@ using UnityEngine.SceneManagement;
 public class XmlMenu : MonoBehaviour
 {
     string UrlMenu = "https://prefigurations.com/je_suis_ma_ville/balades/MenuTest.xml";
+    string FtpURL = "https://prefigurations.com/je_suis_ma_ville/balades/";
     //string UrlMenu = "https://admiring-easley-a2c27c.netlify.app/MenuTest.xml"; //Url où je conserve le menu
     UrlStorage urlstorage;                                                                           // Start is called before the first frame update
     void readXmlMenu(XmlNode menu)
@@ -26,7 +27,8 @@ public class XmlMenu : MonoBehaviour
             i++;
             XmlNode title = currentBalade.FirstChild;
             XmlNode duration = title.NextSibling;
-            string url = duration.NextSibling.InnerText;
+            string idBalade = duration.NextSibling.InnerText;
+            string urlXmlBalade = FtpURL+"XML_Balades/"+idBalade+"/"+idBalade+".xml";
             currentBalade = currentBalade.NextSibling;
             g = Instantiate(baladeTemplate, transform);
             g.transform.GetChild(0).GetComponent<Text>().text = title.InnerText;
@@ -43,7 +45,7 @@ public class XmlMenu : MonoBehaviour
                 {
                     
                     XmlDocument displayXML = new XmlDocument(); ///on crée un nouveau doc xml nommé baladeData
-                    WWW dataDisplay = new WWW(url); ///oui cette fonction est obsolète mais j'ai du mal avec la nouvelle
+                    WWW dataDisplay = new WWW(urlXmlBalade); ///oui cette fonction est obsolète mais j'ai du mal avec la nouvelle
                     while (!dataDisplay.isDone)
                     {
                         ///cette boucle while sert à attendre qu'on ait bien toutes les données, sinon on risque d'avoir des erreurs
@@ -72,15 +74,19 @@ public class XmlMenu : MonoBehaviour
                     
                 }
                 else {
-                    UrlStorage.url = url;
-                    Debug.Log("Cliquée : " + url);
+                    UrlStorage.urlBaladeDirectory = FtpURL+"XML_Balades/"+idBalade+"/";
+                    Debug.Log("Cliquée : " + urlXmlBalade);
+                    UrlStorage.idBalade = idBalade;
+
                     SceneManager.LoadScene("scene_finale");
                 }
             }
             void loadBalade()
             {
-                UrlStorage.url = url;
-                Debug.Log("Cliquée : "+url);
+                UrlStorage.urlBaladeDirectory = FtpURL+"XML_Balades/"+idBalade+"/";
+                Debug.Log("Cliquée : "+urlXmlBalade);
+                UrlStorage.idBalade = idBalade;
+
                 SceneManager.LoadScene("scene_finale");
             }
             curg.GetComponent<Button>().onClick.AddListener(clickBalade);

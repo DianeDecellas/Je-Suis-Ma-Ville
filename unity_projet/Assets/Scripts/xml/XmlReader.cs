@@ -49,9 +49,9 @@ public class XmlReader : MonoBehaviour
         
     }
 
-    public void creerNavigation(XmlNode etapeNode, XmlNode urlImageNode, XmlNode instructionsNode, XmlNode CoordsNode)
+    public void creerNavigation(XmlNode etapeNode, XmlNode imageNameNode, XmlNode instructionsNode, XmlNode CoordsNode)
     {
-        string url = urlImageNode.InnerText.Trim(new char[] {' ', '\n', '\r' });
+        string imagePath = imageNameNode.InnerText.Trim(new char[] {' ', '\n', '\r' });
         string instructions = instructionsNode.InnerText;
         float xprev = float.Parse(CoordsNode.FirstChild.InnerText, System.Globalization.CultureInfo.InvariantCulture);
         float yprev = float.Parse(CoordsNode.LastChild.InnerText.ToString(), System.Globalization.CultureInfo.InvariantCulture);
@@ -79,7 +79,7 @@ public class XmlReader : MonoBehaviour
 
 
         infoObject.SetActive(true);
-        StartCoroutine(DownloadImage(url, rawImage));
+        StartCoroutine(DownloadImage(imagePath, rawImage));
 
         compassParent.SetActive(true);
 
@@ -110,7 +110,8 @@ public class XmlReader : MonoBehaviour
         GameObject input = transform.Find("InputField").gameObject;
         GameObject answerButton = transform.Find("TestButton").gameObject;
         texteInfo.GetComponent<Text>().text = texte.InnerText.ToString();
-        StartCoroutine(DownloadImage(image.InnerText.ToString(), rawImage));
+        string imagePath = image.InnerText.Trim(new char[] { '\n', '\r', ' ' });
+        StartCoroutine(DownloadImage(imagePath, rawImage));
         input.SetActive(false);
         answerButton.SetActive(false);
         info.SetActive(true);
@@ -161,10 +162,11 @@ public class XmlReader : MonoBehaviour
 
     }
 
-    private IEnumerator DownloadImage(string image, RawImage YourRawImage)
+    private IEnumerator DownloadImage(string imageName, RawImage YourRawImage)
     {
-        UnityWebRequest request = UnityWebRequestTexture.GetTexture(image);
-        Debug.Log(image);
+        string imageUrl = UrlStorage.urlBaladeDirectory + imageName;
+        UnityWebRequest request = UnityWebRequestTexture.GetTexture(imageUrl);
+        Debug.Log(imageUrl);
         yield return request.SendWebRequest();
         if (request.isNetworkError || request.isHttpError)
             Debug.Log(request.error);
@@ -512,7 +514,7 @@ public class XmlReader : MonoBehaviour
 
 
         
-    public string Url;
+    //public string urlBaladeDirectory;
     private void Start() ///que fait on au démarrage?
     {
         trueScreen = transform.parent.parent.Find("true").gameObject;
@@ -520,10 +522,10 @@ public class XmlReader : MonoBehaviour
         falseScreen.GetComponent<Button>().onClick.AddListener(killFalseScreen);
         Debug.Log("Start XmlReader");
         UrlStorage.time = (int)Time.time;
-        Url = UrlStorage.url;
-        Debug.Log("URL chargée:"+ Url);
+        string urlBalade = UrlStorage.urlBaladeDirectory+UrlStorage.idBalade+".xml";
+        Debug.Log("URL chargée:"+ urlBalade);
         XmlDocument baladeData = new XmlDocument(); ///on crée un nouveau doc xml nommé baladeData
-        WWW data = new WWW(Url); ///oui cette fonction est obsolète mais j'ai du mal avec la nouvelle
+        WWW data = new WWW(urlBalade); ///oui cette fonction est obsolète mais j'ai du mal avec la nouvelle
         while (!data.isDone)
         {
             ///cette boucle while sert à attendre qu'on ait bien toutes les données, sinon on risque d'avoir des erreurs
