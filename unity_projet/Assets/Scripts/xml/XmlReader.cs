@@ -66,7 +66,7 @@ public class XmlReader : MonoBehaviour
         
         GameObject inputObject = transform.Find("InputField").gameObject;
         GameObject validateButton = transform.Find("TestButton").gameObject;
-        GameObject hintText = transform.Find("TextHint").gameObject;
+        GameObject textHint = transform.parent.Find("HintContainer").GetChild(0).gameObject;
         GameObject audioButton = transform.Find("AudioSource").gameObject;
         GameObject bottomContainer = transform.parent.Find("bottomContainer").gameObject;
         GameObject nextStepButton = bottomContainer.transform.Find("NextStepButton").gameObject;
@@ -75,7 +75,7 @@ public class XmlReader : MonoBehaviour
 
         inputObject.SetActive(false);
         validateButton.SetActive(false);
-        hintText.SetActive(false);
+        textHint.SetActive(false);
 
 
         infoObject.SetActive(true);
@@ -181,7 +181,7 @@ public class XmlReader : MonoBehaviour
         GameObject input = transform.Find("InputField").gameObject; ///le deuxième fils de panel est une zone d'entrée de texte, on l'appelle input
         GameObject imageParent = transform.Find("ImageParent").gameObject; //(G) The image that will containt the camera
         GameObject hint = transform.parent.Find("bottomContainer").Find("Hint").gameObject;//creation of hint button object
-        GameObject textHint = transform.Find("TextHint").gameObject;//creation of hint text
+        GameObject textHint = transform.parent.Find("HintContainer").GetChild(0).gameObject;//creation of hint text
         Debug.Log("etape cree"); ///on affiche etape cree dans la console
 
         textHint.GetComponent<Text>().text = indice.InnerText.ToString();//initialize textHint content with the XmlNode indice innertext
@@ -304,7 +304,7 @@ public class XmlReader : MonoBehaviour
         GameObject questionBox = transform.Find("QuestionBox").gameObject;
         GameObject input = transform.Find("InputField").gameObject;
         GameObject hint = transform.parent.Find("bottomContainer").Find("Hint").gameObject;//creation of hint button object
-        GameObject textHint = transform.Find("TextHint").gameObject;//creation of hint text
+        GameObject textHint = transform.parent.Find("HintContainer").GetChild(0).gameObject;//creation of hint text
 
 
         nextStepButton.transform.GetComponent<Button>().interactable = false;
