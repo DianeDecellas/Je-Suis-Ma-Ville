@@ -12,7 +12,7 @@ using UnityEngine.SceneManagement;
 
 public class XmlMenu : MonoBehaviour
 {
-    string UrlMenu = "https://prefigurations.com/je_suis_ma_ville/balades/MenuTest.xml";
+    string UrlMenu = "https://prefigurations.com/je_suis_ma_ville/balades/MenuV2.xml";
     string FtpURL = "https://prefigurations.com/je_suis_ma_ville/balades/";
     //string UrlMenu = "https://admiring-easley-a2c27c.netlify.app/MenuTest.xml"; //Url où je conserve le menu
     UrlStorage urlstorage;                                                                           // Start is called before the first frame update
@@ -26,16 +26,33 @@ public class XmlMenu : MonoBehaviour
         {
             i++;
             XmlNode title = currentBalade.FirstChild;
-            XmlNode duration = title.NextSibling;
-            string idBalade = duration.NextSibling.InnerText;
+            XmlNode idNode = title.NextSibling;
+            string idBalade = idNode.InnerText;
             string urlXmlBalade = FtpURL+"XML_Balades/"+idBalade+"/"+idBalade+".xml";
+            XmlNode colorNode = idNode.NextSibling;
+            string colorButton = colorNode.InnerText.Trim(new char[] {'\n', '\r', ' '});
+            XmlNode durationNode = colorNode.NextSibling;
+            XmlNode descriptionNode = durationNode.NextSibling;
+            string description = descriptionNode.InnerText.Trim(new char[] { '\n', '\r', ' ' });
+            XmlNode departureNode = descriptionNode.NextSibling;
+            string departure = departureNode.InnerText.Trim(new char[] { '\n', '\r', ' ' });
+            XmlNode thumbnailNode = departureNode.NextSibling;
+            string thumbnailURL = FtpURL + "/XML_Balades/" + idBalade + "/" + thumbnailNode.InnerText.Trim(new char[] { '\n', '\r', ' ' });
+            //Message à Emile : si tu veux te servir de la couleur du cadre, de la vignette de la balade, tu peux le faire ici
+
+            Debug.Log("idBalade : " + idBalade
+                + "\nurlXmlBalade : " + urlXmlBalade
+                + "\ncolor : " + colorButton
+                + "\ndescription : " + description
+                + "\nlieu de départ : " + departure
+                + "\nURL vignette : " + thumbnailURL);
+
             currentBalade = currentBalade.NextSibling;
             g = Instantiate(baladeTemplate, transform);
             g.transform.GetChild(0).GetComponent<Text>().text = title.InnerText;
-            g.transform.GetChild(1).GetComponent<Text>().text = duration.InnerText;
+            g.transform.GetChild(1).GetComponent<Text>().text = durationNode.InnerText;
             Vector2 buttonSizeVect =g.GetComponent<RectTransform>().sizeDelta;
-            Debug.Log("Tite - Outer = " + title.OuterXml);
-            Debug.Log("Name =" + title.Name);
+
             GameObject parent = g.transform.parent.gameObject;
             GameObject curg = parent.transform.GetChild(i).gameObject;
             void clickBalade()
@@ -43,7 +60,7 @@ public class XmlMenu : MonoBehaviour
                 MenuButtonLoadBoolean b = curg.GetComponent<MenuButtonLoadBoolean>();
                 if (!b.getLoadStatus())
                 {
-                    
+                    /* //A dégager si jamais ça fonctionne
                     XmlDocument displayXML = new XmlDocument(); ///on crée un nouveau doc xml nommé baladeData
                     WWW dataDisplay = new WWW(urlXmlBalade); ///oui cette fonction est obsolète mais j'ai du mal avec la nouvelle
                     while (!dataDisplay.isDone)
@@ -52,12 +69,14 @@ public class XmlMenu : MonoBehaviour
                     }
 
                     displayXML.LoadXml(dataDisplay.text); ///on charge le texte de data dans le doc xml baladeData
+                     
 
                     XmlElement root = displayXML.DocumentElement;   //Get follow node
                     Debug.Log("The root element is:" + root.Name);
                     XmlNode descriptif = root.FirstChild;
                     XmlNode resume = descriptif.SelectSingleNode("resume");
                     Debug.Log(resume.InnerText);
+                    */
                     foreach (Transform child in parent.transform)
                     {
                         child.transform.GetChild(2).gameObject.SetActive(false);
@@ -69,7 +88,7 @@ public class XmlMenu : MonoBehaviour
                     b.enableLoad();
                     RectTransform Rt = curg.GetComponent<RectTransform>(); //Get the rect transform of object
                     Rt.sizeDelta = new Vector2(Rt.sizeDelta.x, Rt.sizeDelta.y + 200f); //make button bigger
-                    curg.transform.GetChild(2).GetComponent<Text>().text = resume.InnerText; //get text to display
+                    curg.transform.GetChild(2).GetComponent<Text>().text = description; //get text to display
                     curg.transform.GetChild(2).gameObject.SetActive(true); //make the summary visible
                     
                 }
@@ -97,19 +116,20 @@ public class XmlMenu : MonoBehaviour
 
     void Start()
     {
-        XmlDocument baladeData = new XmlDocument(); ///on crée un nouveau doc xml nommé baladeData
+        XmlDocument listeBalades = new XmlDocument(); ///on crée un nouveau doc xml nommé baladeData
         WWW data = new WWW(UrlMenu); ///oui cette fonction est obsolète mais j'ai du mal avec la nouvelle
         while (!data.isDone)
         {
             ///cette boucle while sert à attendre qu'on ait bien toutes les données, sinon on risque d'avoir des erreurs
         }
 
-        baladeData.LoadXml(data.text); ///on charge le texte de data dans le doc xml baladeData
+        listeBalades.LoadXml(data.text); ///on charge le texte de data dans le doc xml baladeData
 
 
-        XmlNode encoding = baladeData.FirstChild; ///le premier fils de baladeData est l'encoding
+        XmlNode encoding = listeBalades.FirstChild; ///le premier fils de baladeData est l'encoding
         Debug.Log(encoding.InnerText);
-        XmlNode menu = encoding.NextSibling; ///je ne sais pas encore pourquoi mais il faut skip 1 autres fils avant d'arriver au contenu
+        XmlNode dtdNode = encoding.NextSibling;
+        XmlNode menu = dtdNode.NextSibling; ///je ne sais pas encore pourquoi mais il faut skip 1 autres fils avant d'arriver au contenu
         Debug.Log(menu.InnerText);
         readXmlMenu(menu);
 

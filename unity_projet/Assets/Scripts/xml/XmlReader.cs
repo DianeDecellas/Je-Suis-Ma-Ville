@@ -35,19 +35,6 @@ public class XmlReader : MonoBehaviour
 
     }
 
-    public void navigate(XmlNode nav)
-    {
-        XmlNode imagenav = nav.FirstChild;
-        XmlNode instruct = imagenav.NextSibling;
-        XmlNode coords = instruct.NextSibling;
-        XmlNode x = coords.FirstChild;
-        XmlNode y = x.NextSibling;
-        Debug.Log(x.InnerText);
-        float xprev = float.Parse(x.InnerText, System.Globalization.CultureInfo.InvariantCulture );
-        float yprev = float.Parse(y.InnerText.ToString(), System.Globalization.CultureInfo.InvariantCulture);
-        gpscalcul.setLocalisationPrevue(xprev, yprev);
-        
-    }
 
     public void creerNavigation(XmlNode etapeNode, XmlNode imageNameNode, XmlNode instructionsNode, XmlNode CoordsNode)
     {
@@ -538,16 +525,15 @@ public class XmlReader : MonoBehaviour
         XmlNode dtdNode = encoding.NextSibling; ///La DTD compte comme un noeud
         XmlNode baladeNode = dtdNode.NextSibling;///la racine de la balade à proprement parler
          
-        XmlNode descriptif = baladeNode.FirstChild; ///le premier fils de test3 c'est le descriptif de la balade
-        XmlNode etape1 = descriptif.NextSibling; ///l'etape1 c'est le premier frere du descriptif
+        XmlNode etape1 = baladeNode.FirstChild; ///l'etape1 c'est le premier frere du descriptif
 
-        XmlNode nomBalade = descriptif.FirstChild;
+        /*XmlNode nomBalade = descriptif.FirstChild;
         XmlNode duree = nomBalade.NextSibling;
         XmlNode resume = duree.NextSibling;
         XmlNode lieuDepart = resume.NextSibling;
         XmlNode coords = lieuDepart.NextSibling;
         XmlNode x = coords.FirstChild;
-        XmlNode y = x.NextSibling;
+        XmlNode y = x.NextSibling;*/
         //float xprev = float.Parse(x.InnerText, System.Globalization.CultureInfo.InvariantCulture);
         //float yprev = float.Parse(y.InnerText.ToString(), System.Globalization.CultureInfo.InvariantCulture);
         //gpscalcul.setLocalisationPrevue(xprev, yprev);
