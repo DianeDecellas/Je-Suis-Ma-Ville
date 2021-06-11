@@ -445,7 +445,7 @@ Camera:
   m_GameObject: {fileID: 97928906}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 3
   m_BackGroundColor: {r: 0.36078432, g: 0.6862745, b: 0.85098046, a: 0}
   m_projectionMatrixMode: 1
   m_SensorSize: {x: 36, y: 24}
@@ -461,12 +461,12 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
+  orthographic: 1
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 32
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -3730,9 +3730,9 @@ Canvas:
   m_GameObject: {fileID: 2025896532}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 97928908}
-  m_PlaneDistance: 100
+  m_PlaneDistance: 10
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
