@@ -76,6 +76,7 @@ public class XmlMenu : MonoBehaviour
             GameObject parent = g.transform.parent.gameObject;
             GameObject curg = parent.transform.GetChild(i).gameObject;
             Debug.Log(curg);
+            Debug.Log("gni :" + FtpURL + "XML_Balades/" + idBalade + "/");
             void clickBalade()
             {
                 MenuButtonLoadBoolean b = curg.GetComponent<MenuButtonLoadBoolean>();

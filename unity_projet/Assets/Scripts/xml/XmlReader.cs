@@ -515,6 +515,7 @@ public class XmlReader : MonoBehaviour
         Debug.Log("Start XmlReader");
         UrlStorage.time = (int)Time.time;
         string urlBalade = UrlStorage.urlBaladeDirectory+UrlStorage.idBalade+".xml";
+        Debug.Log (urlBalade);
         Debug.Log("URL chargée:"+ urlBalade);
         XmlDocument baladeData = new XmlDocument(); ///on crée un nouveau doc xml nommé baladeData
         WWW data = new WWW(urlBalade); ///oui cette fonction est obsolète mais j'ai du mal avec la nouvelle
