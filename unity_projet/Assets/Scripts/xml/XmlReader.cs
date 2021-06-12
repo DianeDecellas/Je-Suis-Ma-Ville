@@ -16,6 +16,8 @@ public class XmlReader : MonoBehaviour
     {
     GameObject trueScreen;
     GameObject falseScreen;
+    Button trueScreenButton;
+    Button falseScreenButton;
 
     public DeviceCameraController scriptQrCode;
     public UpdatePosition gpscalcul;
@@ -200,9 +202,10 @@ public class XmlReader : MonoBehaviour
             {
                 Debug.Log("Bravo!! C'est Juste!");
                 trueScreen.SetActive(true);
-                trueScreen.GetComponent<Button>().onClick.RemoveAllListeners();
-                trueScreen.GetComponent<Button>().onClick.AddListener(EtapeSuivante);
-                nextStepButton.GetComponent<Button>().interactable = true;
+                
+                trueScreenButton.onClick.RemoveAllListeners();
+                trueScreenButton.onClick.AddListener(EtapeSuivante);
+                
             }
             else
             {
@@ -265,8 +268,8 @@ public class XmlReader : MonoBehaviour
             //(G) the Iterator / Enumerator waitForQRCode goes on only when scriptQrCode.qrcodeValide is set to true
             yield return new WaitUntil(() => scriptQrCode.isQrCodeValid); //(G) the " () => " bit transforms the scriptQrCode.qrcodeValide variable into a function
             trueScreen.SetActive(true);
-            trueScreen.GetComponent<Button>().onClick.RemoveAllListeners();
-            trueScreen.GetComponent<Button>().onClick.AddListener(EtapeSuivante);
+            trueScreenButton.onClick.RemoveAllListeners();
+            trueScreenButton.onClick.AddListener(EtapeSuivante);
             void EtapeSuivante() //(G) this function will be called upon clicking on the nextStepButton button
             {
                 //scriptQrCode.Interrupt(); //(G) maybe will be used someday to destroy the imageParent object ? Who knows.
@@ -376,8 +379,8 @@ public class XmlReader : MonoBehaviour
             g1.GetComponent<Button>().GetComponent<Image>().color=new Color32(0,156,55,255);
             Debug.Log("C'est bon");
             trueScreen.SetActive(true);
-            trueScreen.GetComponent<Button>().onClick.RemoveAllListeners();
-            trueScreen.GetComponent<Button>().onClick.AddListener(EtapeSuivante);
+            trueScreenButton.onClick.RemoveAllListeners();
+            trueScreenButton.onClick.AddListener(EtapeSuivante);
 
 
         }
@@ -505,8 +508,10 @@ public class XmlReader : MonoBehaviour
     private void Start() ///que fait on au démarrage?
     {
         trueScreen = transform.parent.parent.Find("true").gameObject;
+        trueScreenButton = trueScreen.transform.Find("Panel").Find("ButtonTarget").GetComponent<Button>();
         falseScreen = transform.parent.parent.Find("false").gameObject;
-        falseScreen.GetComponent<Button>().onClick.AddListener(killFalseScreen);
+        falseScreenButton = falseScreen.transform.Find("Panel").Find("ButtonTarget").GetComponent<Button>();
+        falseScreenButton.onClick.AddListener(killFalseScreen);
         Debug.Log("Start XmlReader");
         UrlStorage.time = (int)Time.time;
         string urlBalade = UrlStorage.urlBaladeDirectory+UrlStorage.idBalade+".xml";
