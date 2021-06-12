@@ -12,7 +12,7 @@ public class GPS : MonoBehaviour
     private void Start()
     {
         Instance = this;
-        DontDestroyOnLoad(gameObject);
+        
         StartCoroutine(StartLocationService());
     }
 

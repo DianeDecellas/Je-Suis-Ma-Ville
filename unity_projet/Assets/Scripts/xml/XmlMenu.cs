@@ -16,6 +16,7 @@ public class XmlMenu : MonoBehaviour
     string FtpURL = "https://prefigurations.com/je_suis_ma_ville/balades/";
     //string UrlMenu = "https://admiring-easley-a2c27c.netlify.app/MenuTest.xml"; //Url où je conserve le menu
     UrlStorage urlstorage;                                                                           // Start is called before the first frame update
+    public Sprite[] spriteArray;
     void readXmlMenu(XmlNode menu)
     {
         GameObject g;
@@ -39,7 +40,7 @@ public class XmlMenu : MonoBehaviour
             XmlNode thumbnailNode = departureNode.NextSibling;
             string thumbnailURL = FtpURL + "/XML_Balades/" + idBalade + "/" + thumbnailNode.InnerText.Trim(new char[] { '\n', '\r', ' ' });
             //Message à Emile : si tu veux te servir de la couleur du cadre, de la vignette de la balade, tu peux le faire ici
-
+            
             Debug.Log("idBalade : " + idBalade
                 + "\nurlXmlBalade : " + urlXmlBalade
                 + "\ncolor : " + colorButton
@@ -49,12 +50,33 @@ public class XmlMenu : MonoBehaviour
 
             currentBalade = currentBalade.NextSibling;
             g = Instantiate(baladeTemplate, transform);
+            switch (colorButton)
+            {
+                case "rose":
+                    g.GetComponent<Image>().sprite = spriteArray[0];
+                    break;
+                case "jaune":
+                    g.GetComponent<Image>().sprite = spriteArray[1];
+                    break;
+                case "vert":
+                    g.GetComponent<Image>().sprite = spriteArray[3];
+                    break;
+                case "rouge":
+                    g.GetComponent<Image>().sprite = spriteArray[2];
+                    break;
+
+            }
+            
+           
+
             g.transform.GetChild(0).GetComponent<Text>().text = title.InnerText;
             g.transform.GetChild(1).GetComponent<Text>().text = durationNode.InnerText;
             Vector2 buttonSizeVect =g.GetComponent<RectTransform>().sizeDelta;
 
             GameObject parent = g.transform.parent.gameObject;
             GameObject curg = parent.transform.GetChild(i).gameObject;
+            Debug.Log(curg);
+            Debug.Log("gni :" + FtpURL + "XML_Balades/" + idBalade + "/");
             void clickBalade()
             {
                 MenuButtonLoadBoolean b = curg.GetComponent<MenuButtonLoadBoolean>();
@@ -109,7 +131,7 @@ public class XmlMenu : MonoBehaviour
                 SceneManager.LoadScene("scene_finale");
             }
             curg.GetComponent<Button>().onClick.AddListener(clickBalade);
-            
+            Debug.Log(curg.GetComponent<Button>());
         }
         baladeTemplate.SetActive(false);
     }
