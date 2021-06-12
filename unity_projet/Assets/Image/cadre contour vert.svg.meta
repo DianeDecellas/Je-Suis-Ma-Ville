@@ -42,16 +42,16 @@ ScriptedImporter:
   spriteData:
     TessellationDetail: 0
     SpriteRect:
-      name: 
+      name: cadre contour vertSprite
       originalName: 
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5029877, y: 0.48414966}
       alignment: 0
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 1, y: 1, z: 1, w: 1}
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 0
-        height: 0
+        width: 35
+        height: 7
       spriteID: bed236a97d5026746bc55b4712991e4b
     PhysicsOutlines: []
