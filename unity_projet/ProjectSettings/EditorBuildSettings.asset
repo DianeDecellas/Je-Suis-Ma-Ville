@@ -17,7 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ecran_felicitations.unity
     guid: 4da9d8decd5eaba47a5870b65f679d8c
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/ecran_feedbacks.unity
     guid: c6e7d69e93b7f354ba324669815ec2a1
   m_configObjects: {}

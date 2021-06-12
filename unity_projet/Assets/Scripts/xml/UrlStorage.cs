@@ -11,4 +11,5 @@ public class UrlStorage : MonoBehaviour
     public static string idBalade;
 
     public static float time;
+    public static int note;
 }
