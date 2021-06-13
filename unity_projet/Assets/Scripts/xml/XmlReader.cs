@@ -91,7 +91,7 @@ public class XmlReader : MonoBehaviour
     public void creerEtapeInfo(XmlNode etape, XmlNode texte, XmlNode image)
     {
         GameObject info = transform.Find("info").gameObject;
-        GameObject rawImageGameObject = info.transform.Find("RawImage").gameObject;
+        GameObject rawImageGameObject = info.transform.Find("Image").Find("RawImage").gameObject;
         RawImage rawImage = rawImageGameObject.GetComponent(typeof(RawImage)) as RawImage;
         GameObject texteInfo = info.transform.Find("TextInfo").gameObject;
         GameObject nextStepButton = transform.parent.Find("bottomContainer").Find("NextStepButton").gameObject;
@@ -268,12 +268,14 @@ public class XmlReader : MonoBehaviour
         {
             //(G) the Iterator / Enumerator waitForQRCode goes on only when scriptQrCode.qrcodeValide is set to true
             yield return new WaitUntil(() => scriptQrCode.isQrCodeValid); //(G) the " () => " bit transforms the scriptQrCode.qrcodeValide variable into a function
-            trueScreen.SetActive(true);
             frame.SetActive(false);
+            trueScreen.SetActive(true);
+            
             trueScreenButton.onClick.RemoveAllListeners();
             trueScreenButton.onClick.AddListener(EtapeSuivante);
             void EtapeSuivante() //(G) this function will be called upon clicking on the nextStepButton button
             {
+                scriptQrCode.stopCamera();
                 //scriptQrCode.Interrupt(); //(G) maybe will be used someday to destroy the imageParent object ? Who knows.
                 imageParent.SetActive(false); //(G) deactivating the QRReader object
                 EtapeReader(etape.NextSibling);

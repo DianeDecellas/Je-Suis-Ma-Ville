@@ -57,6 +57,10 @@ public class DeviceCameraController : MonoBehaviour
         SetActiveCamera(backCameraTexture);
     }
 
+    public void stopCamera()
+    {
+        activeCameraTexture.Stop();
+    }
     // Set the device camera to use and start it
     public void SetActiveCamera(WebCamTexture cameraToUse)
     {

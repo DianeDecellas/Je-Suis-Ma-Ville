@@ -9,5 +9,5 @@ sceneSetups:
   isLoaded: 0
   isActive: 0
 - path: Assets/Scenes/scene_finale.unity
-  isLoaded: 1
+  isLoaded: 0
   isActive: 0

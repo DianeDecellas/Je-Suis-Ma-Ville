@@ -48,6 +48,7 @@ public class QRCodeReader : MonoBehaviour
                 {
                     Debug.Log("QRCodeReader : True");
                     isQrCodeValid = true;
+                    camTexture.Stop();
                 }
             }
         }
