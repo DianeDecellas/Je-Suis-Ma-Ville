@@ -5,10 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class Escape : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    void escape()
     {
-        
+        SceneManager.LoadScene("scene de chargement", LoadSceneMode.Single);
     }
 
     // Update is called once per frame
@@ -16,7 +15,7 @@ public class Escape : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            SceneManager.LoadScene("scene de chargement", LoadSceneMode.Single);
+            escape();
         }
     }
 }

@@ -187,7 +187,7 @@ public class XmlReader : MonoBehaviour
 
         input.SetActive(true); ///on rend input actif : il faut qu'il soit affiché dans l'ui
         textHint.SetActive(false);//the user should not see the hint before their first answer
-        hint.SetActive(true);//however they need the hint button
+        hint.GetComponent<Button>().interactable =true;//however they need the hint button
 
         questionBox.transform.Find("Text").GetComponent<Text>().text = question.InnerText; ///on récupère le texte contenu dans titre(maintenant questionBox) et on le remplace par le texte de la question
 
@@ -230,8 +230,8 @@ public class XmlReader : MonoBehaviour
 
         void EtapeSuivante()
         {
-        
-            hint.SetActive(false);
+
+            hint.GetComponent<Button>().interactable = false;
             trueScreen.SetActive(false);
             textHint.SetActive(false);
             questionBox.transform.Find("Text").GetComponent<Text>().text = "";
@@ -310,7 +310,7 @@ public class XmlReader : MonoBehaviour
 
         input.SetActive(false); ///on désactive la barre d'entrée de texte pour qu'elle n'aparaisse pas dans l'ui
         textHint.SetActive(false);//the user should not see the hint before their first answer
-        hint.SetActive(true);
+        hint.GetComponent<Button>().interactable= true;
         Debug.Log("etape cree");
 
         buttonTemplate.SetActive(false);
@@ -366,7 +366,7 @@ public class XmlReader : MonoBehaviour
             Destroy(g2); ///on détruit les boutons superflus, et on en conserve un pour toujours avoir le template disponible
             Destroy(g3);
             Destroy(g4);
-            hint.SetActive(false);
+            hint.GetComponent<Button>().interactable = false;
             textHint.SetActive(false);
             trueScreen.SetActive(false);
             questionBox.transform.Find("Text").GetComponent<Text>().text = "";
