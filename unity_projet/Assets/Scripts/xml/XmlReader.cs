@@ -50,7 +50,7 @@ public class XmlReader : MonoBehaviour
         GameObject questionBoxObject = transform.Find("QuestionBox").gameObject;
         GameObject imageParentObject = transform.Find("ImageParent").gameObject;
         GameObject infoObject = transform.Find("info").gameObject;
-        GameObject rawImageObject = infoObject.transform.Find("RawImage").gameObject;
+        GameObject rawImageObject = infoObject.transform.Find("Image").Find("RawImage").gameObject;
         RawImage rawImage = rawImageObject.GetComponent<RawImage>();
         
         GameObject inputObject = transform.Find("InputField").gameObject;
