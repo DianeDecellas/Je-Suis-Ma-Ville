@@ -13,7 +13,9 @@ using UnityEngine.Android;
 
 public class XmlMenu : MonoBehaviour
 {
-    string UrlMenu = "https://prefigurations.com/je_suis_ma_ville/balades/MenuV2.xml";
+    string UrlMenu;
+    string nomMenu = "MenuV2.xml";
+    string dossierBalades = "XML_Balades";
     string FtpURL = "https://prefigurations.com/je_suis_ma_ville/balades/";
     //string UrlMenu = "https://admiring-easley-a2c27c.netlify.app/MenuTest.xml"; //Url où je conserve le menu
     UrlStorage urlstorage;                                                                           // Start is called before the first frame update
@@ -30,7 +32,7 @@ public class XmlMenu : MonoBehaviour
             XmlNode title = currentBalade.FirstChild;
             XmlNode idNode = title.NextSibling;
             string idBalade = idNode.InnerText;
-            string urlXmlBalade = FtpURL+"XML_Balades/"+idBalade+"/"+idBalade+".xml";
+            string urlXmlBalade = FtpURL+dossierBalades+"/"+idBalade+"/"+idBalade+".xml";
             XmlNode colorNode = idNode.NextSibling;
             string colorButton = colorNode.InnerText.Trim(new char[] {'\n', '\r', ' '});
             XmlNode durationNode = colorNode.NextSibling;
@@ -39,7 +41,7 @@ public class XmlMenu : MonoBehaviour
             XmlNode departureNode = descriptionNode.NextSibling;
             string departure = departureNode.InnerText.Trim(new char[] { '\n', '\r', ' ' });
             XmlNode thumbnailNode = departureNode.NextSibling;
-            string thumbnailURL = FtpURL + "/XML_Balades/" + idBalade + "/" + thumbnailNode.InnerText.Trim(new char[] { '\n', '\r', ' ' });
+            string thumbnailURL = FtpURL + "/"+dossierBalades+"/" + idBalade + "/" + thumbnailNode.InnerText.Trim(new char[] { '\n', '\r', ' ' });
             //Message à Emile : si tu veux te servir de la couleur du cadre, de la vignette de la balade, tu peux le faire ici
             
             Debug.Log("idBalade : " + idBalade
@@ -77,7 +79,7 @@ public class XmlMenu : MonoBehaviour
             GameObject parent = g.transform.parent.gameObject;
             GameObject curg = parent.transform.GetChild(i).gameObject;
             Debug.Log(curg);
-            Debug.Log("gni :" + FtpURL + "XML_Balades/" + idBalade + "/");
+            Debug.Log("gni :" + FtpURL + "/"+dossierBalades+"/" + idBalade + "/");
             void clickBalade()
             {
                 MenuButtonLoadBoolean b = curg.GetComponent<MenuButtonLoadBoolean>();
@@ -116,7 +118,7 @@ public class XmlMenu : MonoBehaviour
                     
                 }
                 else {
-                    UrlStorage.urlBaladeDirectory = FtpURL+"XML_Balades/"+idBalade+"/";
+                    UrlStorage.urlBaladeDirectory = FtpURL+"/"+dossierBalades+"/"+idBalade+"/";
                     Debug.Log("Cliquée : " + urlXmlBalade);
                     UrlStorage.idBalade = idBalade;
 
@@ -125,7 +127,7 @@ public class XmlMenu : MonoBehaviour
             }
             void loadBalade()
             {
-                UrlStorage.urlBaladeDirectory = FtpURL+"XML_Balades/"+idBalade+"/";
+                UrlStorage.urlBaladeDirectory = FtpURL+"/"+dossierBalades+"/"+idBalade+"/";
                 Debug.Log("Cliquée : "+urlXmlBalade);
                 UrlStorage.idBalade = idBalade;
 
@@ -139,6 +141,8 @@ public class XmlMenu : MonoBehaviour
 
     void Start()
     {
+        UrlMenu = FtpURL + nomMenu;
+        Debug.Log("UrlMenu = " + UrlMenu);
         XmlDocument listeBalades = new XmlDocument(); ///on crée un nouveau doc xml nommé baladeData
         WWW data = new WWW(UrlMenu); ///oui cette fonction est obsolète mais j'ai du mal avec la nouvelle
         while (!data.isDone)
