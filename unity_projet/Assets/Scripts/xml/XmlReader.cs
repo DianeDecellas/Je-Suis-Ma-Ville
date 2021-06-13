@@ -88,7 +88,7 @@ public class XmlReader : MonoBehaviour
         nextStepButton.GetComponent<Button>().onClick.AddListener(EtapeSuivante);///on applique la fonction EtapeSuivante au bouton suivant
     }
 
-    public void creerEtapeInfo(XmlNode etape, XmlNode texte, XmlNode image)
+    public void creerEtapeInfo(XmlNode etape, XmlNode texte, XmlNode image, XmlNode audioNode)
     {
         GameObject info = transform.Find("info").gameObject;
         GameObject rawImageGameObject = info.transform.Find("Image").Find("RawImage").gameObject;
@@ -106,37 +106,43 @@ public class XmlReader : MonoBehaviour
         info.SetActive(true);
         nextStepButton.SetActive(true);
 
+        
         //creation of audio button
         GameObject AudioButton = transform.Find("AudioButton").gameObject;
         GameObject AudioText = transform.Find("AudioButton").Find("Text").gameObject;
-        AudioText.GetComponent<Text>().text = "Jouer l'audio";
-        AudioButton.SetActive(true);
-        //creation of audio source
-        GameObject AudioSource = transform.Find("AudioSource").gameObject;
-        AudioSource audioSource = AudioSource.GetComponent<AudioSource>();
-        //test with a music from the internet
-        string audiopath = "https://ciihuy.com/downloads/music.mp3";
-        IEnumerator i = audioPlay.GetAudioClip(audiopath, audioSource);
-        StartCoroutine(i);
-        Debug.Log("Starting to download the audio xmlreader...");
-        //how the audio button works: starts audio with first click, then pause or continues with next clicks
-        bool AudioActive = false;
-        void Audio()
+        if (audioNode != null)
         {
-            AudioActive = !AudioActive;
-            AudioText.GetComponent<Text>().text = AudioActive ? "Pause" : "Continuer";
+            Debug.Log("Etape audio : active");
+            AudioText.GetComponent<Text>().text = "Jouer l'audio";
+            AudioButton.SetActive(true);
+            Debug.Log("Bouton actif =" + AudioButton.active.ToString());
+            //creation of audio source
+            GameObject AudioSource = transform.Find("AudioSource").gameObject;
+            AudioSource audioSource = AudioSource.GetComponent<AudioSource>();
+            //test with a music from the internet
+            string audiopath = audioNode.InnerText.Trim(new char[] {' ', '\n', '\r' });
+            IEnumerator i = audioPlay.GetAudioClip(UrlStorage.urlBaladeDirectory+audiopath, audioSource);
+            Debug.Log("Récupération audio : " + UrlStorage.urlBaladeDirectory + audiopath);
+            StartCoroutine(i);
+            Debug.Log("Starting to download the audio xmlreader...");
+            //how the audio button works: starts audio with first click, then pause or continues with next clicks
+            bool AudioActive = false;
+            void Audio()
+            {
+                AudioActive = !AudioActive;
+                AudioText.GetComponent<Text>().text = AudioActive ? "Pause" : "Continuer";
 
-            if (AudioActive == true)
-            {
-                audioPlay.playAudio(audioSource);
+                if (AudioActive == true)
+                {
+                    audioPlay.playAudio(audioSource);
+                }
+                else
+                {
+                    audioPlay.pauseAudio(audioSource);
+                }
             }
-            else
-            {
-                audioPlay.pauseAudio(audioSource);
-            }
+            AudioButton.GetComponent<Button>().onClick.AddListener(Audio);
         }
-        AudioButton.GetComponent<Button>().onClick.AddListener(Audio);
-
         void EtapeSuivante()
         {
             texteInfo.GetComponent<Text>().text = "";
@@ -439,10 +445,10 @@ public class XmlReader : MonoBehaviour
                 //XmlNode info = typeEpreuve.FirstChild;
                 XmlNode texteinfo = typeEpreuve.FirstChild;
                 XmlNode imageUrl = texteinfo.NextSibling;
+                XmlNode audioUrl = imageUrl.NextSibling;
+                Debug.Log("texteInfo : " + texteinfo.InnerText + "\nimageUrl : " + imageUrl.InnerText + "\naudioUrl : "+ (audioUrl == null ? "Rien" : audioUrl.InnerText));
 
-                Debug.Log("texteInfo : " + texteinfo.InnerText + "\nimageUrl : " + imageUrl.InnerText);
-
-                creerEtapeInfo(etape, texteinfo, imageUrl);
+                creerEtapeInfo(etape, texteinfo, imageUrl, audioUrl);
 
             } else if (typeEpreuve.Name == "texte")
             {
