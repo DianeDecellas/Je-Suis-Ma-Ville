@@ -56,6 +56,7 @@ public class DeviceCameraController : MonoBehaviour
         // Set the camera to use by default
         SetActiveCamera(backCameraTexture);
     }
+ 
 
     public void stopCamera()
     {

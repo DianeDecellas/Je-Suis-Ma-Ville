@@ -257,7 +257,7 @@ public class XmlReader : MonoBehaviour
 
         input.SetActive(false);         //(G) input and testButton are set inactive because they are unused during this step
         testButton.SetActive(false);
-        
+        scriptQrCode.SetActiveCamera(new WebCamTexture());
         scriptQrCode.expectedQrCodeMessage = reponse.InnerText; //(G) Setting the expected answer
         scriptQrCode.isQrCodeValid = false;
         imageParent.SetActive(true);
