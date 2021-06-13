@@ -14,14 +14,11 @@ using UnityEngine.Android;
 public class XmlMenu : MonoBehaviour
 {
     string UrlMenu;
-    //string nomMenu = "Menu.xml";     
-    //string dossierBalades = "ressources_balades";
-
-    string nomMenu = "MenuV2.xml";
-    string dossierBalades = "XML_Balades";
+    //nouveaux répertoires de travail
+    string nomMenu = "Menu.xml";     
+    string dossierBalades = "ressources_balades";
 
     string FtpURL = "https://prefigurations.com/je_suis_ma_ville/balades/";
-    //string UrlMenu = "https://admiring-easley-a2c27c.netlify.app/MenuTest.xml"; //Url où je conserve le menu
     UrlStorage urlstorage;                                                                           // Start is called before the first frame update
     public Sprite[] spriteArray;
     void readXmlMenu(XmlNode menu)

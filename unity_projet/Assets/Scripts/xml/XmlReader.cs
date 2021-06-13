@@ -421,8 +421,7 @@ public class XmlReader : MonoBehaviour
 
     public void EtapeReader(XmlNode CurrentNode)
     {
-        string typeEtape= CurrentNode.InnerText; ///on connait le type de l'étape en lisant le texte du noeud en cours (le commentaire)
-        if (CurrentNode.Name == "conclusion") ///si on atteint la conclusion alors c'est fini
+        if (CurrentNode == null) ///si on atteint la conclusion alors c'est fini
         {
             Debug.Log("c'est fini");
             transform.parent.gameObject.SetActive(false);
@@ -430,6 +429,7 @@ public class XmlReader : MonoBehaviour
         }
         else
         {
+            string typeEtape = CurrentNode.InnerText; ///on connait le type de l'étape en lisant le texte du noeud en cours (le commentaire)
             XmlNode etape = CurrentNode; ///l'étape en elle même est le frère du commentaire sur le xml que vous avez fouri
             XmlNode titre = etape.FirstChild; ///le premier fils de l'étape est son titre
             Debug.Log("Titre Etape = " + titre.InnerText);
