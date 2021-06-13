@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Android;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -10,6 +11,8 @@ public class EcranAccueil : MonoBehaviour
     void Start()
     {
         transform.gameObject.GetComponent<Button>().onClick.AddListener(accessChoice);
+        
+        
     }
     void accessChoice()
     {

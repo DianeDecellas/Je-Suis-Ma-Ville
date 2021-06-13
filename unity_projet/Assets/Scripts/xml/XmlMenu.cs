@@ -9,6 +9,7 @@ using System.Xml.Linq;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using UnityEngine.Android;
 
 public class XmlMenu : MonoBehaviour
 {
@@ -146,7 +147,15 @@ public class XmlMenu : MonoBehaviour
         }
 
         listeBalades.LoadXml(data.text); ///on charge le texte de data dans le doc xml baladeData
+        while (!Permission.HasUserAuthorizedPermission(Permission.Camera))
+        {
+            Permission.RequestUserPermission(Permission.Camera);
 
+        }
+        while (!Permission.HasUserAuthorizedPermission(Permission.FineLocation))
+        {
+            Permission.RequestUserPermission(Permission.FineLocation);
+        }
 
         XmlNode encoding = listeBalades.FirstChild; ///le premier fils de baladeData est l'encoding
         Debug.Log(encoding.InnerText);
