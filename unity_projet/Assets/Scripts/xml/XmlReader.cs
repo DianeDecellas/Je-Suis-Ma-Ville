@@ -249,6 +249,7 @@ public class XmlReader : MonoBehaviour
         GameObject input = transform.Find("InputField").gameObject;
         GameObject testButton = transform.Find("TestButton").gameObject;
         GameObject imageParent = transform.Find("ImageParent").gameObject;
+        GameObject frame = imageParent.transform.Find("CameraImage").Find("Frame").gameObject;
         GameObject questionTextBox = transform.Find("QuestionBox").Find("Text").gameObject; //(G) the text box containing the instructions
 
         nextStepButton.transform.GetComponent<Button>().interactable = false;       //(G) can not go to the next step before having the answer
@@ -256,11 +257,11 @@ public class XmlReader : MonoBehaviour
 
         input.SetActive(false);         //(G) input and testButton are set inactive because they are unused during this step
         testButton.SetActive(false);
-
+        
         scriptQrCode.expectedQrCodeMessage = reponse.InnerText; //(G) Setting the expected answer
         scriptQrCode.isQrCodeValid = false;
         imageParent.SetActive(true);
-
+        frame.SetActive(true);
         Debug.Log("Creer QRCode : Expected Message = " + scriptQrCode.expectedQrCodeMessage);
 
         IEnumerator waitForQRCode() //(G) this routine is called and waits for the scriptQrCode.isQrCodeValid to be true
@@ -268,6 +269,7 @@ public class XmlReader : MonoBehaviour
             //(G) the Iterator / Enumerator waitForQRCode goes on only when scriptQrCode.qrcodeValide is set to true
             yield return new WaitUntil(() => scriptQrCode.isQrCodeValid); //(G) the " () => " bit transforms the scriptQrCode.qrcodeValide variable into a function
             trueScreen.SetActive(true);
+            frame.SetActive(false);
             trueScreenButton.onClick.RemoveAllListeners();
             trueScreenButton.onClick.AddListener(EtapeSuivante);
             void EtapeSuivante() //(G) this function will be called upon clicking on the nextStepButton button
