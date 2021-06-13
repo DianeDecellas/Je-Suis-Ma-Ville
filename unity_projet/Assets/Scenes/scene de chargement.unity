@@ -210,7 +210,7 @@ SpriteRenderer:
   m_Size: {x: 4.16, y: 7.74}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &171548734
@@ -646,7 +646,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1493034705}
   m_Direction: 2
   m_Value: 1
-  m_Size: 1
+  m_Size: 0.721156
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -893,7 +893,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 586, y: -1205.0345}
+  m_AnchoredPosition: {x: 586, y: -1261.2141}
   m_SizeDelta: {x: 1080, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1527382227
