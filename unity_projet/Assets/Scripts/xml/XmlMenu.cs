@@ -42,7 +42,7 @@ public class XmlMenu : MonoBehaviour
             XmlNode departureNode = descriptionNode.NextSibling;
             string departure = departureNode.InnerText.Trim(new char[] { '\n', '\r', ' ' });
             XmlNode thumbnailNode = departureNode.NextSibling;
-            string thumbnailURL = FtpURL + "/"+dossierBalades+"/" + idBalade + "/" + thumbnailNode.InnerText.Trim(new char[] { '\n', '\r', ' ' });
+            string thumbnailURL = dossierBalades+"/" + idBalade + "/" + thumbnailNode.InnerText.Trim(new char[] { '\n', '\r', ' ' });
             //Message à Emile : si tu veux te servir de la couleur du cadre, de la vignette de la balade, tu peux le faire ici
             
             Debug.Log("idBalade : " + idBalade
@@ -80,7 +80,7 @@ public class XmlMenu : MonoBehaviour
             GameObject parent = g.transform.parent.gameObject;
             GameObject curg = parent.transform.GetChild(i).gameObject;
             Debug.Log(curg);
-            Debug.Log("gni :" + FtpURL + "/"+dossierBalades+"/" + idBalade + "/");
+            Debug.Log("gni :" + FtpURL +dossierBalades+"/" + idBalade + "/");
             void clickBalade()
             {
                 MenuButtonLoadBoolean b = curg.GetComponent<MenuButtonLoadBoolean>();
@@ -114,9 +114,18 @@ public class XmlMenu : MonoBehaviour
                     b.enableLoad();
                     RectTransform Rt = curg.GetComponent<RectTransform>(); //Get the rect transform of object
                     Rt.sizeDelta = new Vector2(Rt.sizeDelta.x, Rt.sizeDelta.y + 200f); //make button bigger
-                    curg.transform.GetChild(2).GetComponent<Text>().text = description; //get text to display
+                    curg.transform.GetChild(2).Find("Text").GetComponent<Text>().text = description; //get text to display
                     curg.transform.GetChild(2).gameObject.SetActive(true); //make the summary visible
-                    
+                    RawImage raw = curg.transform.GetChild(2).Find("Image").Find("RawImage").GetComponent<RawImage>() ;
+                    if (thumbnailNode.InnerText.Trim(new char[] { '\n', '\r', ' ' }) != "" )
+                    {
+                        StartCoroutine(DownloadImage(thumbnailURL,raw));
+                    }
+                    else
+                    {
+                        Debug.Log("Il n'y a pas d'image");
+                        raw.transform.parent.gameObject.SetActive(false);
+                    }
                 }
                 else {
                     UrlStorage.urlBaladeDirectory = FtpURL+"/"+dossierBalades+"/"+idBalade+"/";
@@ -138,6 +147,22 @@ public class XmlMenu : MonoBehaviour
             Debug.Log(curg.GetComponent<Button>());
         }
         baladeTemplate.SetActive(false);
+    }
+
+    private IEnumerator DownloadImage(string imageName, RawImage YourRawImage)
+    {
+        string imageUrl = FtpURL + imageName;
+        UnityWebRequest request = UnityWebRequestTexture.GetTexture(imageUrl);
+        Debug.Log(imageUrl);
+        yield return request.SendWebRequest();
+        if (request.isNetworkError || request.isHttpError)
+            Debug.Log(request.error);
+        else
+        {
+            float imageRatio = (float)((DownloadHandlerTexture)request.downloadHandler).texture.width / (float)((DownloadHandlerTexture)request.downloadHandler).texture.height;
+            YourRawImage.texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
+            YourRawImage.transform.GetComponent<AspectRatioFitter>().aspectRatio = imageRatio;
+        }
     }
 
     void Start()
