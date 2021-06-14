@@ -32,7 +32,7 @@ public class XmlMenu : MonoBehaviour
             i++;
             XmlNode title = currentBalade.FirstChild;
             XmlNode idNode = title.NextSibling;
-            string idBalade = idNode.InnerText;
+            string idBalade = idNode.InnerText.Trim(new char[] { ' ', '\n', '\r' });
             string urlXmlBalade = FtpURL+dossierBalades+"/"+idBalade+"/"+idBalade+".xml";
             XmlNode colorNode = idNode.NextSibling;
             string colorButton = colorNode.InnerText.Trim(new char[] {'\n', '\r', ' '});

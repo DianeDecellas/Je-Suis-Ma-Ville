@@ -107,7 +107,7 @@ public class XmlReader : MonoBehaviour
         nextStepButton.SetActive(true);
 
         //creation of audio button
-        GameObject AudioButton = transform.Find("AudioButton").gameObject;
+        GameObject AudioButton = transform.Find("info").Find("AudioButton").gameObject;
         
         if (audioNode != null)
         {
@@ -117,7 +117,7 @@ public class XmlReader : MonoBehaviour
             AudioSource audioSource = AudioSource.GetComponent<AudioSource>();
 
             //test with a music from the internet
-            string audiopath = UrlStorage.urlBaladeDirectory + audioNode.InnerText;
+            string audiopath = UrlStorage.urlBaladeDirectory + audioNode.InnerText.Trim(new char[] { ' ', '\n', '\r' });
             Debug.Log("AudioPath = " + audiopath);
             IEnumerator i = audioPlay.GetAudioClip(audiopath, audioSource);
             StartCoroutine(i);
@@ -264,7 +264,7 @@ public class XmlReader : MonoBehaviour
         input.SetActive(false);         //(G) input and testButton are set inactive because they are unused during this step
         testButton.SetActive(false);
         scriptQrCode.SetActiveCamera(new WebCamTexture());
-        scriptQrCode.expectedQrCodeMessage = reponse.InnerText; //(G) Setting the expected answer
+        scriptQrCode.expectedQrCodeMessage = reponse.InnerText.Trim(new char[] { ' ', '\n', '\r' }); //(G) Setting the expected answer
         scriptQrCode.isQrCodeValid = false;
         imageParent.SetActive(true);
         frame.SetActive(true);
