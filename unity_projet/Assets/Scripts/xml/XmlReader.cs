@@ -108,9 +108,7 @@ public class XmlReader : MonoBehaviour
 
         //creation of audio button
         GameObject AudioButton = transform.Find("AudioButton").gameObject;
-        GameObject AudioText = transform.Find("AudioButton").Find("Text").gameObject;
-        AudioText.GetComponent<Text>().text = "Jouer l'audio";
-
+        
         if (audioNode != null)
         {
             AudioButton.SetActive(true);
@@ -129,15 +127,17 @@ public class XmlReader : MonoBehaviour
             void Audio()
             {
                 AudioActive = !AudioActive;
-                AudioText.GetComponent<Text>().text = AudioActive ? "Pause" : "Continuer";
+                
 
                 if (AudioActive == true)
                 {
                     audioPlay.playAudio(audioSource);
+                    AudioButton.GetComponent<changeButton>().setBool(true);
                 }
                 else
                 {
                     audioPlay.pauseAudio(audioSource);
+                    AudioButton.GetComponent<changeButton>().setBool(false);
                 }
             }
             AudioButton.GetComponent<Button>().onClick.AddListener(Audio);
