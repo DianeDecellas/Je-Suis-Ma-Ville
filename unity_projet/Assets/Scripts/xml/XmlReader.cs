@@ -21,7 +21,65 @@ public class XmlReader : MonoBehaviour
 
     public DeviceCameraController scriptQrCode;
     public UpdatePosition gpscalcul;
-    
+
+    GameObject questionBoxObject;
+    GameObject imageParentObject;
+    GameObject infoObject;
+    GameObject inputObject;
+    GameObject validateButton;
+    GameObject audioSourceButton;
+
+    private void Start() ///que fait on au démarrage?
+    {
+        trueScreen = transform.parent.parent.Find("true").gameObject;
+        trueScreenButton = trueScreen.transform.Find("Panel").Find("ButtonTarget").GetComponent<Button>();
+        falseScreen = transform.parent.parent.Find("false").gameObject;
+        falseScreenButton = falseScreen.transform.Find("Panel").Find("ButtonTarget").GetComponent<Button>();
+        falseScreenButton.onClick.AddListener(killFalseScreen);
+
+        questionBoxObject = transform.Find("QuestionBox").gameObject;
+        imageParentObject = transform.Find("ImageParent").gameObject;
+        infoObject = transform.Find("InfoParent").gameObject;
+        inputObject = transform.Find("InputField").gameObject;
+        validateButton = transform.Find("ValidateButton").gameObject;
+        audioSourceButton = transform.Find("AudioSource").gameObject;
+
+        Debug.Log("Start XmlReader");
+        UrlStorage.time = (int)Time.time;
+        string urlBalade = UrlStorage.urlBaladeDirectory + UrlStorage.idBalade + ".xml";
+        Debug.Log(urlBalade);
+        Debug.Log("URL chargée:" + urlBalade);
+        XmlDocument baladeData = new XmlDocument(); ///on crée un nouveau doc xml nommé baladeData
+        WWW data = new WWW(urlBalade); ///oui cette fonction est obsolète mais j'ai du mal avec la nouvelle
+        while (!data.isDone)
+        {
+            ///cette boucle while sert à attendre qu'on ait bien toutes les données, sinon on risque d'avoir des erreurs
+        }
+
+        Debug.Log("Balade finie de charger");
+        baladeData.LoadXml(data.text); ///on charge le texte de data dans le doc xml baladeData
+
+        XmlNode encoding = baladeData.FirstChild; ///le premier fils de baladeData est l'encoding
+        XmlNode dtdNode = encoding.NextSibling; ///La DTD compte comme un noeud
+        XmlNode baladeNode = dtdNode.NextSibling;///la racine de la balade à proprement parler
+
+        XmlNode etape1 = baladeNode.FirstChild; ///l'etape1 c'est le premier frere du descriptif
+
+        /*XmlNode nomBalade = descriptif.FirstChild;
+        XmlNode duree = nomBalade.NextSibling;
+        XmlNode resume = duree.NextSibling;
+        XmlNode lieuDepart = resume.NextSibling;
+        XmlNode coords = lieuDepart.NextSibling;
+        XmlNode x = coords.FirstChild;
+        XmlNode y = x.NextSibling;*/
+        //float xprev = float.Parse(x.InnerText, System.Globalization.CultureInfo.InvariantCulture);
+        //float yprev = float.Parse(y.InnerText.ToString(), System.Globalization.CultureInfo.InvariantCulture);
+        //gpscalcul.setLocalisationPrevue(xprev, yprev);
+
+        EtapeReader(etape1); ///on lance EtapeReader sur l'etape1
+
+    }
+
     void killFalseScreen()
     {
         falseScreen.SetActive(false);
@@ -47,16 +105,16 @@ public class XmlReader : MonoBehaviour
         gpscalcul.setLocalisationPrevue(xprev, yprev);
 
         //the part were we unload what we don't want and load what we want : 
-        GameObject questionBoxObject = transform.Find("QuestionBox").gameObject;
-        GameObject imageParentObject = transform.Find("ImageParent").gameObject;
-        GameObject infoObject = transform.Find("info").gameObject;
+        //GameObject questionBoxObject = transform.Find("QuestionBox").gameObject;
+        //GameObject imageParentObject = transform.Find("ImageParent").gameObject;
+        //GameObject infoObject = transform.Find("info").gameObject;
         GameObject rawImageObject = infoObject.transform.Find("Image").Find("RawImage").gameObject;
         RawImage rawImage = rawImageObject.GetComponent<RawImage>();
         
-        GameObject inputObject = transform.Find("InputField").gameObject;
-        GameObject validateButton = transform.Find("TestButton").gameObject;
+        //GameObject inputObject = transform.Find("InputField").gameObject;
+        //GameObject validateButton = transform.Find("TestButton").gameObject;
         GameObject textHint = transform.parent.Find("HintContainer").GetChild(0).gameObject;
-        GameObject audioButton = transform.Find("AudioSource").gameObject;
+        //GameObject audioSourceButton = transform.Find("AudioSource").gameObject;
         GameObject bottomContainer = transform.parent.Find("bottomContainer").gameObject;
         GameObject nextStepButton = bottomContainer.transform.Find("NextStepButton").gameObject;
         GameObject compassParent = transform.parent.Find("CompassParent").gameObject;
@@ -90,31 +148,31 @@ public class XmlReader : MonoBehaviour
 
     public void creerEtapeInfo(XmlNode etape, XmlNode texte, XmlNode imageNode, XmlNode audioNode)
     {
-        GameObject info = transform.Find("info").gameObject;
-        GameObject rawImageGameObject = info.transform.Find("Image").Find("RawImage").gameObject;
+        //GameObject infoObject = transform.Find("info").gameObject;
+        GameObject rawImageGameObject = infoObject.transform.Find("Image").Find("RawImage").gameObject;
         RawImage rawImage = rawImageGameObject.GetComponent(typeof(RawImage)) as RawImage;
-        GameObject texteInfo = info.transform.Find("TextInfo").gameObject;
+        GameObject texteInfo = infoObject.transform.Find("TextInfo").gameObject;
         GameObject nextStepButton = transform.parent.Find("bottomContainer").Find("NextStepButton").gameObject;
         Debug.Log("etape cree"); ///on affiche etape cree dans la console
-        GameObject input = transform.Find("InputField").gameObject;
-        GameObject answerButton = transform.Find("TestButton").gameObject;
+        //GameObject inputObject = transform.Find("InputField").gameObject;
+        //GameObject validateButton = transform.Find("TestButton").gameObject;
         texteInfo.GetComponent<Text>().text = texte.InnerText.ToString();
         string imagePath = imageNode.InnerText.Trim(new char[] { '\n', '\r', ' ' });
         StartCoroutine(DownloadImage(imagePath, rawImage));
-        input.SetActive(false);
-        answerButton.SetActive(false);
-        info.SetActive(true);
+        inputObject.SetActive(false);
+        validateButton.SetActive(false);
+        infoObject.SetActive(true);
         nextStepButton.SetActive(true);
 
         //creation of audio button
-        GameObject AudioButton = transform.Find("info").Find("AudioButton").gameObject;
+        GameObject AudioButton = transform.Find("InfoParent").Find("AudioButton").gameObject;
         
         if (audioNode != null)
         {
             AudioButton.SetActive(true);
             //creation of audio source
-            GameObject AudioSource = transform.Find("AudioSource").gameObject;
-            AudioSource audioSource = AudioSource.GetComponent<AudioSource>();
+            //GameObject audioSourceButton = transform.Find("AudioSource").gameObject;
+            AudioSource audioSource = audioSourceButton.GetComponent<AudioSource>();
 
             //test with a music from the internet
             string audiopath = UrlStorage.urlBaladeDirectory + audioNode.InnerText.Trim(new char[] { ' ', '\n', '\r' });
@@ -145,7 +203,7 @@ public class XmlReader : MonoBehaviour
         void EtapeSuivante()
         {
             texteInfo.GetComponent<Text>().text = "";
-            info.SetActive(false);
+            infoObject.SetActive(false);
             AudioButton.SetActive(false);
             AudioButton.GetComponent<Button>().onClick.RemoveAllListeners();
             trueScreen.SetActive(false);
@@ -176,11 +234,11 @@ public class XmlReader : MonoBehaviour
 
     public void creerEtapeTexte(XmlNode etape, XmlNode question, XmlNode reponse, XmlNode indice) ///fonction qui crée une etape texte avec question et reponse
     {
-        GameObject buttonTemplate = transform.Find("TestButton").gameObject; ///on récupère la template de bouton formée dans l'UI, il s'agit du 3eme fils de l'objet auquel le code est attaché "panel"
-        GameObject questionBox = transform.Find("QuestionBox").gameObject; ///on récupère le 1er fils de panel et on l'appelle titre //(G) En fait on renomme en questionBox
+        //GameObject validateButton = transform.Find("TestButton").gameObject; ///on récupère la template de bouton formée dans l'UI, il s'agit du 3eme fils de l'objet auquel le code est attaché "panel"
+        //GameObject questionBoxObject = transform.Find("QuestionBox").gameObject; ///on récupère le 1er fils de panel et on l'appelle titre //(G) En fait on renomme en questionBox
         GameObject nextStepButton = transform.parent.Find("bottomContainer").Find("NextStepButton").gameObject; ///le 2ele fils du parent de panel est le bouton suivant    
-        GameObject input = transform.Find("InputField").gameObject; ///le deuxième fils de panel est une zone d'entrée de texte, on l'appelle input
-        GameObject imageParent = transform.Find("ImageParent").gameObject; //(G) The image that will containt the camera
+        GameObject inputObject = transform.Find("InputField").gameObject; ///le deuxième fils de panel est une zone d'entrée de texte, on l'appelle input
+        //GameObject imageParentObject = transform.Find("ImageParent").gameObject; //(G) The image that will containt the camera
         GameObject hint = transform.parent.Find("bottomContainer").Find("Hint").gameObject;//creation of hint button object
         GameObject textHint = transform.parent.Find("HintContainer").GetChild(0).gameObject;//creation of hint text
         Debug.Log("etape cree"); ///on affiche etape cree dans la console
@@ -188,19 +246,19 @@ public class XmlReader : MonoBehaviour
         textHint.GetComponent<Text>().text = indice.InnerText.ToString();//initialize textHint content with the XmlNode indice innertext
 
 
-        buttonTemplate.SetActive(true);
+        validateButton.SetActive(true);
         nextStepButton.GetComponent<Button>().interactable = false; //(G) the Next Step Button is not interactable until the answer is right
 
-        input.SetActive(true); ///on rend input actif : il faut qu'il soit affiché dans l'ui
+        inputObject.SetActive(true); ///on rend input actif : il faut qu'il soit affiché dans l'ui
         textHint.SetActive(false);//the user should not see the hint before their first answer
         hint.GetComponent<Button>().interactable =true;//however they need the hint button
 
-        questionBox.transform.Find("Text").GetComponent<Text>().text = question.InnerText; ///on récupère le texte contenu dans titre(maintenant questionBox) et on le remplace par le texte de la question
+        questionBoxObject.transform.Find("Text").GetComponent<Text>().text = question.InnerText; ///on récupère le texte contenu dans titre(maintenant questionBox) et on le remplace par le texte de la question
 
 
         void ValiderTexte(){
             int stringDistance;//the distance between the correct answer and the user's input, calculated according to the Damerau Levenstein formula
-            stringDistance = DamerauLevensteinDistance.StringDistance.GetDamerauLevenshteinDistance(input.GetComponent<InputField>().text.ToString(), reponse.InnerText.ToString());
+            stringDistance = DamerauLevensteinDistance.StringDistance.GetDamerauLevenshteinDistance(inputObject.GetComponent<InputField>().text.ToString(), reponse.InnerText.ToString());
             int threshold;//the threshold for the correct answer, since we allow some misclicks. You are free to change its definition
             threshold = reponse.InnerText.ToString().Length / 3;
 
@@ -218,13 +276,13 @@ public class XmlReader : MonoBehaviour
                 Debug.Log("Bzzt!! C'est faux!");
                 StartCoroutine(ecranFaux());
                 
-                Color defaultColor = buttonTemplate.GetComponent<Button>().GetComponent<Image>().color;
+                Color defaultColor = validateButton.GetComponent<Button>().GetComponent<Image>().color;
                 //buttonTemplate.GetComponent<Button>().GetComponent<Image>().color = Color.red; //(G) must find a way to make the change last 5 seconds or so
                 //buttonTemplate.GetComponent<Button>().GetComponent<Image>().color = defaultColor;
             }
         }
         GameObject g; ///on crée un objet g
-        g = buttonTemplate; ///g est le template de bouton défini plus haut
+        g = validateButton; ///g est le template de bouton défini plus haut
         g.transform.Find("Text (1)").GetComponent<Text>().text = "Valider";//(G) je touche pas à cette ligne si c'est du test  ///on remplace le contenu texte de g par le texte de la réponse, c'est pour tricher et tester plus facilement il faudra enlever cette ligne
         g.GetComponent<Button>().onClick.AddListener( ValiderTexte); ///le bouton déclenche la fonction ValiderTexte quand on appuye dessus
 
@@ -240,7 +298,7 @@ public class XmlReader : MonoBehaviour
             hint.GetComponent<Button>().interactable = false;
             trueScreen.SetActive(false);
             textHint.SetActive(false);
-            questionBox.transform.Find("Text").GetComponent<Text>().text = "";
+            questionBoxObject.transform.Find("Text").GetComponent<Text>().text = "";
             EtapeReader(etape.NextSibling); ///on appelle la fonction EtapeReader sur le frère suivant de l'étape en cours (imaginez un arbre)
         }
         nextStepButton.GetComponent<Button>().onClick.RemoveAllListeners(); ///on enlève tous les attribus du bouton suivant avant de lui appliquer la fonction EtapeReader sinon le bouton suivant se retrouve avec 1000 fonctions différentes dessus
@@ -252,21 +310,21 @@ public class XmlReader : MonoBehaviour
         //(G) il ne reste plus qu'à modifier cette methode pour qu'elle cherche dans le XML la réponse au QRCode attendue, au lieu que ce soit nous qui la passions pour les tests
         //(G) on récupère les GameObject qui définissent la vue
         GameObject nextStepButton = transform.parent.Find("bottomContainer").Find("NextStepButton").gameObject;
-        GameObject input = transform.Find("InputField").gameObject;
-        GameObject testButton = transform.Find("TestButton").gameObject;
-        GameObject imageParent = transform.Find("ImageParent").gameObject;
-        GameObject frame = imageParent.transform.Find("CameraImage").Find("Frame").gameObject;
+        //GameObject inputObject = transform.Find("InputField").gameObject;
+        //GameObject validateButton = transform.Find("TestButton").gameObject;
+        //GameObject imageParentObject = transform.Find("ImageParent").gameObject;
+        GameObject frame = imageParentObject.transform.Find("CameraImage").Find("Frame").gameObject;
         GameObject questionTextBox = transform.Find("QuestionBox").Find("Text").gameObject; //(G) the text box containing the instructions
 
         nextStepButton.transform.GetComponent<Button>().interactable = false;       //(G) can not go to the next step before having the answer
         questionTextBox.transform.GetComponent<Text>().text = question.InnerText;   //(G) instructions display
 
-        input.SetActive(false);         //(G) input and testButton are set inactive because they are unused during this step
-        testButton.SetActive(false);
+        inputObject.SetActive(false);         //(G) input and testButton are set inactive because they are unused during this step
+        validateButton.SetActive(false);
         scriptQrCode.SetActiveCamera(new WebCamTexture());
         scriptQrCode.expectedQrCodeMessage = reponse.InnerText.Trim(new char[] { ' ', '\n', '\r' }); //(G) Setting the expected answer
         scriptQrCode.isQrCodeValid = false;
-        imageParent.SetActive(true);
+        imageParentObject.SetActive(true);
         frame.SetActive(true);
         Debug.Log("Creer QRCode : Expected Message = " + scriptQrCode.expectedQrCodeMessage);
 
@@ -283,7 +341,7 @@ public class XmlReader : MonoBehaviour
             {
                 scriptQrCode.stopCamera();
                 //scriptQrCode.Interrupt(); //(G) maybe will be used someday to destroy the imageParent object ? Who knows.
-                imageParent.SetActive(false); //(G) deactivating the QRReader object
+                imageParentObject.SetActive(false); //(G) deactivating the QRReader object
                 EtapeReader(etape.NextSibling);
                 trueScreen.SetActive(false);
             }
@@ -298,7 +356,7 @@ public class XmlReader : MonoBehaviour
 
     public void creerQCM(XmlNode etape, XmlNode question, XmlNode reponsev, XmlNode reponsef1, XmlNode reponsef2, XmlNode reponsef3, XmlNode indice) ///reponsev est la réponse juste, reponsefi pour i entre 1 et 3 les fausses
     {
-        GameObject buttonTemplate = transform.Find("TestButton").gameObject; ///on récupère le template de bouton, 3eme fils du panel
+        //GameObject validateButton = transform.Find("TestButton").gameObject; ///on récupère le template de bouton, 3eme fils du panel
         //buttonTemplate.SetActive(true);
 
         GameObject g;
@@ -307,30 +365,30 @@ public class XmlReader : MonoBehaviour
         GameObject g3;
         GameObject g4; ///creation des différents objets
         GameObject nextStepButton = transform.parent.Find("bottomContainer").Find("NextStepButton").gameObject; ////bouton suivant
-        GameObject questionBox = transform.Find("QuestionBox").gameObject;
-        GameObject input = transform.Find("InputField").gameObject;
+        //GameObject questionBoxObject = transform.Find("QuestionBox").gameObject;
+        //GameObject inputObject = transform.Find("InputField").gameObject;
         GameObject hint = transform.parent.Find("bottomContainer").Find("Hint").gameObject;//creation of hint button object
         GameObject textHint = transform.parent.Find("HintContainer").GetChild(0).gameObject;//creation of hint text
 
 
         nextStepButton.transform.GetComponent<Button>().interactable = false;
-        questionBox.transform.Find("Text").GetComponent<Text>().text = question.InnerText;
+        questionBoxObject.transform.Find("Text").GetComponent<Text>().text = question.InnerText;
         textHint.GetComponent<Text>().text = indice.InnerText.ToString();//initialize textHint content with the XmlNode indice innertext
         
 
-        input.SetActive(false); ///on désactive la barre d'entrée de texte pour qu'elle n'aparaisse pas dans l'ui
+        inputObject.SetActive(false); ///on désactive la barre d'entrée de texte pour qu'elle n'aparaisse pas dans l'ui
         textHint.SetActive(false);//the user should not see the hint before their first answer
         hint.GetComponent<Button>().interactable= true;
         Debug.Log("etape cree");
 
-        buttonTemplate.SetActive(false);
+        validateButton.SetActive(false);
         
 
         //g.transform.GetChild(1).GetComponent<Text>().text = reponsev.InnerText;
-        g1 = Instantiate(buttonTemplate, transform);
-        g2 = Instantiate(buttonTemplate, transform); ///on copie le template de bouton pour chaque réponse fausse
-        g3 = Instantiate(buttonTemplate, transform);
-        g4 = Instantiate(buttonTemplate, transform);
+        g1 = Instantiate(validateButton, transform);
+        g2 = Instantiate(validateButton, transform); ///on copie le template de bouton pour chaque réponse fausse
+        g3 = Instantiate(validateButton, transform);
+        g4 = Instantiate(validateButton, transform);
 
         g1.transform.GetChild(0).GetComponent<Text>().text = reponsev.InnerText;
         g2.transform.GetChild(0).GetComponent<Text>().text = reponsef1.InnerText; ///on remplit le texte de chaque bouton avec celui de la réponse correspondante
@@ -379,7 +437,7 @@ public class XmlReader : MonoBehaviour
             hint.GetComponent<Button>().interactable = false;
             textHint.SetActive(false);
             trueScreen.SetActive(false);
-            questionBox.transform.Find("Text").GetComponent<Text>().text = "";
+            questionBoxObject.transform.Find("Text").GetComponent<Text>().text = "";
             EtapeReader(etape.NextSibling); ///on appelle la fonction EtapeReader sur le frère suivant de cette étape
         }
         
@@ -505,57 +563,7 @@ public class XmlReader : MonoBehaviour
                 Debug.Log("urlImage : " + urlImageNode.InnerText + "\ninstructions :" + instructionsNode.InnerText + "\ncoords : " + coordsNode.FirstChild.InnerText + " " + coordsNode.LastChild.InnerText);
 
                 creerNavigation(etape, urlImageNode, instructionsNode, coordsNode);
-            }
-            
-        }
-            
-            
-
-    }
-
-
-        
-    //public string urlBaladeDirectory;
-    private void Start() ///que fait on au démarrage?
-    {
-        trueScreen = transform.parent.parent.Find("true").gameObject;
-        trueScreenButton = trueScreen.transform.Find("Panel").Find("ButtonTarget").GetComponent<Button>();
-        falseScreen = transform.parent.parent.Find("false").gameObject;
-        falseScreenButton = falseScreen.transform.Find("Panel").Find("ButtonTarget").GetComponent<Button>();
-        falseScreenButton.onClick.AddListener(killFalseScreen);
-        Debug.Log("Start XmlReader");
-        UrlStorage.time = (int)Time.time;
-        string urlBalade = UrlStorage.urlBaladeDirectory+UrlStorage.idBalade+".xml";
-        Debug.Log (urlBalade);
-        Debug.Log("URL chargée:"+ urlBalade);
-        XmlDocument baladeData = new XmlDocument(); ///on crée un nouveau doc xml nommé baladeData
-        WWW data = new WWW(urlBalade); ///oui cette fonction est obsolète mais j'ai du mal avec la nouvelle
-        while (!data.isDone)
-        {
-            ///cette boucle while sert à attendre qu'on ait bien toutes les données, sinon on risque d'avoir des erreurs
-        }
-
-        Debug.Log("Balade finie de charger");
-        baladeData.LoadXml(data.text); ///on charge le texte de data dans le doc xml baladeData
-
-        XmlNode encoding = baladeData.FirstChild; ///le premier fils de baladeData est l'encoding
-        XmlNode dtdNode = encoding.NextSibling; ///La DTD compte comme un noeud
-        XmlNode baladeNode = dtdNode.NextSibling;///la racine de la balade à proprement parler
-         
-        XmlNode etape1 = baladeNode.FirstChild; ///l'etape1 c'est le premier frere du descriptif
-
-        /*XmlNode nomBalade = descriptif.FirstChild;
-        XmlNode duree = nomBalade.NextSibling;
-        XmlNode resume = duree.NextSibling;
-        XmlNode lieuDepart = resume.NextSibling;
-        XmlNode coords = lieuDepart.NextSibling;
-        XmlNode x = coords.FirstChild;
-        XmlNode y = x.NextSibling;*/
-        //float xprev = float.Parse(x.InnerText, System.Globalization.CultureInfo.InvariantCulture);
-        //float yprev = float.Parse(y.InnerText.ToString(), System.Globalization.CultureInfo.InvariantCulture);
-        //gpscalcul.setLocalisationPrevue(xprev, yprev);
-
-        EtapeReader(etape1); ///on lance EtapeReader sur l'etape1
-            
+            }   
+        }           
     }
 }
