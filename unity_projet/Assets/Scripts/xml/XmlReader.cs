@@ -28,6 +28,8 @@ public class XmlReader : MonoBehaviour
     GameObject inputObject;
     GameObject validateButton;
     GameObject audioSourceButton;
+    GameObject bottomContainerObject;
+    GameObject nextStepButton;
 
     private void Start() ///que fait on au démarrage?
     {
@@ -43,6 +45,9 @@ public class XmlReader : MonoBehaviour
         inputObject = transform.Find("InputField").gameObject;
         validateButton = transform.Find("ValidateButton").gameObject;
         audioSourceButton = transform.Find("AudioSource").gameObject;
+        bottomContainerObject = transform.parent.Find("BottomContainer").gameObject;
+        nextStepButton = bottomContainerObject.transform.Find("NextStepButton").gameObject;
+        
 
         Debug.Log("Start XmlReader");
         UrlStorage.time = (int)Time.time;
@@ -115,8 +120,8 @@ public class XmlReader : MonoBehaviour
         //GameObject validateButton = transform.Find("TestButton").gameObject;
         GameObject textHint = transform.parent.Find("HintContainer").GetChild(0).gameObject;
         //GameObject audioSourceButton = transform.Find("AudioSource").gameObject;
-        GameObject bottomContainer = transform.parent.Find("bottomContainer").gameObject;
-        GameObject nextStepButton = bottomContainer.transform.Find("NextStepButton").gameObject;
+        //GameObject bottomContainerObject = transform.parent.Find("bottomContainer").gameObject;
+        //GameObject nextStepButton = bottomContainerObject.transform.Find("NextStepButton").gameObject;
         GameObject compassParent = transform.parent.Find("CompassParent").gameObject;
 
 
@@ -152,7 +157,7 @@ public class XmlReader : MonoBehaviour
         GameObject rawImageGameObject = infoObject.transform.Find("Image").Find("RawImage").gameObject;
         RawImage rawImage = rawImageGameObject.GetComponent(typeof(RawImage)) as RawImage;
         GameObject texteInfo = infoObject.transform.Find("TextInfo").gameObject;
-        GameObject nextStepButton = transform.parent.Find("bottomContainer").Find("NextStepButton").gameObject;
+        //GameObject nextStepButton = bottomContainerObject.transform.Find("NextStepButton").gameObject;
         Debug.Log("etape cree"); ///on affiche etape cree dans la console
         //GameObject inputObject = transform.Find("InputField").gameObject;
         //GameObject validateButton = transform.Find("TestButton").gameObject;
@@ -236,10 +241,10 @@ public class XmlReader : MonoBehaviour
     {
         //GameObject validateButton = transform.Find("TestButton").gameObject; ///on récupère la template de bouton formée dans l'UI, il s'agit du 3eme fils de l'objet auquel le code est attaché "panel"
         //GameObject questionBoxObject = transform.Find("QuestionBox").gameObject; ///on récupère le 1er fils de panel et on l'appelle titre //(G) En fait on renomme en questionBox
-        GameObject nextStepButton = transform.parent.Find("bottomContainer").Find("NextStepButton").gameObject; ///le 2ele fils du parent de panel est le bouton suivant    
+        //GameObject nextStepButton = bottomContainerObject.transform.Find("NextStepButton").gameObject; ///le 2ele fils du parent de panel est le bouton suivant    
         GameObject inputObject = transform.Find("InputField").gameObject; ///le deuxième fils de panel est une zone d'entrée de texte, on l'appelle input
         //GameObject imageParentObject = transform.Find("ImageParent").gameObject; //(G) The image that will containt the camera
-        GameObject hint = transform.parent.Find("bottomContainer").Find("Hint").gameObject;//creation of hint button object
+        GameObject hint = bottomContainerObject.transform.Find("Hint").gameObject;//creation of hint button object
         GameObject textHint = transform.parent.Find("HintContainer").GetChild(0).gameObject;//creation of hint text
         Debug.Log("etape cree"); ///on affiche etape cree dans la console
 
@@ -309,7 +314,7 @@ public class XmlReader : MonoBehaviour
     {
         //(G) il ne reste plus qu'à modifier cette methode pour qu'elle cherche dans le XML la réponse au QRCode attendue, au lieu que ce soit nous qui la passions pour les tests
         //(G) on récupère les GameObject qui définissent la vue
-        GameObject nextStepButton = transform.parent.Find("bottomContainer").Find("NextStepButton").gameObject;
+        //GameObject nextStepButton = bottomContainerObject.transform.Find("NextStepButton").gameObject;
         //GameObject inputObject = transform.Find("InputField").gameObject;
         //GameObject validateButton = transform.Find("TestButton").gameObject;
         //GameObject imageParentObject = transform.Find("ImageParent").gameObject;
@@ -364,10 +369,10 @@ public class XmlReader : MonoBehaviour
         GameObject g2;
         GameObject g3;
         GameObject g4; ///creation des différents objets
-        GameObject nextStepButton = transform.parent.Find("bottomContainer").Find("NextStepButton").gameObject; ////bouton suivant
+        //GameObject nextStepButton = bottomContainerObject.transform.Find("NextStepButton").gameObject; ////bouton suivant
         //GameObject questionBoxObject = transform.Find("QuestionBox").gameObject;
         //GameObject inputObject = transform.Find("InputField").gameObject;
-        GameObject hint = transform.parent.Find("bottomContainer").Find("Hint").gameObject;//creation of hint button object
+        GameObject hint =bottomContainerObject.transform.Find("Hint").gameObject;//creation of hint button object
         GameObject textHint = transform.parent.Find("HintContainer").GetChild(0).gameObject;//creation of hint text
 
 

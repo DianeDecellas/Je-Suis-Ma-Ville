@@ -1920,7 +1920,7 @@ GameObject:
   - component: {fileID: 1322040281}
   - component: {fileID: 1322040279}
   m_Layer: 5
-  m_Name: bottomContainer
+  m_Name: BottomContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
