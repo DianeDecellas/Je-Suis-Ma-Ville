@@ -27,9 +27,12 @@ public class XmlReader : MonoBehaviour
     GameObject infoObject;
     GameObject inputObject;
     GameObject validateButton;
-    GameObject audioSourceButton;
+    GameObject audioSourceObject;
     GameObject bottomContainerObject;
     GameObject nextStepButton;
+    GameObject audioButton;
+    GameObject rawImageObject;
+    RawImage rawImage;
 
     private void Start() ///que fait on au démarrage?
     {
@@ -44,10 +47,14 @@ public class XmlReader : MonoBehaviour
         infoObject = transform.Find("InfoParent").gameObject;
         inputObject = transform.Find("InputField").gameObject;
         validateButton = transform.Find("ValidateButton").gameObject;
-        audioSourceButton = transform.Find("AudioSource").gameObject;
+        audioSourceObject = transform.Find("AudioSource").gameObject;
         bottomContainerObject = transform.parent.Find("BottomContainer").gameObject;
         nextStepButton = bottomContainerObject.transform.Find("NextStepButton").gameObject;
-        
+        audioButton = transform.Find("InfoParent").Find("AudioButton").gameObject;
+        rawImageObject = infoObject.transform.Find("Image").Find("RawImage").gameObject;
+        rawImage = rawImageObject.GetComponent<RawImage>();
+
+
 
         Debug.Log("Start XmlReader");
         UrlStorage.time = (int)Time.time;
@@ -113,8 +120,8 @@ public class XmlReader : MonoBehaviour
         //GameObject questionBoxObject = transform.Find("QuestionBox").gameObject;
         //GameObject imageParentObject = transform.Find("ImageParent").gameObject;
         //GameObject infoObject = transform.Find("info").gameObject;
-        GameObject rawImageObject = infoObject.transform.Find("Image").Find("RawImage").gameObject;
-        RawImage rawImage = rawImageObject.GetComponent<RawImage>();
+        //GameObject rawImageObject = infoObject.transform.Find("Image").Find("RawImage").gameObject;
+        //RawImage rawImage = rawImageObject.GetComponent<RawImage>();
         
         //GameObject inputObject = transform.Find("InputField").gameObject;
         //GameObject validateButton = transform.Find("TestButton").gameObject;
@@ -154,8 +161,8 @@ public class XmlReader : MonoBehaviour
     public void creerEtapeInfo(XmlNode etape, XmlNode texte, XmlNode imageNode, XmlNode audioNode)
     {
         //GameObject infoObject = transform.Find("info").gameObject;
-        GameObject rawImageGameObject = infoObject.transform.Find("Image").Find("RawImage").gameObject;
-        RawImage rawImage = rawImageGameObject.GetComponent(typeof(RawImage)) as RawImage;
+        //GameObject rawImageObject = infoObject.transform.Find("Image").Find("RawImage").gameObject;
+        //RawImage rawImage = rawImageObject.GetComponent<RawImage>();
         GameObject texteInfo = infoObject.transform.Find("TextInfo").gameObject;
         //GameObject nextStepButton = bottomContainerObject.transform.Find("NextStepButton").gameObject;
         Debug.Log("etape cree"); ///on affiche etape cree dans la console
@@ -170,14 +177,14 @@ public class XmlReader : MonoBehaviour
         nextStepButton.SetActive(true);
 
         //creation of audio button
-        GameObject AudioButton = transform.Find("InfoParent").Find("AudioButton").gameObject;
+        //GameObject AudioButton = transform.Find("InfoParent").Find("AudioButton").gameObject;
         
         if (audioNode != null)
         {
-            AudioButton.SetActive(true);
+            audioButton.SetActive(true);
             //creation of audio source
             //GameObject audioSourceButton = transform.Find("AudioSource").gameObject;
-            AudioSource audioSource = audioSourceButton.GetComponent<AudioSource>();
+            AudioSource audioSource = audioSourceObject.GetComponent<AudioSource>();
 
             //test with a music from the internet
             string audiopath = UrlStorage.urlBaladeDirectory + audioNode.InnerText.Trim(new char[] { ' ', '\n', '\r' });
@@ -195,22 +202,22 @@ public class XmlReader : MonoBehaviour
                 if (AudioActive == true)
                 {
                     audioPlay.playAudio(audioSource);
-                    AudioButton.GetComponent<changeButton>().setBool(true);
+                    audioButton.GetComponent<changeButton>().setBool(true);
                 }
                 else
                 {
                     audioPlay.pauseAudio(audioSource);
-                    AudioButton.GetComponent<changeButton>().setBool(false);
+                    audioButton.GetComponent<changeButton>().setBool(false);
                 }
             }
-            AudioButton.GetComponent<Button>().onClick.AddListener(Audio);
+            audioButton.GetComponent<Button>().onClick.AddListener(Audio);
         }
         void EtapeSuivante()
         {
             texteInfo.GetComponent<Text>().text = "";
             infoObject.SetActive(false);
-            AudioButton.SetActive(false);
-            AudioButton.GetComponent<Button>().onClick.RemoveAllListeners();
+            audioButton.SetActive(false);
+            audioButton.GetComponent<Button>().onClick.RemoveAllListeners();
             trueScreen.SetActive(false);
             EtapeReader(etape.NextSibling); ///on appelle la fonction EtapeReader sur le frère suivant de l'étape en cours (imaginez un arbre)
 
