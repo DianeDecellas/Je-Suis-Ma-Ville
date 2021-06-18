@@ -37,6 +37,7 @@ public class XmlReader : MonoBehaviour
     GameObject texteInfo;
     GameObject textHint;
     GameObject hint;
+    GameObject compassParent;
 
     private void Start() ///que fait on au démarrage?
     {
@@ -61,6 +62,7 @@ public class XmlReader : MonoBehaviour
         texteInfo = infoObject.transform.Find("TextInfo").gameObject;
         textHint = transform.parent.Find("HintContainer").GetChild(0).gameObject;
         hint = bottomContainerObject.transform.Find("Hint").gameObject;
+        compassParent = transform.parent.Find("CompassParent").gameObject;
 
 
 
@@ -137,7 +139,7 @@ public class XmlReader : MonoBehaviour
         //GameObject audioSourceButton = transform.Find("AudioSource").gameObject;
         //GameObject bottomContainerObject = transform.parent.Find("bottomContainer").gameObject;
         //GameObject nextStepButton = bottomContainerObject.transform.Find("NextStepButton").gameObject;
-        GameObject compassParent = transform.parent.Find("CompassParent").gameObject;
+        //GameObject compassParent = transform.parent.Find("CompassParent").gameObject;
 
 
         inputObject.SetActive(false);
@@ -257,7 +259,7 @@ public class XmlReader : MonoBehaviour
         //GameObject validateButton = transform.Find("TestButton").gameObject; ///on récupère la template de bouton formée dans l'UI, il s'agit du 3eme fils de l'objet auquel le code est attaché "panel"
         //GameObject questionBoxObject = transform.Find("QuestionBox").gameObject; ///on récupère le 1er fils de panel et on l'appelle titre //(G) En fait on renomme en questionBox
         //GameObject nextStepButton = bottomContainerObject.transform.Find("NextStepButton").gameObject; ///le 2ele fils du parent de panel est le bouton suivant    
-        GameObject inputObject = transform.Find("InputField").gameObject; ///le deuxième fils de panel est une zone d'entrée de texte, on l'appelle input
+        //GameObject inputObject = transform.Find("InputField").gameObject; ///le deuxième fils de panel est une zone d'entrée de texte, on l'appelle input
         //GameObject imageParentObject = transform.Find("ImageParent").gameObject; //(G) The image that will containt the camera
         //GameObject hint = bottomContainerObject.transform.Find("Hint").gameObject;//creation of hint button object
         //GameObject textHint = transform.parent.Find("HintContainer").GetChild(0).gameObject;//creation of hint text
@@ -303,7 +305,7 @@ public class XmlReader : MonoBehaviour
         }
         GameObject g; ///on crée un objet g
         g = validateButton; ///g est le template de bouton défini plus haut
-        g.transform.Find("Text (1)").GetComponent<Text>().text = "Valider";//(G) je touche pas à cette ligne si c'est du test  ///on remplace le contenu texte de g par le texte de la réponse, c'est pour tricher et tester plus facilement il faudra enlever cette ligne
+        g.transform.Find("Sous-titre").GetComponent<Text>().text = "Valider";//(G) je touche pas à cette ligne si c'est du test  ///on remplace le contenu texte de g par le texte de la réponse, c'est pour tricher et tester plus facilement il faudra enlever cette ligne
         g.GetComponent<Button>().onClick.AddListener( ValiderTexte); ///le bouton déclenche la fonction ValiderTexte quand on appuye dessus
 
         void AfficherIndice()
