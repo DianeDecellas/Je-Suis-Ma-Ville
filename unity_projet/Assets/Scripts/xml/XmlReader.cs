@@ -23,6 +23,7 @@ public class XmlReader : MonoBehaviour
     public UpdatePosition gpscalcul;
 
     GameObject questionBoxObject;
+    GameObject questionTextBox;
     GameObject imageParentObject;
     GameObject infoObject;
     GameObject inputObject;
@@ -33,6 +34,9 @@ public class XmlReader : MonoBehaviour
     GameObject audioButton;
     GameObject rawImageObject;
     RawImage rawImage;
+    GameObject texteInfo;
+    GameObject textHint;
+    GameObject hint;
 
     private void Start() ///que fait on au démarrage?
     {
@@ -43,6 +47,7 @@ public class XmlReader : MonoBehaviour
         falseScreenButton.onClick.AddListener(killFalseScreen);
 
         questionBoxObject = transform.Find("QuestionBox").gameObject;
+        questionTextBox = questionBoxObject.transform.Find("Text").gameObject;
         imageParentObject = transform.Find("ImageParent").gameObject;
         infoObject = transform.Find("InfoParent").gameObject;
         inputObject = transform.Find("InputField").gameObject;
@@ -53,6 +58,9 @@ public class XmlReader : MonoBehaviour
         audioButton = transform.Find("InfoParent").Find("AudioButton").gameObject;
         rawImageObject = infoObject.transform.Find("Image").Find("RawImage").gameObject;
         rawImage = rawImageObject.GetComponent<RawImage>();
+        texteInfo = infoObject.transform.Find("TextInfo").gameObject;
+        textHint = transform.parent.Find("HintContainer").GetChild(0).gameObject;
+        hint = bottomContainerObject.transform.Find("Hint").gameObject;
 
 
 
@@ -125,7 +133,7 @@ public class XmlReader : MonoBehaviour
         
         //GameObject inputObject = transform.Find("InputField").gameObject;
         //GameObject validateButton = transform.Find("TestButton").gameObject;
-        GameObject textHint = transform.parent.Find("HintContainer").GetChild(0).gameObject;
+        //GameObject textHint = transform.parent.Find("HintContainer").GetChild(0).gameObject;
         //GameObject audioSourceButton = transform.Find("AudioSource").gameObject;
         //GameObject bottomContainerObject = transform.parent.Find("bottomContainer").gameObject;
         //GameObject nextStepButton = bottomContainerObject.transform.Find("NextStepButton").gameObject;
@@ -142,7 +150,7 @@ public class XmlReader : MonoBehaviour
 
         compassParent.SetActive(true);
 
-        questionBoxObject.transform.Find("Text").GetComponent<Text>().text = instructions;
+        questionTextBox.GetComponent<Text>().text = instructions;
         void EtapeSuivante()
         {
 
@@ -163,7 +171,7 @@ public class XmlReader : MonoBehaviour
         //GameObject infoObject = transform.Find("info").gameObject;
         //GameObject rawImageObject = infoObject.transform.Find("Image").Find("RawImage").gameObject;
         //RawImage rawImage = rawImageObject.GetComponent<RawImage>();
-        GameObject texteInfo = infoObject.transform.Find("TextInfo").gameObject;
+        //GameObject texteInfo = infoObject.transform.Find("TextInfo").gameObject;
         //GameObject nextStepButton = bottomContainerObject.transform.Find("NextStepButton").gameObject;
         Debug.Log("etape cree"); ///on affiche etape cree dans la console
         //GameObject inputObject = transform.Find("InputField").gameObject;
@@ -251,8 +259,8 @@ public class XmlReader : MonoBehaviour
         //GameObject nextStepButton = bottomContainerObject.transform.Find("NextStepButton").gameObject; ///le 2ele fils du parent de panel est le bouton suivant    
         GameObject inputObject = transform.Find("InputField").gameObject; ///le deuxième fils de panel est une zone d'entrée de texte, on l'appelle input
         //GameObject imageParentObject = transform.Find("ImageParent").gameObject; //(G) The image that will containt the camera
-        GameObject hint = bottomContainerObject.transform.Find("Hint").gameObject;//creation of hint button object
-        GameObject textHint = transform.parent.Find("HintContainer").GetChild(0).gameObject;//creation of hint text
+        //GameObject hint = bottomContainerObject.transform.Find("Hint").gameObject;//creation of hint button object
+        //GameObject textHint = transform.parent.Find("HintContainer").GetChild(0).gameObject;//creation of hint text
         Debug.Log("etape cree"); ///on affiche etape cree dans la console
 
         textHint.GetComponent<Text>().text = indice.InnerText.ToString();//initialize textHint content with the XmlNode indice innertext
@@ -265,8 +273,8 @@ public class XmlReader : MonoBehaviour
         textHint.SetActive(false);//the user should not see the hint before their first answer
         hint.GetComponent<Button>().interactable =true;//however they need the hint button
 
-        questionBoxObject.transform.Find("Text").GetComponent<Text>().text = question.InnerText; ///on récupère le texte contenu dans titre(maintenant questionBox) et on le remplace par le texte de la question
-
+        //questionBoxObject.transform.Find("Text").GetComponent<Text>().text = question.InnerText; ///on récupère le texte contenu dans titre(maintenant questionBox) et on le remplace par le texte de la question
+        questionTextBox.GetComponent<Text>().text = question.InnerText;
 
         void ValiderTexte(){
             int stringDistance;//the distance between the correct answer and the user's input, calculated according to the Damerau Levenstein formula
@@ -310,7 +318,8 @@ public class XmlReader : MonoBehaviour
             hint.GetComponent<Button>().interactable = false;
             trueScreen.SetActive(false);
             textHint.SetActive(false);
-            questionBoxObject.transform.Find("Text").GetComponent<Text>().text = "";
+            //questionBoxObject.transform.Find("Text").GetComponent<Text>().text = "";
+            questionTextBox.GetComponent<Text>().text = "";
             EtapeReader(etape.NextSibling); ///on appelle la fonction EtapeReader sur le frère suivant de l'étape en cours (imaginez un arbre)
         }
         nextStepButton.GetComponent<Button>().onClick.RemoveAllListeners(); ///on enlève tous les attribus du bouton suivant avant de lui appliquer la fonction EtapeReader sinon le bouton suivant se retrouve avec 1000 fonctions différentes dessus
@@ -326,7 +335,7 @@ public class XmlReader : MonoBehaviour
         //GameObject validateButton = transform.Find("TestButton").gameObject;
         //GameObject imageParentObject = transform.Find("ImageParent").gameObject;
         GameObject frame = imageParentObject.transform.Find("CameraImage").Find("Frame").gameObject;
-        GameObject questionTextBox = transform.Find("QuestionBox").Find("Text").gameObject; //(G) the text box containing the instructions
+        //GameObject questionTextBox = transform.Find("QuestionBox").Find("Text").gameObject; //(G) the text box containing the instructions
 
         nextStepButton.transform.GetComponent<Button>().interactable = false;       //(G) can not go to the next step before having the answer
         questionTextBox.transform.GetComponent<Text>().text = question.InnerText;   //(G) instructions display
@@ -379,12 +388,13 @@ public class XmlReader : MonoBehaviour
         //GameObject nextStepButton = bottomContainerObject.transform.Find("NextStepButton").gameObject; ////bouton suivant
         //GameObject questionBoxObject = transform.Find("QuestionBox").gameObject;
         //GameObject inputObject = transform.Find("InputField").gameObject;
-        GameObject hint =bottomContainerObject.transform.Find("Hint").gameObject;//creation of hint button object
-        GameObject textHint = transform.parent.Find("HintContainer").GetChild(0).gameObject;//creation of hint text
+        //GameObject hint =bottomContainerObject.transform.Find("Hint").gameObject;//creation of hint button object
+        //GameObject textHint = transform.parent.Find("HintContainer").GetChild(0).gameObject;//creation of hint text
 
 
         nextStepButton.transform.GetComponent<Button>().interactable = false;
-        questionBoxObject.transform.Find("Text").GetComponent<Text>().text = question.InnerText;
+        //questionBoxObject.transform.Find("Text").GetComponent<Text>().text = question.InnerText;
+        questionTextBox.GetComponent<Text>().text = question.InnerText;
         textHint.GetComponent<Text>().text = indice.InnerText.ToString();//initialize textHint content with the XmlNode indice innertext
         
 
@@ -449,7 +459,8 @@ public class XmlReader : MonoBehaviour
             hint.GetComponent<Button>().interactable = false;
             textHint.SetActive(false);
             trueScreen.SetActive(false);
-            questionBoxObject.transform.Find("Text").GetComponent<Text>().text = "";
+            //questionBoxObject.transform.Find("Text").GetComponent<Text>().text = "";
+            questionTextBox.GetComponent<Text>().text = "";
             EtapeReader(etape.NextSibling); ///on appelle la fonction EtapeReader sur le frère suivant de cette étape
         }
         
