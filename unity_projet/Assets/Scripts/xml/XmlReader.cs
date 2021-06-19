@@ -38,6 +38,7 @@ public class XmlReader : MonoBehaviour
     GameObject textHint;
     GameObject hint;
     GameObject compassParent;
+    AudioSource audioSource;
 
     private void Start() ///que fait on au démarrage?
     {
@@ -63,6 +64,7 @@ public class XmlReader : MonoBehaviour
         textHint = transform.parent.Find("HintContainer").GetChild(0).gameObject;
         hint = bottomContainerObject.transform.Find("Hint").gameObject;
         compassParent = transform.parent.Find("CompassParent").gameObject;
+        audioSource = audioSourceObject.GetComponent<AudioSource>();
 
 
 
@@ -85,20 +87,9 @@ public class XmlReader : MonoBehaviour
         XmlNode dtdNode = encoding.NextSibling; ///La DTD compte comme un noeud
         XmlNode baladeNode = dtdNode.NextSibling;///la racine de la balade à proprement parler
 
-        XmlNode etape1 = baladeNode.FirstChild; ///l'etape1 c'est le premier frere du descriptif
+        XmlNode etapeNode = baladeNode.FirstChild; ///l'etape1 c'est le premier frere du descriptif
 
-        /*XmlNode nomBalade = descriptif.FirstChild;
-        XmlNode duree = nomBalade.NextSibling;
-        XmlNode resume = duree.NextSibling;
-        XmlNode lieuDepart = resume.NextSibling;
-        XmlNode coords = lieuDepart.NextSibling;
-        XmlNode x = coords.FirstChild;
-        XmlNode y = x.NextSibling;*/
-        //float xprev = float.Parse(x.InnerText, System.Globalization.CultureInfo.InvariantCulture);
-        //float yprev = float.Parse(y.InnerText.ToString(), System.Globalization.CultureInfo.InvariantCulture);
-        //gpscalcul.setLocalisationPrevue(xprev, yprev);
-
-        EtapeReader(etape1); ///on lance EtapeReader sur l'etape1
+        EtapeReader(etapeNode); ///on lance EtapeReader sur l'etape1
 
     }
 
@@ -127,20 +118,6 @@ public class XmlReader : MonoBehaviour
         gpscalcul.setLocalisationPrevue(xprev, yprev);
 
         //the part were we unload what we don't want and load what we want : 
-        //GameObject questionBoxObject = transform.Find("QuestionBox").gameObject;
-        //GameObject imageParentObject = transform.Find("ImageParent").gameObject;
-        //GameObject infoObject = transform.Find("info").gameObject;
-        //GameObject rawImageObject = infoObject.transform.Find("Image").Find("RawImage").gameObject;
-        //RawImage rawImage = rawImageObject.GetComponent<RawImage>();
-        
-        //GameObject inputObject = transform.Find("InputField").gameObject;
-        //GameObject validateButton = transform.Find("TestButton").gameObject;
-        //GameObject textHint = transform.parent.Find("HintContainer").GetChild(0).gameObject;
-        //GameObject audioSourceButton = transform.Find("AudioSource").gameObject;
-        //GameObject bottomContainerObject = transform.parent.Find("bottomContainer").gameObject;
-        //GameObject nextStepButton = bottomContainerObject.transform.Find("NextStepButton").gameObject;
-        //GameObject compassParent = transform.parent.Find("CompassParent").gameObject;
-
 
         inputObject.SetActive(false);
         validateButton.SetActive(false);
@@ -155,10 +132,6 @@ public class XmlReader : MonoBehaviour
         questionTextBox.GetComponent<Text>().text = instructions;
         void EtapeSuivante()
         {
-
-            //hint.SetActive(false);
-            //textHint.SetActive(false);
-            //questionBox.transform.Find("Text").GetComponent<Text>().text = "";
             infoObject.SetActive(false);
             compassParent.SetActive(false);
             trueScreen.SetActive(false);
@@ -170,14 +143,8 @@ public class XmlReader : MonoBehaviour
 
     public void creerEtapeInfo(XmlNode etape, XmlNode texte, XmlNode imageNode, XmlNode audioNode)
     {
-        //GameObject infoObject = transform.Find("info").gameObject;
-        //GameObject rawImageObject = infoObject.transform.Find("Image").Find("RawImage").gameObject;
-        //RawImage rawImage = rawImageObject.GetComponent<RawImage>();
-        //GameObject texteInfo = infoObject.transform.Find("TextInfo").gameObject;
-        //GameObject nextStepButton = bottomContainerObject.transform.Find("NextStepButton").gameObject;
         Debug.Log("etape cree"); ///on affiche etape cree dans la console
-        //GameObject inputObject = transform.Find("InputField").gameObject;
-        //GameObject validateButton = transform.Find("TestButton").gameObject;
+
         texteInfo.GetComponent<Text>().text = texte.InnerText.ToString();
         string imagePath = imageNode.InnerText.Trim(new char[] { '\n', '\r', ' ' });
         StartCoroutine(DownloadImage(imagePath, rawImage));
@@ -186,15 +153,11 @@ public class XmlReader : MonoBehaviour
         infoObject.SetActive(true);
         nextStepButton.SetActive(true);
 
-        //creation of audio button
-        //GameObject AudioButton = transform.Find("InfoParent").Find("AudioButton").gameObject;
         
         if (audioNode != null)
         {
             audioButton.SetActive(true);
             //creation of audio source
-            //GameObject audioSourceButton = transform.Find("AudioSource").gameObject;
-            AudioSource audioSource = audioSourceObject.GetComponent<AudioSource>();
 
             //test with a music from the internet
             string audiopath = UrlStorage.urlBaladeDirectory + audioNode.InnerText.Trim(new char[] { ' ', '\n', '\r' });
@@ -379,25 +342,17 @@ public class XmlReader : MonoBehaviour
 
     public void creerQCM(XmlNode etape, XmlNode question, XmlNode reponsev, XmlNode reponsef1, XmlNode reponsef2, XmlNode reponsef3, XmlNode indice) ///reponsev est la réponse juste, reponsefi pour i entre 1 et 3 les fausses
     {
-        //GameObject validateButton = transform.Find("TestButton").gameObject; ///on récupère le template de bouton, 3eme fils du panel
-        //buttonTemplate.SetActive(true);
+        //validateButton.SetActive(true);
 
         GameObject g;
         GameObject g1;
         GameObject g2;
         GameObject g3;
         GameObject g4; ///creation des différents objets
-        //GameObject nextStepButton = bottomContainerObject.transform.Find("NextStepButton").gameObject; ////bouton suivant
-        //GameObject questionBoxObject = transform.Find("QuestionBox").gameObject;
-        //GameObject inputObject = transform.Find("InputField").gameObject;
-        //GameObject hint =bottomContainerObject.transform.Find("Hint").gameObject;//creation of hint button object
-        //GameObject textHint = transform.parent.Find("HintContainer").GetChild(0).gameObject;//creation of hint text
-
 
         nextStepButton.transform.GetComponent<Button>().interactable = false;
-        //questionBoxObject.transform.Find("Text").GetComponent<Text>().text = question.InnerText;
         questionTextBox.GetComponent<Text>().text = question.InnerText;
-        textHint.GetComponent<Text>().text = indice.InnerText.ToString();//initialize textHint content with the XmlNode indice innertext
+        textHint.GetComponent<Text>().text = indice.InnerText.ToString(); //initialize textHint content with the XmlNode indice innertext
         
 
         inputObject.SetActive(false); ///on désactive la barre d'entrée de texte pour qu'elle n'aparaisse pas dans l'ui
