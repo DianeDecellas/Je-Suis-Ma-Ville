@@ -14,29 +14,9 @@ public class feedbacks : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        donnerNote();
+        giveNote();
 
-        //we collect information about the user's walk
-        //here we collect the date of the walk
-        DateTime dt = DateTime.Now;
-        //string date = dt.Day + "/" + dt.Month + "/" + dt.Year;
-        string date = dt.ToString("dd/MM/yyyy");
-        Debug.Log(date);
 
-        //here we collect at what time the walk has ended
-        //string hour = dt.Hour + ":"+ dt.Minute + ":"+dt.Second;
-        string hour = dt.ToString("HH:mm");
-        Debug.Log(hour);
-
-        //here we collect the name of the walk
-        string nom = UrlStorage.idBalade;
-        Debug.Log(nom);
-        
-        //here we collect the duration of the walk
-        curTime = time = (int)Time.time;
-        time = curTime - UrlStorage.time;
-        string duree = texteDuree(time);
-        Debug.Log(duree);
 
        
     }
@@ -75,7 +55,7 @@ public class feedbacks : MonoBehaviour
             }
         }
     }
-    void donnerNote()
+    void giveNote()
     {
         //we collect information about the user's walk
         //here we collect the date of the walk
@@ -95,8 +75,6 @@ public class feedbacks : MonoBehaviour
         time = curTime - UrlStorage.time;
         string duree = texteDuree(time);
 
-        //we prepare the request
-        string request = FTPUrl+"?"+"date="+date+"&"+"heure="+hour+"&"+"nom="+nom+"&"+"duree="+duree;
         
         //we want to collect the grade
         //we instantiate each button. Each button has a corresponding number
@@ -105,6 +83,7 @@ public class feedbacks : MonoBehaviour
         GameObject button3 = transform.Find("Button3").gameObject;
         GameObject button4 = transform.Find("Button4").gameObject;
         GameObject button5 = transform.Find("Button5").gameObject;
+        GameObject homeButton = transform.parent.Find("HomeButton").gameObject;
         
         /*we define each button's behaviour. When the user clicks on a button, 
          * the corresponding number of stars are switched on. 
@@ -117,9 +96,8 @@ public class feedbacks : MonoBehaviour
             button3.GetComponent<changeButton>().setBool(false);
             button4.GetComponent<changeButton>().setBool(false);
             button5.GetComponent<changeButton>().setBool(false);
-            note = 1;
-            request = request + "&"+"note="+note;
-            StartCoroutine(GetRequest(request));
+            UrlStorage.note = 1;
+  
 
         }
         button1.GetComponent<Button>().onClick.AddListener(click1);
@@ -131,9 +109,8 @@ public class feedbacks : MonoBehaviour
             button3.GetComponent<changeButton>().setBool(false);
             button4.GetComponent<changeButton>().setBool(false);
             button5.GetComponent<changeButton>().setBool(false);
-            note = 2;
-            request = request + "&" + "note=" + note;
-            StartCoroutine(GetRequest(request));
+            UrlStorage.note = 2;
+ 
 
         }
         button2.GetComponent<Button>().onClick.AddListener(click2);
@@ -145,9 +122,8 @@ public class feedbacks : MonoBehaviour
             button3.GetComponent<changeButton>().setBool(true);
             button4.GetComponent<changeButton>().setBool(false);
             button5.GetComponent<changeButton>().setBool(false);
-            note = 3;
-            request = request + "&" + "note=" + note;
-            StartCoroutine(GetRequest(request));
+            UrlStorage.note = 3;
+ 
 
         }
         button3.GetComponent<Button>().onClick.AddListener(click3);
@@ -159,9 +135,8 @@ public class feedbacks : MonoBehaviour
             button3.GetComponent<changeButton>().setBool(true);
             button4.GetComponent<changeButton>().setBool(true);
             button5.GetComponent<changeButton>().setBool(false);
-            note = 4;
-            request = request + "&" + "note=" + note;
-            StartCoroutine(GetRequest(request));
+            UrlStorage.note = 4;
+ 
         }
         button4.GetComponent<Button>().onClick.AddListener(click4);
 
@@ -172,14 +147,20 @@ public class feedbacks : MonoBehaviour
             button3.GetComponent<changeButton>().setBool(true);
             button4.GetComponent<changeButton>().setBool(true);
             button5.GetComponent<changeButton>().setBool(true);
-            note = 5;
-            request = request + "&" + "note=" + note;
-            StartCoroutine(GetRequest(request));
+            UrlStorage.note = 5;
 
         }
         button5.GetComponent<Button>().onClick.AddListener(click5);
 
-     
-        
+        void goHome()
+        {
+            note = UrlStorage.note;
+            //we prepare the request
+            string request = FTPUrl + "?" + "date=" + date + "&" + "heure=" + hour + "&" + "nom=" + nom + "&" + "duree=" + duree + "&" + "note=" + note;
+            StartCoroutine(GetRequest(request));
+        }
+        homeButton.GetComponent<Button>().onClick.AddListener(goHome);
+
+
     }
 }
