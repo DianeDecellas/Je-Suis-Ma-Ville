@@ -272,18 +272,15 @@ public class XmlReader : MonoBehaviour
     /// <returns>The input string with the accentuated symbols replaced by their non-accentuated equivalent, and without all the characters that are neither letters nor numbers, and with all remaining letters in lower case</returns>
     private string normalize(string stIn)
     {
-        Debug.Log(stripString(RemoveDiacritics(stIn)).ToLower());
         return stripString(RemoveDiacritics(stIn)).ToLower();
     }
 
-
-    public void creerEtapeTexte(XmlNode etape, XmlNode question, XmlNode reponse, XmlNode indice) ///fonction qui crée une etape texte avec question et reponse
+    public void creerEtapeTexte(XmlNode etape, XmlNode question, List<XmlNode> reponseArray, XmlNode indice) ///fonction qui crée une etape texte avec question et reponse
     {
 
         Debug.Log("etape cree"); ///on affiche etape cree dans la console
 
         textHint.GetComponent<Text>().text = indice.InnerText.ToString();//initialize textHint content with the XmlNode indice innertext
-
 
         validateButton.SetActive(true);
         nextStepButton.GetComponent<Button>().interactable = false; //(G) the Next Step Button is not interactable until the answer is right
@@ -293,27 +290,35 @@ public class XmlReader : MonoBehaviour
         hint.SetActive(true);
         hint.GetComponent<Button>().interactable =true;//however they need the hint button
 
-        //questionBoxObject.transform.Find("Text").GetComponent<Text>().text = question.InnerText; ///on récupère le texte contenu dans titre(maintenant questionBox) et on le remplace par le texte de la question
         questionTextBox.GetComponent<Text>().text = question.InnerText;
 
-        string normalizedAnswer = normalize(reponse.InnerText);
-        Debug.Log(normalizedAnswer);
+        List<string> normalizedAnswerList = new List<string>();
+        foreach(XmlNode answer in reponseArray)
+        {
+            normalizedAnswerList.Add(normalize(answer.InnerText));
+        }
         void ValiderTexte(){
             string normalizedAttempt = normalize(inputFieldObject.GetComponent<InputField>().text.ToString());
             Debug.Log(normalizedAttempt);
-            int stringDistance;//the distance between the correct answer and the user's input, calculated according to the Damerau Levenstein formula
-            stringDistance = DamerauLevensteinDistance.StringDistance.GetDamerauLevenshteinDistance(normalizedAttempt, normalizedAnswer);
-            int threshold;//the threshold for the correct answer, since we allow some misclicks. You are free to change its definition
-            threshold = reponse.InnerText.ToString().Length / 3;
-
-            if (stringDistance <= threshold) //if the user's input is accurate enough
+            bool isRightAnswer = false;
+            foreach (string answer in normalizedAnswerList)
+            {
+                int distanceBetweenStrings;//the distance between the correct answer and the user's input, calculated according to the Damerau Levenstein formula
+                distanceBetweenStrings = DamerauLevensteinDistance.StringDistance.GetDamerauLevenshteinDistance(normalizedAttempt, answer);
+                int threshold;//the threshold for the correct answer, since we allow some misclicks. You are free to change its definition
+                threshold = answer.Length / 3;
+                isRightAnswer = (distanceBetweenStrings <= threshold);
+                if (isRightAnswer)
+                    break;
+            }
+            if (isRightAnswer) //if the user's input is accurate enough
             {
                 Debug.Log("Bravo!! C'est Juste!");
                 trueScreen.SetActive(true);
                 
                 trueScreenButton.onClick.RemoveAllListeners();
                 trueScreenButton.onClick.AddListener(EtapeSuivante);
-                
+               
             }
             else
             {
@@ -324,6 +329,7 @@ public class XmlReader : MonoBehaviour
                 //buttonTemplate.GetComponent<Button>().GetComponent<Image>().color = Color.red; //(G) must find a way to make the change last 5 seconds or so
                 //buttonTemplate.GetComponent<Button>().GetComponent<Image>().color = defaultColor;
             }
+
         }
         GameObject g; ///on crée un objet g
         g = validateButton; ///g est le template de bouton défini plus haut
@@ -335,8 +341,10 @@ public class XmlReader : MonoBehaviour
             //This method displays the Hint if it is hidden, and hides it if it is displayed.
             //I do not know why this works with "textHint.activeInHierarchy" rather than "!textHint.activeInHierarchy":
             //My intuition tells me this right below should not work, but it does...
-            textHint.SetActive(textHint.activeSelf);
+            textHint.SetActive(!textHint.activeInHierarchy);
+            Debug.Log("Boup");
         }
+        hint.GetComponent<Button>().onClick.RemoveAllListeners();
         hint.GetComponent<Button>().onClick.AddListener(AfficherIndice);//if the user hits the hint button, the game displays the text in textHint
 
         void EtapeSuivante()
@@ -455,6 +463,7 @@ public class XmlReader : MonoBehaviour
         {
             textHint.SetActive(!textHint.activeInHierarchy);
         }
+        hint.GetComponent<Button>().onClick.RemoveAllListeners();
         hint.GetComponent<Button>().onClick.AddListener(AfficherIndice);//if the user hits the hint button, the game displays the text in textHint
 
         void EtapeSuivante()
@@ -538,18 +547,25 @@ public class XmlReader : MonoBehaviour
 
             } else if (typeEpreuve.Name == "texte")
             {
-                /// on affiche la navigation dans la console, pour vérifier que àa marche
+                // on affiche la navigation dans la console, pour vérifier que àa marche
 
                 Debug.Log(typeEpreuve.InnerText);
 
                 XmlNode imagetexte = typeEpreuve.FirstChild;
                 XmlNode question = imagetexte.NextSibling; ///on récupère la question
-                XmlNode reponse = question.NextSibling; ///et la réponse
-                XmlNode indice = reponse.NextSibling; //and the hint
 
-                Debug.Log("urlImage : "+imagetexte.InnerText+"\nquestion : "+question.InnerText+"\nreponse : "+reponse.InnerText+"\nindice : "+indice.InnerText);
+                List<XmlNode> reponseArray = new List<XmlNode>();
+                XmlNode curNode = question.NextSibling;
+                while (curNode.Name == "reponse")
+                {
+                    reponseArray.Add(curNode);
+                    curNode = curNode.NextSibling;
+                }
+                XmlNode indice = curNode; //and the hint
 
-                creerEtapeTexte(etape, question, reponse, indice); ///on crée une étape à partir de la question et de la réponse
+                Debug.Log("urlImage : "+imagetexte.InnerText+"\nquestion : "+question.InnerText+"\nreponse : "+reponseArray.ToString()+"\nindice : "+indice.InnerText);
+
+                creerEtapeTexte(etape, question, reponseArray, indice); ///on crée une étape à partir de la question et de la réponse
             }
 
             else if (typeEpreuve.Name == "qcm")
