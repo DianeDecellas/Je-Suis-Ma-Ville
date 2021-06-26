@@ -42,7 +42,14 @@ public class XmlReader : MonoBehaviour
     GameObject compassParent;
     AudioSource audioSource;
 
-    private void Start() ///que fait on au démarrage?
+    /// <summary>
+    /// This function initialises the view once the walk starts
+    /// At first, we initialise every GameObject corresponding to the different UI elements
+    /// Then, we retrieve the XML file from the remote server using the url and walk ID contained inside of the UrlStorage object.
+    /// Finally, we parse these elements and launch the walk by calling EtapeReader
+    /// <see cref="EtapeReader(XmlNode)"/>
+    /// </summary>
+    private void Start() //que fait on au démarrage?
     {
         trueScreen = transform.parent.parent.Find("true").gameObject;
         trueScreenButton = trueScreen.transform.Find("Panel").Find("ButtonTarget").GetComponent<Button>();
@@ -75,23 +82,23 @@ public class XmlReader : MonoBehaviour
         string urlBalade = UrlStorage.urlBaladeDirectory + UrlStorage.idBalade + ".xml";
         Debug.Log(urlBalade);
         Debug.Log("URL chargée:" + urlBalade);
-        XmlDocument baladeData = new XmlDocument(); ///on crée un nouveau doc xml nommé baladeData
-        WWW data = new WWW(urlBalade); ///oui cette fonction est obsolète mais j'ai du mal avec la nouvelle
+        XmlDocument baladeData = new XmlDocument(); //on crée un nouveau doc xml nommé baladeData
+        WWW data = new WWW(urlBalade); //oui cette fonction est obsolète mais j'ai du mal avec la nouvelle
         while (!data.isDone)
         {
-            ///cette boucle while sert à attendre qu'on ait bien toutes les données, sinon on risque d'avoir des erreurs
+            //cette boucle while sert à attendre qu'on ait bien toutes les données, sinon on risque d'avoir des erreurs
         }
 
         Debug.Log("Balade finie de charger");
-        baladeData.LoadXml(data.text); ///on charge le texte de data dans le doc xml baladeData
+        baladeData.LoadXml(data.text); //on charge le texte de data dans le doc xml baladeData
 
-        XmlNode encoding = baladeData.FirstChild; ///le premier fils de baladeData est l'encoding
-        XmlNode dtdNode = encoding.NextSibling; ///La DTD compte comme un noeud
-        XmlNode baladeNode = dtdNode.NextSibling;///la racine de la balade à proprement parler
+        XmlNode encoding = baladeData.FirstChild; //le premier fils de baladeData est l'encoding
+        XmlNode dtdNode = encoding.NextSibling; //La DTD compte comme un noeud
+        XmlNode baladeNode = dtdNode.NextSibling;//la racine de la balade à proprement parler
 
-        XmlNode etapeNode = baladeNode.FirstChild; ///l'etape1 c'est le premier frere du descriptif
+        XmlNode etapeNode = baladeNode.FirstChild; //l'etape1 c'est le premier frere du descriptif
 
-        EtapeReader(etapeNode); ///on lance EtapeReader sur l'etape1
+        EtapeReader(etapeNode); //on lance EtapeReader sur l'etape1
 
     }
 
@@ -137,15 +144,15 @@ public class XmlReader : MonoBehaviour
             infoObject.SetActive(false);
             compassParent.SetActive(false);
             trueScreen.SetActive(false);
-            EtapeReader(etapeNode.NextSibling); ///on appelle la fonction EtapeReader sur le frère suivant de l'étape en cours (imaginez un arbre)
+            EtapeReader(etapeNode.NextSibling); //on appelle la fonction EtapeReader sur le frère suivant de l'étape en cours (imaginez un arbre)
         }
-        nextStepButton.GetComponent<Button>().onClick.RemoveAllListeners(); ///on enlève tous les attribus du bouton suivant avant de lui appliquer la fonction EtapeReader sinon le bouton suivant se retrouve avec 1000 fonctions différentes dessus
-        nextStepButton.GetComponent<Button>().onClick.AddListener(EtapeSuivante);///on applique la fonction EtapeSuivante au bouton suivant
+        nextStepButton.GetComponent<Button>().onClick.RemoveAllListeners(); //on enlève tous les attribus du bouton suivant avant de lui appliquer la fonction EtapeReader sinon le bouton suivant se retrouve avec 1000 fonctions différentes dessus
+        nextStepButton.GetComponent<Button>().onClick.AddListener(EtapeSuivante);//on applique la fonction EtapeSuivante au bouton suivant
     }
 
     public void creerEtapeInfo(XmlNode etape, XmlNode texte, XmlNode imageNode, XmlNode audioNode)
     {
-        Debug.Log("etape cree"); ///on affiche etape cree dans la console
+        Debug.Log("etape cree"); //on affiche etape cree dans la console
 
         texteInfo.GetComponent<Text>().text = texte.InnerText.ToString();
         string imagePath = imageNode.InnerText.Trim(new char[] { '\n', '\r', ' ' });
@@ -194,10 +201,10 @@ public class XmlReader : MonoBehaviour
             audioButton.SetActive(false);
             audioButton.GetComponent<Button>().onClick.RemoveAllListeners();
             trueScreen.SetActive(false);
-            EtapeReader(etape.NextSibling); ///on appelle la fonction EtapeReader sur le frère suivant de l'étape en cours (imaginez un arbre)
+            EtapeReader(etape.NextSibling); //on appelle la fonction EtapeReader sur le frère suivant de l'étape en cours (imaginez un arbre)
 
         }
-        nextStepButton.GetComponent<Button>().onClick.RemoveAllListeners(); ///on enlève tous les attribus du bouton suivant avant de lui appliquer la fonction EtapeReader sinon le bouton suivant se retrouve avec 1000 fonctions différentes dessus
+        nextStepButton.GetComponent<Button>().onClick.RemoveAllListeners(); //on enlève tous les attribus du bouton suivant avant de lui appliquer la fonction EtapeReader sinon le bouton suivant se retrouve avec 1000 fonctions différentes dessus
         nextStepButton.GetComponent<Button>().onClick.AddListener(EtapeSuivante);
 
     }
@@ -275,17 +282,17 @@ public class XmlReader : MonoBehaviour
         return stripString(RemoveDiacritics(stIn)).ToLower();
     }
 
-    public void creerEtapeTexte(XmlNode etape, XmlNode question, List<XmlNode> reponseArray, XmlNode indice) ///fonction qui crée une etape texte avec question et reponse
+    public void creerEtapeTexte(XmlNode etape, XmlNode question, List<XmlNode> reponseArray, XmlNode indice) //fonction qui crée une etape texte avec question et reponse
     {
 
-        Debug.Log("etape cree"); ///on affiche etape cree dans la console
+        Debug.Log("etape cree"); //on affiche etape cree dans la console
 
         textHint.GetComponent<Text>().text = indice.InnerText.ToString();//initialize textHint content with the XmlNode indice innertext
 
         validateButton.SetActive(true);
         nextStepButton.GetComponent<Button>().interactable = false; //(G) the Next Step Button is not interactable until the answer is right
 
-        inputFieldObject.SetActive(true); ///on rend input actif : il faut qu'il soit affiché dans l'ui
+        inputFieldObject.SetActive(true); //on rend input actif : il faut qu'il soit affiché dans l'ui
         textHint.SetActive(false);//the user should not see the hint before their first answer
         hint.SetActive(true);
         hint.GetComponent<Button>().interactable =true;//however they need the hint button
@@ -331,10 +338,10 @@ public class XmlReader : MonoBehaviour
             }
 
         }
-        GameObject g; ///on crée un objet g
-        g = validateButton; ///g est le template de bouton défini plus haut
-        g.transform.Find("Sous-titre").GetComponent<Text>().text = "Valider";//(G) je touche pas à cette ligne si c'est du test  ///on remplace le contenu texte de g par le texte de la réponse, c'est pour tricher et tester plus facilement il faudra enlever cette ligne
-        g.GetComponent<Button>().onClick.AddListener( ValiderTexte); ///le bouton déclenche la fonction ValiderTexte quand on appuye dessus
+        GameObject g; //on crée un objet g
+        g = validateButton; //g est le template de bouton défini plus haut
+        g.transform.Find("Sous-titre").GetComponent<Text>().text = "Valider";//(G) je touche pas à cette ligne si c'est du test  //on remplace le contenu texte de g par le texte de la réponse, c'est pour tricher et tester plus facilement il faudra enlever cette ligne
+        g.GetComponent<Button>().onClick.AddListener( ValiderTexte); //le bouton déclenche la fonction ValiderTexte quand on appuye dessus
 
         void AfficherIndice()
         {
@@ -355,13 +362,13 @@ public class XmlReader : MonoBehaviour
             textHint.SetActive(false);
             //questionBoxObject.transform.Find("Text").GetComponent<Text>().text = "";
             questionTextBox.GetComponent<Text>().text = "";
-            EtapeReader(etape.NextSibling); ///on appelle la fonction EtapeReader sur le frère suivant de l'étape en cours (imaginez un arbre)
+            EtapeReader(etape.NextSibling); //on appelle la fonction EtapeReader sur le frère suivant de l'étape en cours (imaginez un arbre)
         }
-        nextStepButton.GetComponent<Button>().onClick.RemoveAllListeners(); ///on enlève tous les attribus du bouton suivant avant de lui appliquer la fonction EtapeReader sinon le bouton suivant se retrouve avec 1000 fonctions différentes dessus
-        nextStepButton.GetComponent<Button>().onClick.AddListener(EtapeSuivante);///on applique la fonction EtapeSuivante au bouton suivant
+        nextStepButton.GetComponent<Button>().onClick.RemoveAllListeners(); //on enlève tous les attribus du bouton suivant avant de lui appliquer la fonction EtapeReader sinon le bouton suivant se retrouve avec 1000 fonctions différentes dessus
+        nextStepButton.GetComponent<Button>().onClick.AddListener(EtapeSuivante);//on applique la fonction EtapeSuivante au bouton suivant
     }
 
-    public void creerQrCode(XmlNode etape, XmlNode question, XmlNode reponse) ///fonction creer qrCode
+    public void creerQrCode(XmlNode etape, XmlNode question, XmlNode reponse) //fonction creer qrCode
     {
         GameObject frame = imageParentObject.transform.Find("CameraImage").Find("Frame").gameObject;
         
@@ -395,7 +402,7 @@ public class XmlReader : MonoBehaviour
                 trueScreen.SetActive(false);
             }
             nextStepButton.GetComponent<Button>().interactable = true;
-            nextStepButton.GetComponent<Button>().onClick.RemoveAllListeners(); ///on enlève les anciennes fonctions du bouton avant d'ajouter la fonction etape suivante appropriée
+            nextStepButton.GetComponent<Button>().onClick.RemoveAllListeners(); //on enlève les anciennes fonctions du bouton avant d'ajouter la fonction etape suivante appropriée
             nextStepButton.GetComponent<Button>().onClick.AddListener(EtapeSuivante);
         }
 
@@ -403,32 +410,32 @@ public class XmlReader : MonoBehaviour
         StartCoroutine(waitForQRCode());
     }
 
-    public void creerQCM(XmlNode etape, XmlNode question, XmlNode reponsev, XmlNode reponsef1, XmlNode reponsef2, XmlNode reponsef3, XmlNode indice) ///reponsev est la réponse juste, reponsefi pour i entre 1 et 3 les fausses
+    public void creerQCM(XmlNode etape, XmlNode question, XmlNode reponsev, XmlNode reponsef1, XmlNode reponsef2, XmlNode reponsef3, XmlNode indice) //reponsev est la réponse juste, reponsefi pour i entre 1 et 3 les fausses
     {
         GameObject g;
         GameObject g1;
         GameObject g2;
         GameObject g3;
-        GameObject g4; ///creation des différents objets
+        GameObject g4; //creation des différents objets
 
         nextStepButton.transform.GetComponent<Button>().interactable = false;
         questionTextBox.GetComponent<Text>().text = question.InnerText;
         textHint.GetComponent<Text>().text = indice.InnerText.ToString(); //initialize textHint content with the XmlNode indice innertext
         
 
-        inputFieldObject.SetActive(false); ///on désactive la barre d'entrée de texte pour qu'elle n'aparaisse pas dans l'ui
+        inputFieldObject.SetActive(false); //on désactive la barre d'entrée de texte pour qu'elle n'aparaisse pas dans l'ui
         textHint.SetActive(false);//the user should not see the hint before their first answer
         hint.GetComponent<Button>().interactable= true;
         Debug.Log("etape cree");
         validateButton.SetActive(false);
 
         g1 = Instantiate(validateButton, transform);
-        g2 = Instantiate(validateButton, transform); ///on copie le template de bouton pour chaque réponse fausse
+        g2 = Instantiate(validateButton, transform); //on copie le template de bouton pour chaque réponse fausse
         g3 = Instantiate(validateButton, transform);
         g4 = Instantiate(validateButton, transform);
 
         g1.transform.GetChild(0).GetComponent<Text>().text = reponsev.InnerText;
-        g2.transform.GetChild(0).GetComponent<Text>().text = reponsef1.InnerText; ///on remplit le texte de chaque bouton avec celui de la réponse correspondante
+        g2.transform.GetChild(0).GetComponent<Text>().text = reponsef1.InnerText; //on remplit le texte de chaque bouton avec celui de la réponse correspondante
         g3.transform.GetChild(0).GetComponent<Text>().text = reponsef2.InnerText;
         g4.transform.GetChild(0).GetComponent<Text>().text = reponsef3.InnerText;
 
@@ -469,7 +476,7 @@ public class XmlReader : MonoBehaviour
         void EtapeSuivante()
         {
             Destroy(g1);
-            Destroy(g2); ///on détruit les boutons superflus, et on en conserve un pour toujours avoir le template disponible
+            Destroy(g2); //on détruit les boutons superflus, et on en conserve un pour toujours avoir le template disponible
             Destroy(g3);
             Destroy(g4);
             hint.GetComponent<Button>().interactable = false;
@@ -477,7 +484,7 @@ public class XmlReader : MonoBehaviour
             trueScreen.SetActive(false);
             //questionBoxObject.transform.Find("Text").GetComponent<Text>().text = "";
             questionTextBox.GetComponent<Text>().text = "";
-            EtapeReader(etape.NextSibling); ///on appelle la fonction EtapeReader sur le frère suivant de cette étape
+            EtapeReader(etape.NextSibling); //on appelle la fonction EtapeReader sur le frère suivant de cette étape
         }
         
         void Valider2()
@@ -507,8 +514,8 @@ public class XmlReader : MonoBehaviour
 
             }
         }
-        g1.GetComponent<Button>().onClick.AddListener(Valider2); ///la réponse juste appelle valider, fen vrai il faudrait enlever les fonctions déjà présentes sur le bouton avant de faire ça...
-        g2.GetComponent<Button>().onClick.AddListener(delegate { Refuser2(g2); });///les autres appellent refuser
+        g1.GetComponent<Button>().onClick.AddListener(Valider2); //la réponse juste appelle valider, fen vrai il faudrait enlever les fonctions déjà présentes sur le bouton avant de faire ça...
+        g2.GetComponent<Button>().onClick.AddListener(delegate { Refuser2(g2); });//les autres appellent refuser
         g3.GetComponent<Button>().onClick.AddListener(delegate { Refuser2(g3); });
         g4.GetComponent<Button>().onClick.AddListener(delegate { Refuser2(g4); });
         nextStepButton.GetComponent<Button>().onClick.RemoveAllListeners();
@@ -518,7 +525,7 @@ public class XmlReader : MonoBehaviour
 
     public void EtapeReader(XmlNode CurrentNode)
     {
-        if (CurrentNode == null) ///si on atteint la conclusion alors c'est fini
+        if (CurrentNode == null) //si on atteint la conclusion alors c'est fini
         {
             Debug.Log("c'est fini");
             transform.parent.gameObject.SetActive(false);
@@ -526,9 +533,9 @@ public class XmlReader : MonoBehaviour
         }
         else
         {
-            string typeEtape = CurrentNode.InnerText; ///on connait le type de l'étape en lisant le texte du noeud en cours (le commentaire)
-            XmlNode etape = CurrentNode; ///l'étape en elle même est le frère du commentaire sur le xml que vous avez fouri
-            XmlNode titre = etape.FirstChild; ///le premier fils de l'étape est son titre
+            string typeEtape = CurrentNode.InnerText; //on connait le type de l'étape en lisant le texte du noeud en cours (le commentaire)
+            XmlNode etape = CurrentNode; //l'étape en elle même est le frère du commentaire sur le xml que vous avez fouri
+            XmlNode titre = etape.FirstChild; //le premier fils de l'étape est son titre
             Debug.Log("Titre Etape = " + titre.InnerText);
 
             XmlNode typeEpreuve = titre.NextSibling;
@@ -552,7 +559,7 @@ public class XmlReader : MonoBehaviour
                 Debug.Log(typeEpreuve.InnerText);
 
                 XmlNode imagetexte = typeEpreuve.FirstChild;
-                XmlNode question = imagetexte.NextSibling; ///on récupère la question
+                XmlNode question = imagetexte.NextSibling; //on récupère la question
 
                 List<XmlNode> reponseArray = new List<XmlNode>();
                 XmlNode curNode = question.NextSibling;
@@ -565,7 +572,7 @@ public class XmlReader : MonoBehaviour
 
                 Debug.Log("urlImage : "+imagetexte.InnerText+"\nquestion : "+question.InnerText+"\nreponse : "+reponseArray.ToString()+"\nindice : "+indice.InnerText);
 
-                creerEtapeTexte(etape, question, reponseArray, indice); ///on crée une étape à partir de la question et de la réponse
+                creerEtapeTexte(etape, question, reponseArray, indice); //on crée une étape à partir de la question et de la réponse
             }
 
             else if (typeEpreuve.Name == "qcm")
@@ -576,14 +583,14 @@ public class XmlReader : MonoBehaviour
 
                 XmlNode question = typeEpreuve.FirstChild;
                 XmlNode reponsev = question.NextSibling;
-                XmlNode reponsef1 = reponsev.NextSibling; ///on récupère toutes les réponses juste et fausses
+                XmlNode reponsef1 = reponsev.NextSibling; //on récupère toutes les réponses juste et fausses
                 XmlNode reponsef2 = reponsef1.NextSibling;
                 XmlNode reponsef3 = reponsef2.NextSibling;
-                XmlNode indice = reponsef3.NextSibling; ///(D) and the hint
+                XmlNode indice = reponsef3.NextSibling; //(D) and the hint
 
                 Debug.Log("question : " + question.InnerText + "\nreponse :" + reponsev.InnerText + "\n"+reponsef1.InnerText+"\n"+reponsef2.InnerText+"\n"+reponsef3.InnerText);
 
-                creerQCM(etape, question, reponsev, reponsef1, reponsef2, reponsef3, indice); ///on crée l'étape qcm
+                creerQCM(etape, question, reponsev, reponsef1, reponsef2, reponsef3, indice); //on crée l'étape qcm
             }
 
             else if (typeEpreuve.Name == "qrcode")
