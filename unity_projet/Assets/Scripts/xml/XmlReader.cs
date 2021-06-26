@@ -10,6 +10,8 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.Linq;
 using UnityEngine.SceneManagement;
+using System.Text;
+using System.Globalization;
 
 
 public class XmlReader : MonoBehaviour
@@ -216,6 +218,64 @@ public class XmlReader : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Removes all characters that are not letters or numbers from a string
+    /// </summary>
+    /// <example><c>stripString("Aàëo@ - !ï")</c> returns <c>"Aaeoi"</c></example>
+    /// <param name="inString">The string to strip</param>
+    /// <returns>The input string with only the numbers and letters</returns>
+    private string stripString(string inString)
+    {
+        StringBuilder outString = new StringBuilder();
+        foreach (char c in inString)
+        {
+            if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+            {
+                outString.Append(c);
+            }
+        }
+        return outString.ToString();
+    }
+
+    /// <summary>
+    /// Removes all diacritics symbols from a string and replace them with their standard alphabet equivalent
+    /// </summary>
+    /// <example>
+    /// <c>RemoveDiactrics("Aàëo@ - !ï")</c> returns <c>"Aaeo@ - !i"</c>
+    /// 
+    /// </example>
+    /// <param name="stIn"></param>
+    /// <returns>the input string without any accent</returns>
+    static string RemoveDiacritics(string stIn)
+    {
+        string stFormD = stIn.Normalize(NormalizationForm.FormD);
+        StringBuilder sb = new StringBuilder();
+
+        for (int ich = 0; ich < stFormD.Length; ich++)
+        {
+            UnicodeCategory uc = CharUnicodeInfo.GetUnicodeCategory(stFormD[ich]);
+            if (uc != UnicodeCategory.NonSpacingMark)
+            {
+                sb.Append(stFormD[ich]);
+            }
+        }
+        return (sb.ToString().Normalize(NormalizationForm.FormC));
+    }
+
+    /// <summary>
+    /// Replaces all diacritics symbol with their non-accentuated equivalent, then removes all characters that are neither numbers nor letters, and then finally casts every character into lower case 
+    /// </summary>
+    /// <example><c>normalize("L'île de la cité de Paris!")</c> returns <c>"liledelacitedeparis"</c></example>
+    /// <see cref="RemoveDiacritics"/>
+    /// <see cref="stripString"/>
+    /// <param name="stIn"></param>
+    /// <returns>The input string with the accentuated symbols replaced by their non-accentuated equivalent, and without all the characters that are neither letters nor numbers, and with all remaining letters in lower case</returns>
+    private string normalize(string stIn)
+    {
+        Debug.Log(stripString(RemoveDiacritics(stIn)).ToLower());
+        return stripString(RemoveDiacritics(stIn)).ToLower();
+    }
+
 
     public void creerEtapeTexte(XmlNode etape, XmlNode question, XmlNode reponse, XmlNode indice) ///fonction qui crée une etape texte avec question et reponse
     {
@@ -236,9 +296,13 @@ public class XmlReader : MonoBehaviour
         //questionBoxObject.transform.Find("Text").GetComponent<Text>().text = question.InnerText; ///on récupère le texte contenu dans titre(maintenant questionBox) et on le remplace par le texte de la question
         questionTextBox.GetComponent<Text>().text = question.InnerText;
 
+        string normalizedAnswer = normalize(reponse.InnerText);
+        Debug.Log(normalizedAnswer);
         void ValiderTexte(){
+            string normalizedAttempt = normalize(inputFieldObject.GetComponent<InputField>().text.ToString());
+            Debug.Log(normalizedAttempt);
             int stringDistance;//the distance between the correct answer and the user's input, calculated according to the Damerau Levenstein formula
-            stringDistance = DamerauLevensteinDistance.StringDistance.GetDamerauLevenshteinDistance(inputFieldObject.GetComponent<InputField>().text.ToString(), reponse.InnerText.ToString());
+            stringDistance = DamerauLevensteinDistance.StringDistance.GetDamerauLevenshteinDistance(normalizedAttempt, normalizedAnswer);
             int threshold;//the threshold for the correct answer, since we allow some misclicks. You are free to change its definition
             threshold = reponse.InnerText.ToString().Length / 3;
 
