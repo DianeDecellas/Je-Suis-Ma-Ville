@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 public class feedbacks : MonoBehaviour
 {
@@ -152,14 +153,15 @@ public class feedbacks : MonoBehaviour
         }
         button5.GetComponent<Button>().onClick.AddListener(click5);
 
-        void goHome()
+        void validate()
         {
             note = UrlStorage.note;
             //we prepare the request
             string request = FTPUrl + "?" + "date=" + date + "&" + "heure=" + hour + "&" + "nom=" + nom + "&" + "duree=" + duree + "&" + "note=" + note;
             StartCoroutine(GetRequest(request));
+            SceneManager.LoadScene("ecran_valider", UnityEngine.SceneManagement.LoadSceneMode.Single);
         }
-        homeButton.GetComponent<Button>().onClick.AddListener(goHome);
+        homeButton.GetComponent<Button>().onClick.AddListener(validate);
 
 
     }
