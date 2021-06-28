@@ -21,6 +21,19 @@ public class XmlMenu : MonoBehaviour
     string FtpURL = "https://prefigurations.com/je_suis_ma_ville/balades/";
     UrlStorage urlstorage;                                                                           // Start is called before the first frame update
     public Sprite[] spriteArray;
+
+    /// <summary>
+    /// This method is used to parse walks from the Menu XML and display them on screen.
+    /// 
+    /// For each walk, we retrieve the various informations relative to the balad, namely the title, the id, the color, the duration, the description, the departure and the thumbnail's URL.
+    /// Each string is trimmed to delete artifacts from the XML (such as the \n and \r which could hinder the use of these informations).
+    /// We feed all of these informations into the walk's button
+    /// 
+    /// Each walk's button displays the walk's name and its duration. When clicked, the button expands to display the thumbnail and the place where the walk begins.
+    /// If clicked a second time, the button launches the walk by loading the scene scenefinale.
+    /// If the user clicks elsewhere while a button is expanded, it collapses.
+    /// </summary>
+    /// <param name="menu">The XmlNode that is the root of the list containing the differents walks' data</param>
     void readXmlMenu(XmlNode menu)
     {
         GameObject g;
@@ -62,11 +75,11 @@ public class XmlMenu : MonoBehaviour
                 case "jaune":
                     g.GetComponent<Image>().sprite = spriteArray[1];
                     break;
-                case "vert":
-                    g.GetComponent<Image>().sprite = spriteArray[3];
-                    break;
                 case "rouge":
                     g.GetComponent<Image>().sprite = spriteArray[2];
+                    break;
+                case "vert":
+                    g.GetComponent<Image>().sprite = spriteArray[3];
                     break;
 
             }
@@ -135,14 +148,6 @@ public class XmlMenu : MonoBehaviour
                     SceneManager.LoadScene("scene_finale",LoadSceneMode.Single);
                 }
             }
-            void loadBalade()
-            {
-                UrlStorage.urlBaladeDirectory = FtpURL+"/"+dossierBalades+"/"+idBalade+"/";
-                Debug.Log("Cliquée : "+urlXmlBalade);
-                UrlStorage.idBalade = idBalade;
-
-                SceneManager.LoadScene("scene_finale",LoadSceneMode.Single);
-            }
             curg.GetComponent<Button>().onClick.AddListener(clickBalade);
             Debug.Log(curg.GetComponent<Button>());
         }
@@ -164,7 +169,14 @@ public class XmlMenu : MonoBehaviour
             YourRawImage.transform.GetComponent<AspectRatioFitter>().aspectRatio = imageRatio;
         }
     }
-
+    /// <summary>
+    /// The function launched upon loading the menu screen.
+    /// 
+    /// The walk is downloaded from the FTP using the URL of the file containing the Menu XML +  the Menu XML
+    /// Once that file is retreived, the permissions are asked to use the camera and the GPS.
+    /// We then extract the walks list and launch readXmlMenu for it to display the walks thumbnails.
+    /// <see cref="readXmlMenu(XmlNode)"/>
+    /// </summary>
     void Start()
     {
         UrlMenu = FtpURL + nomMenu;
