@@ -132,7 +132,7 @@ public class XmlMenu : MonoBehaviour
                     Debug.Log("Cliquée : " + urlXmlBalade);
                     UrlStorage.idBalade = idBalade;
 
-                    SceneManager.LoadScene("scene_finale");
+                    SceneManager.LoadScene("scene_finale",LoadSceneMode.Single);
                 }
             }
             void loadBalade()
@@ -141,7 +141,7 @@ public class XmlMenu : MonoBehaviour
                 Debug.Log("Cliquée : "+urlXmlBalade);
                 UrlStorage.idBalade = idBalade;
 
-                SceneManager.LoadScene("scene_finale");
+                SceneManager.LoadScene("scene_finale",LoadSceneMode.Single);
             }
             curg.GetComponent<Button>().onClick.AddListener(clickBalade);
             Debug.Log(curg.GetComponent<Button>());

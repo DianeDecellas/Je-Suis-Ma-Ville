@@ -41,6 +41,7 @@ public class XmlReader : MonoBehaviour
     GameObject hint;
     GameObject compassParent;
     AudioSource audioSource;
+    GameObject previousStepButton;
 
     /// <summary>
     /// This function initialises the view once the walk starts
@@ -66,6 +67,7 @@ public class XmlReader : MonoBehaviour
         audioSourceObject = transform.Find("AudioSource").gameObject;
         bottomContainerObject = transform.parent.Find("BottomContainer").gameObject;
         nextStepButton = bottomContainerObject.transform.Find("NextStepButton").gameObject;
+        previousStepButton = bottomContainerObject.transform.Find("PreviousStepButton").gameObject;
         audioButton = transform.Find("InfoParent").Find("AudioButton").gameObject;
         rawImageObject = infoObject.transform.Find("Image").Find("RawImage").gameObject;
         rawImage = rawImageObject.GetComponent<RawImage>();
@@ -139,6 +141,17 @@ public class XmlReader : MonoBehaviour
         compassParent.SetActive(true);
 
         questionTextBox.GetComponent<Text>().text = instructions;
+        void EtapePrecedente()
+        {
+            if (etapeNode.PreviousSibling != null)
+            {
+
+                infoObject.SetActive(false);
+                compassParent.SetActive(false);
+                trueScreen.SetActive(false);
+                EtapeReader(etapeNode.PreviousSibling);
+            }
+        }
         void EtapeSuivante()
         {
             infoObject.SetActive(false);
@@ -146,6 +159,8 @@ public class XmlReader : MonoBehaviour
             trueScreen.SetActive(false);
             EtapeReader(etapeNode.NextSibling); //on appelle la fonction EtapeReader sur le frère suivant de l'étape en cours (imaginez un arbre)
         }
+        previousStepButton.GetComponent<Button>().onClick.RemoveAllListeners();
+        previousStepButton.GetComponent<Button>().onClick.AddListener(EtapePrecedente);
         nextStepButton.GetComponent<Button>().onClick.RemoveAllListeners(); //on enlève tous les attribus du bouton suivant avant de lui appliquer la fonction EtapeReader sinon le bouton suivant se retrouve avec 1000 fonctions différentes dessus
         nextStepButton.GetComponent<Button>().onClick.AddListener(EtapeSuivante);//on applique la fonction EtapeSuivante au bouton suivant
     }
@@ -204,6 +219,21 @@ public class XmlReader : MonoBehaviour
             EtapeReader(etape.NextSibling); //on appelle la fonction EtapeReader sur le frère suivant de l'étape en cours (imaginez un arbre)
 
         }
+
+        void EtapePrecedente()
+        {
+            if (etape.PreviousSibling != null) {
+                texteInfo.GetComponent<Text>().text = "";
+                infoObject.SetActive(false);
+                audioButton.SetActive(false);
+                audioButton.GetComponent<Button>().onClick.RemoveAllListeners();
+                trueScreen.SetActive(false);
+                EtapeReader(etape.PreviousSibling);
+            }
+        }
+
+        previousStepButton.GetComponent<Button>().onClick.RemoveAllListeners();
+        previousStepButton.GetComponent<Button>().onClick.AddListener(EtapePrecedente);
         nextStepButton.GetComponent<Button>().onClick.RemoveAllListeners(); //on enlève tous les attribus du bouton suivant avant de lui appliquer la fonction EtapeReader sinon le bouton suivant se retrouve avec 1000 fonctions différentes dessus
         nextStepButton.GetComponent<Button>().onClick.AddListener(EtapeSuivante);
 
@@ -364,6 +394,21 @@ public class XmlReader : MonoBehaviour
             questionTextBox.GetComponent<Text>().text = "";
             EtapeReader(etape.NextSibling); //on appelle la fonction EtapeReader sur le frère suivant de l'étape en cours (imaginez un arbre)
         }
+
+        void EtapePrecedente()
+        {
+            if (etape.PreviousSibling != null) {
+                hint.GetComponent<Button>().interactable = false;
+                trueScreen.SetActive(false);
+                textHint.SetActive(false);
+                //questionBoxObject.transform.Find("Text").GetComponent<Text>().text = "";
+                questionTextBox.GetComponent<Text>().text = "";
+                EtapeReader(etape.PreviousSibling);
+            }
+        }
+
+        previousStepButton.GetComponent<Button>().onClick.RemoveAllListeners();
+        previousStepButton.GetComponent<Button>().onClick.AddListener(EtapePrecedente);
         nextStepButton.GetComponent<Button>().onClick.RemoveAllListeners(); //on enlève tous les attribus du bouton suivant avant de lui appliquer la fonction EtapeReader sinon le bouton suivant se retrouve avec 1000 fonctions différentes dessus
         nextStepButton.GetComponent<Button>().onClick.AddListener(EtapeSuivante);//on applique la fonction EtapeSuivante au bouton suivant
     }
@@ -374,7 +419,8 @@ public class XmlReader : MonoBehaviour
         
         nextStepButton.transform.GetComponent<Button>().interactable = false;       //(G) can not go to the next step before having the answer
         questionTextBox.transform.GetComponent<Text>().text = question.InnerText;   //(G) instructions display
-
+        previousStepButton.GetComponent<Button>().onClick.RemoveAllListeners();
+        previousStepButton.GetComponent<Button>().onClick.AddListener(EtapePrecedente);
         inputFieldObject.SetActive(false);         //(G) input and testButton are set inactive because they are unused during this step
         validateButton.SetActive(false);
         scriptQrCode.SetActiveCamera(new WebCamTexture());
@@ -383,6 +429,16 @@ public class XmlReader : MonoBehaviour
         imageParentObject.SetActive(true);
         frame.SetActive(true);
         Debug.Log("Creer QRCode : Expected Message = " + scriptQrCode.expectedQrCodeMessage);
+        void EtapePrecedente() //(G) this function will be called upon clicking on the nextStepButton button
+        {
+            scriptQrCode.stopCamera();
+            //scriptQrCode.Interrupt(); //(G) maybe will be used someday to destroy the imageParent object ? Who knows.
+            imageParentObject.SetActive(false); //(G) deactivating the QRReader object
+            EtapeReader(etape.PreviousSibling);
+            nextStepButton.transform.GetComponent<Button>().interactable = true;
+            trueScreen.SetActive(false);
+            
+        }
 
         IEnumerator waitForQRCode() //(G) this routine is called and waits for the scriptQrCode.isQrCodeValid to be true
         {
@@ -473,6 +529,21 @@ public class XmlReader : MonoBehaviour
         hint.GetComponent<Button>().onClick.RemoveAllListeners();
         hint.GetComponent<Button>().onClick.AddListener(AfficherIndice);//if the user hits the hint button, the game displays the text in textHint
 
+        void EtapePrecedente()
+        {
+            if (etape.PreviousSibling != null) {
+                Destroy(g1);
+                Destroy(g2); //on détruit les boutons superflus, et on en conserve un pour toujours avoir le template disponible
+                Destroy(g3);
+                Destroy(g4);
+                hint.GetComponent<Button>().interactable = false;
+                textHint.SetActive(false);
+                trueScreen.SetActive(false);
+                //questionBoxObject.transform.Find("Text").GetComponent<Text>().text = "";
+                questionTextBox.GetComponent<Text>().text = "";
+                EtapeReader(etape.PreviousSibling); //on appelle la fonction EtapeReader sur le frère précédent de cette étape
+            }
+        }
         void EtapeSuivante()
         {
             Destroy(g1);
@@ -518,6 +589,8 @@ public class XmlReader : MonoBehaviour
         g2.GetComponent<Button>().onClick.AddListener(delegate { Refuser2(g2); });//les autres appellent refuser
         g3.GetComponent<Button>().onClick.AddListener(delegate { Refuser2(g3); });
         g4.GetComponent<Button>().onClick.AddListener(delegate { Refuser2(g4); });
+        previousStepButton.GetComponent<Button>().onClick.RemoveAllListeners();
+        previousStepButton.GetComponent<Button>().onClick.AddListener(EtapePrecedente);
         nextStepButton.GetComponent<Button>().onClick.RemoveAllListeners();
         nextStepButton.GetComponent<Button>().onClick.AddListener(EtapeSuivante);
             
@@ -612,7 +685,11 @@ public class XmlReader : MonoBehaviour
                 Debug.Log("urlImage : " + urlImageNode.InnerText + "\ninstructions :" + instructionsNode.InnerText + "\ncoords : " + coordsNode.FirstChild.InnerText + " " + coordsNode.LastChild.InnerText);
 
                 creerNavigation(etape, urlImageNode, instructionsNode, coordsNode);
-            }   
+            }
+            else //si jamais on a eu un beug
+            {
+                SceneManager.LoadScene("ecran_accueil",LoadSceneMode.Single);
+            }
         }           
     }
 }
