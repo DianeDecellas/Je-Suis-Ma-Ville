@@ -114,7 +114,7 @@ public class XmlMenu : MonoBehaviour
                     b.enableLoad();
                     RectTransform Rt = curg.GetComponent<RectTransform>(); //Get the rect transform of object
                     Rt.sizeDelta = new Vector2(Rt.sizeDelta.x, Rt.sizeDelta.y + 200f); //make button bigger
-                    curg.transform.GetChild(2).Find("Text").GetComponent<Text>().text = description; //get text to display
+                    curg.transform.GetChild(2).Find("Text").GetComponent<Text>().text = description + "\n\n"+ "Lieu de départ: "+departure; //get text to display
                     curg.transform.GetChild(2).gameObject.SetActive(true); //make the summary visible
                     RawImage raw = curg.transform.GetChild(2).Find("Image").Find("RawImage").GetComponent<RawImage>() ;
                     if (thumbnailNode.InnerText.Trim(new char[] { '\n', '\r', ' ' }) != "" )
