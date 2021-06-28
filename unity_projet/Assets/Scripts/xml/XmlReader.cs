@@ -42,6 +42,7 @@ public class XmlReader : MonoBehaviour
     GameObject compassParent;
     AudioSource audioSource;
     GameObject previousStepButton;
+    bool isItPreviousStep = false;
 
     /// <summary>
     /// This function initialises the view once the walk starts
@@ -52,6 +53,7 @@ public class XmlReader : MonoBehaviour
     /// </summary>
     private void Start() //que fait on au démarrage?
     {
+        
         trueScreen = transform.parent.parent.Find("true").gameObject;
         trueScreenButton = trueScreen.transform.Find("Panel").Find("ButtonTarget").GetComponent<Button>();
         falseScreen = transform.parent.parent.Find("false").gameObject;
@@ -145,7 +147,7 @@ public class XmlReader : MonoBehaviour
         {
             if (etapeNode.PreviousSibling != null)
             {
-
+                isItPreviousStep = true;
                 infoObject.SetActive(false);
                 compassParent.SetActive(false);
                 trueScreen.SetActive(false);
@@ -154,6 +156,7 @@ public class XmlReader : MonoBehaviour
         }
         void EtapeSuivante()
         {
+            isItPreviousStep = false;
             infoObject.SetActive(false);
             compassParent.SetActive(false);
             trueScreen.SetActive(false);
@@ -211,6 +214,7 @@ public class XmlReader : MonoBehaviour
         }
         void EtapeSuivante()
         {
+            isItPreviousStep = false;
             texteInfo.GetComponent<Text>().text = "";
             infoObject.SetActive(false);
             audioButton.SetActive(false);
@@ -223,6 +227,7 @@ public class XmlReader : MonoBehaviour
         void EtapePrecedente()
         {
             if (etape.PreviousSibling != null) {
+                isItPreviousStep = true;
                 texteInfo.GetComponent<Text>().text = "";
                 infoObject.SetActive(false);
                 audioButton.SetActive(false);
@@ -321,7 +326,10 @@ public class XmlReader : MonoBehaviour
 
         validateButton.SetActive(true);
         nextStepButton.GetComponent<Button>().interactable = false; //(G) the Next Step Button is not interactable until the answer is right
-
+        if (isItPreviousStep)
+        {
+            nextStepButton.GetComponent<Button>().interactable = false;
+        }
         inputFieldObject.SetActive(true); //on rend input actif : il faut qu'il soit affiché dans l'ui
         textHint.SetActive(false);//the user should not see the hint before their first answer
         hint.SetActive(true);
@@ -386,7 +394,7 @@ public class XmlReader : MonoBehaviour
 
         void EtapeSuivante()
         {
-
+            isItPreviousStep = false;
             hint.GetComponent<Button>().interactable = false;
             trueScreen.SetActive(false);
             textHint.SetActive(false);
@@ -398,6 +406,7 @@ public class XmlReader : MonoBehaviour
         void EtapePrecedente()
         {
             if (etape.PreviousSibling != null) {
+                isItPreviousStep = true;
                 hint.GetComponent<Button>().interactable = false;
                 trueScreen.SetActive(false);
                 textHint.SetActive(false);
@@ -418,9 +427,15 @@ public class XmlReader : MonoBehaviour
         GameObject frame = imageParentObject.transform.Find("CameraImage").Find("Frame").gameObject;
         
         nextStepButton.transform.GetComponent<Button>().interactable = false;       //(G) can not go to the next step before having the answer
+        if (isItPreviousStep)
+        {
+            nextStepButton.GetComponent<Button>().interactable = true;
+        }
         questionTextBox.transform.GetComponent<Text>().text = question.InnerText;   //(G) instructions display
         previousStepButton.GetComponent<Button>().onClick.RemoveAllListeners();
         previousStepButton.GetComponent<Button>().onClick.AddListener(EtapePrecedente);
+        nextStepButton.GetComponent<Button>().onClick.RemoveAllListeners(); //on enlève les anciennes fonctions du bouton avant d'ajouter la fonction etape suivante appropriée
+        nextStepButton.GetComponent<Button>().onClick.AddListener(EtapeSuivante);
         inputFieldObject.SetActive(false);         //(G) input and testButton are set inactive because they are unused during this step
         validateButton.SetActive(false);
         scriptQrCode.SetActiveCamera(new WebCamTexture());
@@ -431,6 +446,7 @@ public class XmlReader : MonoBehaviour
         Debug.Log("Creer QRCode : Expected Message = " + scriptQrCode.expectedQrCodeMessage);
         void EtapePrecedente() //(G) this function will be called upon clicking on the nextStepButton button
         {
+            isItPreviousStep = true;
             scriptQrCode.stopCamera();
             //scriptQrCode.Interrupt(); //(G) maybe will be used someday to destroy the imageParent object ? Who knows.
             imageParentObject.SetActive(false); //(G) deactivating the QRReader object
@@ -438,6 +454,16 @@ public class XmlReader : MonoBehaviour
             nextStepButton.transform.GetComponent<Button>().interactable = true;
             trueScreen.SetActive(false);
             
+        }
+        void EtapeSuivante() //(G) this function will be called upon clicking on the nextStepButton button
+        {
+            frame.SetActive(false);
+            scriptQrCode.stopCamera();
+            //scriptQrCode.Interrupt(); //(G) maybe will be used someday to destroy the imageParent object ? Who knows.
+            imageParentObject.SetActive(false); //(G) deactivating the QRReader object
+            EtapeReader(etape.NextSibling);
+            trueScreen.SetActive(false);
+            isItPreviousStep = false;
         }
 
         IEnumerator waitForQRCode() //(G) this routine is called and waits for the scriptQrCode.isQrCodeValid to be true
@@ -449,17 +475,9 @@ public class XmlReader : MonoBehaviour
             
             trueScreenButton.onClick.RemoveAllListeners();
             trueScreenButton.onClick.AddListener(EtapeSuivante);
-            void EtapeSuivante() //(G) this function will be called upon clicking on the nextStepButton button
-            {
-                scriptQrCode.stopCamera();
-                //scriptQrCode.Interrupt(); //(G) maybe will be used someday to destroy the imageParent object ? Who knows.
-                imageParentObject.SetActive(false); //(G) deactivating the QRReader object
-                EtapeReader(etape.NextSibling);
-                trueScreen.SetActive(false);
-            }
+            
             nextStepButton.GetComponent<Button>().interactable = true;
-            nextStepButton.GetComponent<Button>().onClick.RemoveAllListeners(); //on enlève les anciennes fonctions du bouton avant d'ajouter la fonction etape suivante appropriée
-            nextStepButton.GetComponent<Button>().onClick.AddListener(EtapeSuivante);
+            
         }
 
         Debug.Log("En attente de QRCode");
@@ -475,6 +493,10 @@ public class XmlReader : MonoBehaviour
         GameObject g4; //creation des différents objets
 
         nextStepButton.transform.GetComponent<Button>().interactable = false;
+        if (isItPreviousStep)
+        {
+            nextStepButton.GetComponent<Button>().interactable = true;
+        }
         questionTextBox.GetComponent<Text>().text = question.InnerText;
         textHint.GetComponent<Text>().text = indice.InnerText.ToString(); //initialize textHint content with the XmlNode indice innertext
         
@@ -532,6 +554,7 @@ public class XmlReader : MonoBehaviour
         void EtapePrecedente()
         {
             if (etape.PreviousSibling != null) {
+                isItPreviousStep = true;
                 Destroy(g1);
                 Destroy(g2); //on détruit les boutons superflus, et on en conserve un pour toujours avoir le template disponible
                 Destroy(g3);
@@ -546,6 +569,7 @@ public class XmlReader : MonoBehaviour
         }
         void EtapeSuivante()
         {
+            isItPreviousStep = false;
             Destroy(g1);
             Destroy(g2); //on détruit les boutons superflus, et on en conserve un pour toujours avoir le template disponible
             Destroy(g3);
