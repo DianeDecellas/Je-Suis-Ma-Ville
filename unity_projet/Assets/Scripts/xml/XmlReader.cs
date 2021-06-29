@@ -517,9 +517,10 @@ public class XmlReader : MonoBehaviour
         GameObject g4; //creation des différents objets
 
         nextStepButton.transform.GetComponent<Button>().interactable = false;
+        isItPreviousStep = currentNodeIndex < furthestNodeIndex;
         if (isItPreviousStep)
         {
-            nextStepButton.GetComponent<Button>().interactable = true;
+            nextStepButton.transform.GetComponent<Button>().interactable = true;
         }
         questionTextBox.GetComponent<Text>().text = question.InnerText;
         textHint.GetComponent<Text>().text = indice.InnerText.ToString(); //initialize textHint content with the XmlNode indice innertext
