@@ -43,6 +43,8 @@ public class XmlReader : MonoBehaviour
     AudioSource audioSource;
     GameObject previousStepButton;
     bool isItPreviousStep = false;
+    int furthestNodeIndex = 0;
+    int currentNodeIndex = 0;
 
     /// <summary>
     /// This function initialises the view once the walk starts
@@ -147,7 +149,8 @@ public class XmlReader : MonoBehaviour
         {
             if (etapeNode.PreviousSibling != null)
             {
-                isItPreviousStep = true;
+                currentNodeIndex = currentNodeIndex - 1;
+                isItPreviousStep = (furthestNodeIndex < currentNodeIndex);
                 infoObject.SetActive(false);
                 compassParent.SetActive(false);
                 trueScreen.SetActive(false);
@@ -156,7 +159,9 @@ public class XmlReader : MonoBehaviour
         }
         void EtapeSuivante()
         {
-            isItPreviousStep = false;
+            currentNodeIndex += 1;
+            furthestNodeIndex = Mathf.Max(furthestNodeIndex, currentNodeIndex);
+            isItPreviousStep = (furthestNodeIndex < currentNodeIndex);
             infoObject.SetActive(false);
             compassParent.SetActive(false);
             trueScreen.SetActive(false);
@@ -214,7 +219,9 @@ public class XmlReader : MonoBehaviour
         }
         void EtapeSuivante()
         {
-            isItPreviousStep = false;
+            currentNodeIndex += 1;
+            furthestNodeIndex = Mathf.Max(currentNodeIndex, furthestNodeIndex);
+            isItPreviousStep = (furthestNodeIndex < currentNodeIndex);
             texteInfo.GetComponent<Text>().text = "";
             infoObject.SetActive(false);
             audioButton.SetActive(false);
@@ -227,7 +234,8 @@ public class XmlReader : MonoBehaviour
         void EtapePrecedente()
         {
             if (etape.PreviousSibling != null) {
-                isItPreviousStep = true;
+                currentNodeIndex -= 1;
+                isItPreviousStep = (furthestNodeIndex < currentNodeIndex);
                 texteInfo.GetComponent<Text>().text = "";
                 infoObject.SetActive(false);
                 audioButton.SetActive(false);
@@ -394,7 +402,9 @@ public class XmlReader : MonoBehaviour
 
         void EtapeSuivante()
         {
-            isItPreviousStep = false;
+            currentNodeIndex += 1;
+            furthestNodeIndex = Mathf.Max(furthestNodeIndex, currentNodeIndex);
+            isItPreviousStep = (furthestNodeIndex < currentNodeIndex);
             hint.GetComponent<Button>().interactable = false;
             trueScreen.SetActive(false);
             textHint.SetActive(false);
@@ -406,7 +416,8 @@ public class XmlReader : MonoBehaviour
         void EtapePrecedente()
         {
             if (etape.PreviousSibling != null) {
-                isItPreviousStep = true;
+                currentNodeIndex -= 1;
+                isItPreviousStep = (furthestNodeIndex < currentNodeIndex);
                 hint.GetComponent<Button>().interactable = false;
                 trueScreen.SetActive(false);
                 textHint.SetActive(false);
@@ -446,24 +457,30 @@ public class XmlReader : MonoBehaviour
         Debug.Log("Creer QRCode : Expected Message = " + scriptQrCode.expectedQrCodeMessage);
         void EtapePrecedente() //(G) this function will be called upon clicking on the nextStepButton button
         {
-            isItPreviousStep = true;
-            scriptQrCode.stopCamera();
-            //scriptQrCode.Interrupt(); //(G) maybe will be used someday to destroy the imageParent object ? Who knows.
-            imageParentObject.SetActive(false); //(G) deactivating the QRReader object
-            EtapeReader(etape.PreviousSibling);
-            nextStepButton.transform.GetComponent<Button>().interactable = true;
-            trueScreen.SetActive(false);
+            if (currentNodeIndex != 0)
+            {
+                currentNodeIndex -= 1;
+                isItPreviousStep = (furthestNodeIndex < currentNodeIndex);
+                scriptQrCode.stopCamera();
+                //scriptQrCode.Interrupt(); //(G) maybe will be used someday to destroy the imageParent object ? Who knows.
+                imageParentObject.SetActive(false); //(G) deactivating the QRReader object
+                EtapeReader(etape.PreviousSibling);
+                nextStepButton.transform.GetComponent<Button>().interactable = true;
+                trueScreen.SetActive(false);
+            }
             
         }
         void EtapeSuivante() //(G) this function will be called upon clicking on the nextStepButton button
         {
+            currentNodeIndex += 1;
+            furthestNodeIndex = Mathf.Max(furthestNodeIndex, currentNodeIndex);
             frame.SetActive(false);
             scriptQrCode.stopCamera();
             //scriptQrCode.Interrupt(); //(G) maybe will be used someday to destroy the imageParent object ? Who knows.
             imageParentObject.SetActive(false); //(G) deactivating the QRReader object
             EtapeReader(etape.NextSibling);
             trueScreen.SetActive(false);
-            isItPreviousStep = false;
+            isItPreviousStep = (furthestNodeIndex < currentNodeIndex);
         }
 
         IEnumerator waitForQRCode() //(G) this routine is called and waits for the scriptQrCode.isQrCodeValid to be true
@@ -554,7 +571,8 @@ public class XmlReader : MonoBehaviour
         void EtapePrecedente()
         {
             if (etape.PreviousSibling != null) {
-                isItPreviousStep = true;
+                currentNodeIndex -= 1;
+                isItPreviousStep = (furthestNodeIndex < currentNodeIndex);
                 Destroy(g1);
                 Destroy(g2); //on détruit les boutons superflus, et on en conserve un pour toujours avoir le template disponible
                 Destroy(g3);
@@ -569,7 +587,9 @@ public class XmlReader : MonoBehaviour
         }
         void EtapeSuivante()
         {
-            isItPreviousStep = false;
+            currentNodeIndex += 1;
+            furthestNodeIndex = Mathf.Max(furthestNodeIndex, currentNodeIndex);
+            isItPreviousStep = (furthestNodeIndex < currentNodeIndex);
             Destroy(g1);
             Destroy(g2); //on détruit les boutons superflus, et on en conserve un pour toujours avoir le template disponible
             Destroy(g3);
@@ -630,6 +650,7 @@ public class XmlReader : MonoBehaviour
         }
         else
         {
+            
             string typeEtape = CurrentNode.InnerText; //on connait le type de l'étape en lisant le texte du noeud en cours (le commentaire)
             XmlNode etape = CurrentNode; //l'étape en elle même est le frère du commentaire sur le xml que vous avez fouri
             XmlNode titre = etape.FirstChild; //le premier fils de l'étape est son titre
