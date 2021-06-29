@@ -42,6 +42,7 @@ public class XmlReader : MonoBehaviour
     GameObject compassParent;
     AudioSource audioSource;
     GameObject previousStepButton;
+    GameObject texteInfoContainer;
     bool isItPreviousStep = false;
     int furthestNodeIndex = 0;
     int currentNodeIndex = 0;
@@ -75,13 +76,14 @@ public class XmlReader : MonoBehaviour
         audioButton = transform.Find("InfoParent").Find("AudioButton").gameObject;
         rawImageObject = infoObject.transform.Find("Image").Find("RawImage").gameObject;
         rawImage = rawImageObject.GetComponent<RawImage>();
-        texteInfo = infoObject.transform.Find("TextInfo").gameObject;
+        texteInfoContainer = texteInfo = infoObject.transform.Find("test").gameObject;
+        texteInfo = texteInfoContainer.transform.Find("TextInfo").gameObject;
         textHint = transform.parent.Find("HintContainer").GetChild(0).gameObject;
         hint = bottomContainerObject.transform.Find("Hint").gameObject;
         compassParent = transform.parent.Find("CompassParent").gameObject;
         audioSource = audioSourceObject.GetComponent<AudioSource>();
 
-
+        texteInfoContainer.SetActive(false);
 
         Debug.Log("Start XmlReader");
         UrlStorage.time = (int)Time.time;
@@ -177,6 +179,7 @@ public class XmlReader : MonoBehaviour
     {
         Debug.Log("etape cree"); //on affiche etape cree dans la console
         questionBoxObject.SetActive(false);
+        texteInfoContainer.SetActive(true);
         texteInfo.GetComponent<Text>().text = texte.InnerText.ToString();
         string imagePath = imageNode.InnerText.Trim(new char[] { '\n', '\r', ' ' });
         StartCoroutine(DownloadImage(imagePath, rawImage));
@@ -219,6 +222,7 @@ public class XmlReader : MonoBehaviour
         }
         void EtapeSuivante()
         {
+            texteInfoContainer.SetActive(false);
             questionBoxObject.SetActive(true);
             currentNodeIndex += 1;
             furthestNodeIndex = Mathf.Max(currentNodeIndex, furthestNodeIndex);
@@ -235,6 +239,7 @@ public class XmlReader : MonoBehaviour
         void EtapePrecedente()
         {
             if (etape.PreviousSibling != null) {
+                texteInfoContainer.SetActive(false);
                 questionBoxObject.SetActive(true);
                 currentNodeIndex -= 1;
                 isItPreviousStep = (furthestNodeIndex < currentNodeIndex);
