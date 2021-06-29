@@ -176,7 +176,7 @@ public class XmlReader : MonoBehaviour
     public void creerEtapeInfo(XmlNode etape, XmlNode texte, XmlNode imageNode, XmlNode audioNode)
     {
         Debug.Log("etape cree"); //on affiche etape cree dans la console
-
+        questionBoxObject.SetActive(false);
         texteInfo.GetComponent<Text>().text = texte.InnerText.ToString();
         string imagePath = imageNode.InnerText.Trim(new char[] { '\n', '\r', ' ' });
         StartCoroutine(DownloadImage(imagePath, rawImage));
@@ -219,6 +219,7 @@ public class XmlReader : MonoBehaviour
         }
         void EtapeSuivante()
         {
+            questionBoxObject.SetActive(true);
             currentNodeIndex += 1;
             furthestNodeIndex = Mathf.Max(currentNodeIndex, furthestNodeIndex);
             isItPreviousStep = (furthestNodeIndex < currentNodeIndex);
@@ -234,6 +235,7 @@ public class XmlReader : MonoBehaviour
         void EtapePrecedente()
         {
             if (etape.PreviousSibling != null) {
+                questionBoxObject.SetActive(true);
                 currentNodeIndex -= 1;
                 isItPreviousStep = (furthestNodeIndex < currentNodeIndex);
                 texteInfo.GetComponent<Text>().text = "";

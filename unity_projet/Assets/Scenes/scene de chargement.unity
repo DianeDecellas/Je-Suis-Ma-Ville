@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.3731193, g: 0.38073996, b: 0.35872692, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1048,10 +1048,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteArray:
-  - {fileID: 21300000, guid: de3269dff2a90d6488092fb5edf84daf, type: 3}
-  - {fileID: 21300000, guid: 33eb790826e800e42b85d576aa386a4d, type: 3}
-  - {fileID: 21300000, guid: b1837704d643f4d4cb904f63a5207f95, type: 3}
-  - {fileID: 21300000, guid: 94ece3d353729da4eb5470532ce06f8e, type: 3}
+  - {fileID: 21300000, guid: 009a1eaef774a384e8417b3dc64baad0, type: 3}
+  - {fileID: 21300000, guid: 3d60d254b7d7d84488f610e087cccb23, type: 3}
+  - {fileID: 21300000, guid: d79c6b3b96376c246a4e37024377e97a, type: 3}
+  - {fileID: 21300000, guid: 2c56f5ee17a2f6a4a9d4a308e52fb5af, type: 3}
 --- !u!114 &1527382229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1180,7 +1180,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 94ece3d353729da4eb5470532ce06f8e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3d60d254b7d7d84488f610e087cccb23, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
