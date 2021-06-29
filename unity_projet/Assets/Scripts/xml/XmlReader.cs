@@ -129,7 +129,7 @@ public class XmlReader : MonoBehaviour
     public void creerNavigation(XmlNode etapeNode, XmlNode imageNameNode, XmlNode instructionsNode, XmlNode CoordsNode)
     {
         string imagePath = imageNameNode.InnerText.Trim(new char[] {' ', '\n', '\r' });
-        string instructions = instructionsNode.InnerText;
+        string instructions = instructionsNode.InnerText.Trim(new char[] { ' ', '\n', '\r' }).Replace("  ", " ").Replace("   ", " ").Replace("    ", " ");
         float xprev = float.Parse(CoordsNode.FirstChild.InnerText, System.Globalization.CultureInfo.InvariantCulture);
         float yprev = float.Parse(CoordsNode.LastChild.InnerText.ToString(), System.Globalization.CultureInfo.InvariantCulture);
         gpscalcul.setLocalisationPrevue(xprev, yprev);
@@ -180,7 +180,7 @@ public class XmlReader : MonoBehaviour
         Debug.Log("etape cree"); //on affiche etape cree dans la console
         questionBoxObject.SetActive(false);
         texteInfoContainer.SetActive(true);
-        texteInfo.GetComponent<Text>().text = texte.InnerText.ToString();
+        texteInfo.GetComponent<Text>().text = texte.InnerText.Trim(new char[] { ' ', '\n', '\r' }).Replace("  ", " ").Replace("   ", " ").Replace("    ", " ");
         string imagePath = imageNode.InnerText.Trim(new char[] { '\n', '\r', ' ' });
         StartCoroutine(DownloadImage(imagePath, rawImage));
         inputFieldObject.SetActive(false);
