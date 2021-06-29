@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UrlStorage : MonoBehaviour
+public class Storage : MonoBehaviour
 {
     public static string urlBaladeDirectory;
     public static float xprevu=0;

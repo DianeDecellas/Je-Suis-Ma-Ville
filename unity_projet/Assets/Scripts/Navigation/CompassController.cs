@@ -47,7 +47,7 @@ public class CompassController : MonoBehaviour
         movingAvgAngle = 0f;
 
         Phone = new Vector2(GPS.Instance.latitude, GPS.Instance.longitude); //The current coordinates of the mobile phone.
-        Objective = new Vector2(UrlStorage.xprevu, UrlStorage.yprevu); //Coords of place to go
+        Objective = new Vector2(Storage.xprevu, Storage.yprevu); //Coords of place to go
         North = new Vector2(90, Phone.y); //The coordinates of the North. This may seem wierd, but it works to accomodate the model of a 2D plan, and works on the scale of a city or a region
 
         PhoneToNorth = North - Phone; //The vector between the phone and North
@@ -65,7 +65,7 @@ public class CompassController : MonoBehaviour
     private void Update()
     {
         Phone = new Vector2(GPS.Instance.latitude, GPS.Instance.longitude); //to refresh the phone's current coordinates.
-        Objective = new Vector2(UrlStorage.xprevu, UrlStorage.yprevu); // coords of place to reach. May need to be changed in the future.  
+        Objective = new Vector2(Storage.xprevu, Storage.yprevu); // coords of place to reach. May need to be changed in the future.  
 
         PhoneToNorth = North - Phone; //The vector between the phone and North
         PhoneToObjective = Objective - Phone; //The vector between the Phone and the Objective

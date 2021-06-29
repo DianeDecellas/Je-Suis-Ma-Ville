@@ -69,11 +69,11 @@ public class feedbacks : MonoBehaviour
         string hour = dt.ToString("HH:mm:ss");
 
         //here we collect the name of the walk
-        string nom = UrlStorage.idBalade;
+        string nom = Storage.idBalade;
 
         //here we collect the duration of the walk
         curTime = time = (int)Time.time;
-        time = curTime - UrlStorage.time;
+        time = curTime - Storage.time;
         string duree = texteDuree(time);
 
         
@@ -97,7 +97,7 @@ public class feedbacks : MonoBehaviour
             button3.GetComponent<changeButton>().setBool(false);
             button4.GetComponent<changeButton>().setBool(false);
             button5.GetComponent<changeButton>().setBool(false);
-            UrlStorage.note = 1;
+            Storage.note = 1;
   
 
         }
@@ -110,7 +110,7 @@ public class feedbacks : MonoBehaviour
             button3.GetComponent<changeButton>().setBool(false);
             button4.GetComponent<changeButton>().setBool(false);
             button5.GetComponent<changeButton>().setBool(false);
-            UrlStorage.note = 2;
+            Storage.note = 2;
  
 
         }
@@ -123,7 +123,7 @@ public class feedbacks : MonoBehaviour
             button3.GetComponent<changeButton>().setBool(true);
             button4.GetComponent<changeButton>().setBool(false);
             button5.GetComponent<changeButton>().setBool(false);
-            UrlStorage.note = 3;
+            Storage.note = 3;
  
 
         }
@@ -136,7 +136,7 @@ public class feedbacks : MonoBehaviour
             button3.GetComponent<changeButton>().setBool(true);
             button4.GetComponent<changeButton>().setBool(true);
             button5.GetComponent<changeButton>().setBool(false);
-            UrlStorage.note = 4;
+            Storage.note = 4;
  
         }
         button4.GetComponent<Button>().onClick.AddListener(click4);
@@ -148,14 +148,14 @@ public class feedbacks : MonoBehaviour
             button3.GetComponent<changeButton>().setBool(true);
             button4.GetComponent<changeButton>().setBool(true);
             button5.GetComponent<changeButton>().setBool(true);
-            UrlStorage.note = 5;
+            Storage.note = 5;
 
         }
         button5.GetComponent<Button>().onClick.AddListener(click5);
 
         void validate()
         {
-            note = UrlStorage.note;
+            note = Storage.note;
             //we prepare the request
             string request = FTPUrl + "?" + "date=" + date + "&" + "heure=" + hour + "&" + "nom=" + nom + "&" + "duree=" + duree + "&" + "note=" + note;
             StartCoroutine(GetRequest(request));

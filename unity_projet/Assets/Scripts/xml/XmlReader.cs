@@ -86,8 +86,8 @@ public class XmlReader : MonoBehaviour
         texteInfoContainer.SetActive(false);
 
         Debug.Log("Start XmlReader");
-        UrlStorage.time = (int)Time.time;
-        string urlBalade = UrlStorage.urlBaladeDirectory + UrlStorage.idBalade + ".xml";
+        Storage.time = (int)Time.time;
+        string urlBalade = Storage.urlBaladeDirectory + Storage.idBalade + ".xml";
         Debug.Log(urlBalade);
         Debug.Log("URL chargée:" + urlBalade);
         XmlDocument baladeData = new XmlDocument(); //on crée un nouveau doc xml nommé baladeData
@@ -195,7 +195,7 @@ public class XmlReader : MonoBehaviour
             //creation of audio source
 
             //test with a music from the internet
-            string audiopath = UrlStorage.urlBaladeDirectory + audioNode.InnerText.Trim(new char[] { ' ', '\n', '\r' });
+            string audiopath = Storage.urlBaladeDirectory + audioNode.InnerText.Trim(new char[] { ' ', '\n', '\r' });
             Debug.Log("AudioPath = " + audiopath);
             IEnumerator i = audioPlay.GetAudioClip(audiopath, audioSource);
             StartCoroutine(i);
@@ -261,7 +261,7 @@ public class XmlReader : MonoBehaviour
 
     private IEnumerator DownloadImage(string imageName, RawImage YourRawImage)
     {
-        string imageUrl = UrlStorage.urlBaladeDirectory + imageName;
+        string imageUrl = Storage.urlBaladeDirectory + imageName;
         UnityWebRequest request = UnityWebRequestTexture.GetTexture(imageUrl);
         Debug.Log(imageUrl);
         yield return request.SendWebRequest();

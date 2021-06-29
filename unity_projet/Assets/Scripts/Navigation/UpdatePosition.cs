@@ -17,8 +17,8 @@ public class UpdatePosition : MonoBehaviour
     {
         xprevu = x;
         yprevu = y;
-        UrlStorage.xprevu = x;
-        UrlStorage.yprevu = y;
+        Storage.xprevu = x;
+        Storage.yprevu = y;
 
     }
     bool getDistanceIsOk()

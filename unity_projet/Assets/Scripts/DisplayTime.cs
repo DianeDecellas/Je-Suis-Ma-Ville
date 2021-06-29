@@ -12,7 +12,7 @@ public class DisplayTime : MonoBehaviour
     void Start()
     {
         curTime= time = (int)Time.time;
-        time = curTime - UrlStorage.time;
+        time = curTime - Storage.time;
         int seconds = (int)(time % 60);
         int minutes = (int)(time / 60) % 60;
         int hours = (int)(time / 3600) % 24;
