@@ -343,7 +343,7 @@ public class XmlReader : MonoBehaviour
         nextStepButton.GetComponent<Button>().interactable = false; //(G) the Next Step Button is not interactable until the answer is right
         if (isItPreviousStep)
         {
-            nextStepButton.GetComponent<Button>().interactable = false;
+            nextStepButton.transform.GetComponent<Button>().interactable = true;
         }
         inputFieldObject.SetActive(true); //on rend input actif : il faut qu'il soit affiché dans l'ui
         textHint.SetActive(false);//the user should not see the hint before their first answer
@@ -445,9 +445,10 @@ public class XmlReader : MonoBehaviour
         GameObject frame = imageParentObject.transform.Find("CameraImage").Find("Frame").gameObject;
         
         nextStepButton.transform.GetComponent<Button>().interactable = false;       //(G) can not go to the next step before having the answer
+        isItPreviousStep = currentNodeIndex < furthestNodeIndex;
         if (isItPreviousStep)
         {
-            nextStepButton.GetComponent<Button>().interactable = true;
+            nextStepButton.transform.GetComponent<Button>().interactable = true;
         }
         questionTextBox.transform.GetComponent<Text>().text = question.InnerText;   //(G) instructions display
         previousStepButton.GetComponent<Button>().onClick.RemoveAllListeners();
