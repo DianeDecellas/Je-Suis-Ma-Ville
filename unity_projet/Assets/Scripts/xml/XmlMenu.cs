@@ -19,7 +19,7 @@ public class XmlMenu : MonoBehaviour
     string dossierBalades = "ressources_balades";
 
     string FtpURL = "https://prefigurations.com/je_suis_ma_ville/balades/";
-    UrlStorage urlstorage;                                                                           // Start is called before the first frame update
+    Storage urlstorage;                                                                           // Start is called before the first frame update
     public Sprite[] spriteArray;
 
     /// <summary>
@@ -141,9 +141,9 @@ public class XmlMenu : MonoBehaviour
                     }
                 }
                 else {
-                    UrlStorage.urlBaladeDirectory = FtpURL+"/"+dossierBalades+"/"+idBalade+"/";
+                    Storage.urlBaladeDirectory = FtpURL+"/"+dossierBalades+"/"+idBalade+"/";
                     Debug.Log("Cliquée : " + urlXmlBalade);
-                    UrlStorage.idBalade = idBalade;
+                    Storage.idBalade = idBalade;
 
                     SceneManager.LoadScene("scene_finale",LoadSceneMode.Single);
                 }
