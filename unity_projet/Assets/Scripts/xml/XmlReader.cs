@@ -117,12 +117,8 @@ public class XmlReader : MonoBehaviour
     
     IEnumerator ecranFaux()
     {
-        
         falseScreen.SetActive(true);
         yield return new WaitForSecondsRealtime(2);
-        
-        
-
     }
 
 
@@ -139,7 +135,7 @@ public class XmlReader : MonoBehaviour
         inputFieldObject.SetActive(false);
         validateButton.SetActive(false);
         textHint.SetActive(false);
-
+        nextStepButton.GetComponent<Button>().interactable = true;
 
         infoObject.SetActive(true);
         StartCoroutine(DownloadImage(imagePath, rawImage));
@@ -548,17 +544,9 @@ public class XmlReader : MonoBehaviour
             g2.transform.GetSiblingIndex(),
             g3.transform.GetSiblingIndex(),
             g4.transform.GetSiblingIndex() };
-        Debug.Log(indexArray[0].ToString() 
-            +" | " + indexArray[1].ToString()
-            +" | " + indexArray[2].ToString()
-            +" | " + indexArray[3].ToString()); //(G) test Debug
         //(G) Shuffling the indexes array
         System.Random rnd = new System.Random();
         indexArray = indexArray.OrderBy(c => rnd.Next()).ToArray();
-        Debug.Log(indexArray[0].ToString() 
-            + " | " + indexArray[1].ToString()
-            + " | " + indexArray[2].ToString()
-            + " | " + indexArray[3].ToString()); //(G) test Debug
         //(G) switching the buttons' order 
         g1.transform.SetSiblingIndex(indexArray[0]);
         g2.transform.SetSiblingIndex(indexArray[1]);
